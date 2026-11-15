@@ -127,20 +127,24 @@ fun MiuixThemeSettingsPage(
                         selectedIndex = uiState.uiStyle.ordinal,
                         onSelectedIndexChange = { viewModel.dispatch(ThemeSettingsAction.SetUiStyle(UiStyle.entries[it])) },
                     )
-                    if (uiState.uiStyle == UiStyle.CURRENT) MiuixThemeEngineWidget(
-                        currentThemeIsMiuix = uiState.showMiuixUI,
-                        onThemeChange = { useMiuix ->
-                            viewModel.dispatch(ThemeSettingsAction.ChangeUseMiuix(useMiuix))
-                        },
-                    )
-                    if (uiState.uiStyle == UiStyle.CURRENT) MiuixSwitchWidget(
-                        title = stringResource(R.string.theme_settings_use_apple_floating_bar),
-                        description = stringResource(R.string.theme_settings_use_apple_floating_bar_desc),
-                        checked = uiState.useAppleFloatingBar,
-                        onCheckedChange = {
-                            viewModel.dispatch(ThemeSettingsAction.SetUseAppleFloatingBar(it))
-                        },
-                    )
+                    if (uiState.uiStyle == UiStyle.CURRENT) {
+                        MiuixThemeEngineWidget(
+                            currentThemeIsMiuix = uiState.showMiuixUI,
+                            onThemeChange = { useMiuix ->
+                                viewModel.dispatch(ThemeSettingsAction.ChangeUseMiuix(useMiuix))
+                            },
+                        )
+                    }
+                    if (uiState.uiStyle == UiStyle.CURRENT) {
+                        MiuixSwitchWidget(
+                            title = stringResource(R.string.theme_settings_use_apple_floating_bar),
+                            description = stringResource(R.string.theme_settings_use_apple_floating_bar_desc),
+                            checked = uiState.useAppleFloatingBar,
+                            onCheckedChange = {
+                                viewModel.dispatch(ThemeSettingsAction.SetUseAppleFloatingBar(it))
+                            },
+                        )
+                    }
                 }
             }
             item { SmallTitle(stringResource(R.string.theme_settings_miuix_ui)) }

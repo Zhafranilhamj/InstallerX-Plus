@@ -7,7 +7,8 @@ enum class UiStyle {
     CURRENT,
     LIQUID_GLASS,
     MATERIAL_EXPRESSIVE,
-    MIXED;
+    MIXED,
+    ;
 
     companion object {
         fun fromValue(value: String?): UiStyle = entries.firstOrNull { it.name == value } ?: CURRENT

@@ -207,16 +207,18 @@ fun ThemeSettingsPage(viewModel: ThemeSettingsViewModel = koinViewModel()) {
                             )
                         }
                     }
-                    if (uiState.uiStyle == UiStyle.CURRENT) item {
-                        SwitchWidget(
-                            iconPlaceholder = false,
-                            title = stringResource(R.string.theme_settings_use_apple_floating_bar),
-                            description = stringResource(R.string.theme_settings_use_apple_floating_bar_desc),
-                            checked = uiState.useAppleFloatingBar,
-                            onCheckedChange = {
-                                viewModel.dispatch(ThemeSettingsAction.SetUseAppleFloatingBar(it))
-                            },
-                        )
+                    if (uiState.uiStyle == UiStyle.CURRENT) {
+                        item {
+                            SwitchWidget(
+                                iconPlaceholder = false,
+                                title = stringResource(R.string.theme_settings_use_apple_floating_bar),
+                                description = stringResource(R.string.theme_settings_use_apple_floating_bar_desc),
+                                checked = uiState.useAppleFloatingBar,
+                                onCheckedChange = {
+                                    viewModel.dispatch(ThemeSettingsAction.SetUseAppleFloatingBar(it))
+                                },
+                            )
+                        }
                     }
                 }
             }
