@@ -1,0 +1,24 @@
+name: Style diagnostic
+on:
+  push:
+    branches: [ 'arena/268148ca-installerx-plus' ]
+permissions:
+  contents: read
+  packages: read
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: zulu
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v6
+      - run: ./gradlew spotlessApply --no-configuration-cache
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          git diff > /tmp/format.patch
+          base64 -w0 /tmp/format.patch | fold -w 8000 | while read -r line; do echo "::notice::$line"; done
