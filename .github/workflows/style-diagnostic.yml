@@ -15,10 +15,10 @@ jobs:
           distribution: zulu
           java-version: '25'
       - uses: gradle/actions/setup-gradle@v6
-      - name: Diagnose check
-        run: |
-          set +e
-          ./gradlew spotlessCheck --no-configuration-cache > /tmp/check.log 2>&1
-          STATUS=$?
-          tail -n 35 /tmp/check.log | while IFS= read -r line; do echo "::notice::$line"; done
-          exit "$STATUS"
+      - run: ./gradlew spotlessApply --no-configuration-cache
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          git diff > /tmp/format.patch
+          base64 -w0 /tmp/format.patch | fold -w 4000 | while IFS= read -r line || [ -n "$line" ]; do echo "::notice::$line"; done
