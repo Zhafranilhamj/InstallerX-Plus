@@ -9,10 +9,12 @@ import com.rosan.installer.domain.settings.model.preferences.PredictiveBackExitD
 import com.rosan.installer.domain.settings.model.preferences.theme.PaletteStyle
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeColorSpec
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeMode
+import com.rosan.installer.domain.settings.model.preferences.theme.UiStyle
 import com.rosan.installer.ui.theme.material.PresetColors
 import com.rosan.installer.ui.theme.material.RawColor
 
 data class ThemeSettingsState(
+    val uiStyle: UiStyle = UiStyle.CURRENT,
     val showMiuixUI: Boolean = false,
     val useBlur: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU,
     val themeMode: ThemeMode = ThemeMode.SYSTEM,

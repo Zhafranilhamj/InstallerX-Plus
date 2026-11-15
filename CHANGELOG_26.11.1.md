@@ -1,0 +1,2 @@
+- Choose between the current look, liquid glass, Material 3 Expressive, or a mix of both in appearance settings.
+- The app is now named InstallerX-Plus.

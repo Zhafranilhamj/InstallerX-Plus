@@ -10,6 +10,7 @@ import com.rosan.installer.domain.settings.model.config.NetworkSourceMode
 import com.rosan.installer.domain.settings.model.preferences.theme.PaletteStyle
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeColorSpec
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeMode
+import com.rosan.installer.domain.settings.model.preferences.theme.UiStyle
 
 /**
  * The aggregated state of all application preferences.
@@ -81,6 +82,7 @@ data class AppPreferences(
     val labTryDifferentArchitecture: Boolean,
     val enableFileLogging: Boolean,
     // Theme Settings
+    val uiStyle: UiStyle = UiStyle.CURRENT,
     val themeMode: ThemeMode,
     val paletteStyle: PaletteStyle,
     val colorSpec: ThemeColorSpec,

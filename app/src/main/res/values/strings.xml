@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">InstallerX Revived</string>
+    <string name="app_name" translatable="false">InstallerX-Plus</string>
+    <string name="ui_style_current">Current</string>
+    <string name="ui_style_current_desc">Keep your existing appearance settings.</string>
+    <string name="ui_style_glass">Liquid glass</string>
+    <string name="ui_style_glass_desc">Miuix controls with a floating bar and translucent blur where supported.</string>
+    <string name="ui_style_material">Material 3 Expressive</string>
+    <string name="ui_style_material_desc">Material controls with solid surfaces.</string>
+    <string name="ui_style_mixed">Mix of both</string>
+    <string name="ui_style_mixed_desc">Material controls with a floating bar and translucent blur where supported.</string>
     <!--<string name="agreement_text">Here is our user policy, Please read and agree to it. &lt;a href="https://iamr0s.github.io/InstallerXDocs/terms"&gt;User Policy&lt;/a&gt;, &lt;a href="https://iamr0s.github.io/InstallerXDocs/privacy"&gt;Privacy Policy&lt;/a&gt; This message won\'t show up again after you agree.</string>-->
     <string name="warning">Warning</string>
     <string name="open_source_license">Open Source License</string>

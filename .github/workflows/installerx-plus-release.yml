@@ -1,0 +1,74 @@
+name: InstallerX-Plus signed APK
+
+on:
+  push:
+    branches:
+      - 'arena/268148ca-installerx-plus'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@v6
+        with:
+          distribution: zulu
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: true
+      - name: Prepare signing key
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          set -eu
+          : "${KEYSTORE_BASE64:?Missing KEYSTORE_BASE64}"
+          : "${KEY_ALIAS:?Missing KEY_ALIAS}"
+          : "${KEY_PASSWORD:?Missing KEY_PASSWORD}"
+          STORE_PASSWORD="${STORE_PASSWORD:-${KEYSTORE_PASSWORD:-}}"
+          : "${STORE_PASSWORD:?Missing STORE_PASSWORD or KEYSTORE_PASSWORD}"
+          mkdir -p keystore
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > keystore/release.jks
+          echo "KEYSTORE_FILE=$GITHUB_WORKSPACE/keystore/release.jks" >> "$GITHUB_ENV"
+          echo "KEYSTORE_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
+          echo "KEY_ALIAS=$KEY_ALIAS" >> "$GITHUB_ENV"
+          echo "KEY_PASSWORD=$KEY_PASSWORD" >> "$GITHUB_ENV"
+      - name: Run unit tests
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew testStableDebugUnitTest --no-configuration-cache
+      - name: Build signed release APK
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew assembleStableRelease --no-configuration-cache
+      - name: Verify and collect APK
+        run: |
+          set -eu
+          APK=$(find app/build/outputs/apk -type f -ipath '*/stable/release/*.apk' -print -quit)
+          test -n "$APK"
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -name apksigner | sort -V | tail -1)
+          "$APKSIGNER" verify --verbose "$APK"
+          mkdir -p release-apk
+          cp "$APK" release-apk/InstallerX-Plus-26.11.1.apk
+      - uses: actions/upload-artifact@v7
+        with:
+          name: InstallerX-Plus-26.11.1
+          path: release-apk/InstallerX-Plus-26.11.1.apk
+          if-no-files-found: error
+          retention-days: 90
+          archive: false

@@ -69,6 +69,7 @@ class ThemeSettingsViewModel(
             }
 
         ThemeSettingsState(
+            uiStyle = prefs.uiStyle,
             showMiuixUI = prefs.showMiuixUI,
             useBlur = prefs.useBlur,
             themeMode = prefs.themeMode,
@@ -94,6 +95,10 @@ class ThemeSettingsViewModel(
 
     fun dispatch(action: ThemeSettingsAction) {
         when (action) {
+            is ThemeSettingsAction.SetUiStyle -> viewModelScope.launch {
+                updateSetting(StringSetting.UiStyle, action.style.name)
+            }
+
             is ThemeSettingsAction.ChangeUseMiuix -> viewModelScope.launch {
                 updateSetting(BooleanSetting.UiUseMiuix, action.useMiuix)
             }

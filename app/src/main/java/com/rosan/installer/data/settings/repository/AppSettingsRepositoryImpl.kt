@@ -23,6 +23,7 @@ import com.rosan.installer.domain.settings.model.preferences.VirusTotalScanMode
 import com.rosan.installer.domain.settings.model.preferences.theme.PaletteStyle
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeColorSpec
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeMode
+import com.rosan.installer.domain.settings.model.preferences.theme.UiStyle
 import com.rosan.installer.domain.settings.repository.AppSettingsRepository
 import com.rosan.installer.domain.settings.repository.BooleanSetting
 import com.rosan.installer.domain.settings.repository.IntSetting
@@ -53,6 +54,8 @@ class AppSettingsRepositoryImpl(
         } else {
             rawGithubUpdateChannel
         }
+
+        val uiStyle = UiStyle.fromValue(prefs[AppDataStore.UI_STYLE])
 
         // Map all preferences explicitly by key. Order no longer matters.
         AppPreferences(
@@ -94,7 +97,7 @@ class AppSettingsRepositoryImpl(
                 value = prefs[AppDataStore.SMART_AUTHORIZER_CANDIDATES].orEmpty(),
                 isSessionInstallSupported = capabilityProvider.isSessionInstallSupported,
             ),
-            showMiuixUI = prefs[AppDataStore.UI_USE_MIUIX] ?: false,
+            showMiuixUI = uiStyle.useMiuix(prefs[AppDataStore.UI_USE_MIUIX] ?: false),
             preferSystemIcon = prefs[AppDataStore.PREFER_SYSTEM_ICON_FOR_INSTALL] ?: false,
             showLauncherIcon = prefs[AppDataStore.SHOW_LAUNCHER_ICON] ?: true,
             userSetLSPosedActive = prefs[AppDataStore.USER_SET_LSPOSED_ACTIVE] ?: false,
@@ -157,6 +160,7 @@ class AppSettingsRepositoryImpl(
             labTryDifferentArchitecture = prefs[AppDataStore.LAB_TRY_DIFFERENT_ARCHITECTURE] ?: false,
             enableFileLogging = prefs[AppDataStore.ENABLE_FILE_LOGGING] ?: true,
             // UI State
+            uiStyle = uiStyle,
             themeMode = ThemeMode.fromValueOrDefault(prefs[AppDataStore.THEME_MODE] ?: ThemeMode.SYSTEM.name),
             paletteStyle = PaletteStyle.fromValueOrDefault(
                 prefs[AppDataStore.THEME_PALETTE_STYLE] ?: PaletteStyle.TonalSpot.name,
@@ -164,17 +168,15 @@ class AppSettingsRepositoryImpl(
             colorSpec = ThemeColorSpec.fromValueOrDefault(prefs[AppDataStore.THEME_COLOR_SPEC] ?: ThemeColorSpec.SPEC_2025.name),
             useDynamicColor = prefs[AppDataStore.THEME_USE_DYNAMIC_COLOR] ?: true,
             useMiuixMonet = prefs[AppDataStore.UI_USE_MIUIX_MONET] ?: false,
-            useAppleFloatingBar = prefs[AppDataStore.UI_USE_APPLE_FLOATING_BAR] ?: false,
+            useAppleFloatingBar = uiStyle.useFloatingBar(prefs[AppDataStore.UI_USE_APPLE_FLOATING_BAR] ?: false),
             seedColorInt = prefs[AppDataStore.THEME_SEED_COLOR] ?: DEFAULT_SEED_COLOR,
             wallpaperSeedColorInt = prefs[AppDataStore.THEME_WALLPAPER_SEED_COLOR] ?: 0,
             useDynColorFollowPkgIcon = prefs[AppDataStore.UI_DYN_COLOR_FOLLOW_PKG_ICON] ?: false,
             useDynColorFollowPkgIconForLiveActivity = prefs[AppDataStore.LIVE_ACTIVITY_DYN_COLOR_FOLLOW_PKG_ICON] ?: false,
-            useBlur = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                prefs[AppDataStore.UI_USE_BLUR]
-                    ?: true
-            } else {
-                false
-            },
+            useBlur = uiStyle.useBlur(
+                current = prefs[AppDataStore.UI_USE_BLUR] ?: true,
+                supported = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU,
+            ),
             predictiveBackAnimation = PredictiveBackAnimation.fromValueOrDefault(
                 prefs[AppDataStore.PREDICTIVE_BACK_ANIMATION] ?: PredictiveBackAnimation.MIUIX.value,
             ),
@@ -224,6 +226,7 @@ class AppSettingsRepositoryImpl(
     override suspend fun updateUninstallFlags(transform: (Int) -> Int) = appDataStore.updateUninstallFlags(transform)
 
     private fun stringKey(setting: StringSetting): Preferences.Key<String> = when (setting) {
+        StringSetting.UiStyle -> AppDataStore.UI_STYLE
         StringSetting.ThemeMode -> AppDataStore.THEME_MODE
         StringSetting.ThemePaletteStyle -> AppDataStore.THEME_PALETTE_STYLE
         StringSetting.ThemeColorSpec -> AppDataStore.THEME_COLOR_SPEC
