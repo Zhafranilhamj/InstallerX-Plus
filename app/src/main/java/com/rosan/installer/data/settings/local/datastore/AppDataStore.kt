@@ -39,6 +39,7 @@ class AppDataStore(private val dataStore: DataStore<Preferences>, private val js
         }
 
         // UI Related
+        val UI_STYLE = register(stringPreferencesKey("ui_style"), PreferenceValueType.STRING)
         val UI_USE_BLUR = register(booleanPreferencesKey("ui_use_blur"), PreferenceValueType.BOOLEAN)
         val THEME_MODE = register(stringPreferencesKey("theme_mode"), PreferenceValueType.STRING)
         val THEME_PALETTE_STYLE = register(stringPreferencesKey("theme_palette_style"), PreferenceValueType.STRING)

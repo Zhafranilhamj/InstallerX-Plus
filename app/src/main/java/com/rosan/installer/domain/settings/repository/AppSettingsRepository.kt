@@ -8,6 +8,7 @@ import com.rosan.installer.domain.settings.model.preferences.AppPreferences
 import kotlinx.coroutines.flow.Flow
 
 enum class StringSetting {
+    UiStyle,
     ThemeMode,
     ThemePaletteStyle,
     ThemeColorSpec,

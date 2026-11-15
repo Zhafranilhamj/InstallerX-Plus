@@ -8,8 +8,10 @@ import com.rosan.installer.domain.settings.model.preferences.PredictiveBackExitD
 import com.rosan.installer.domain.settings.model.preferences.theme.PaletteStyle
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeColorSpec
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeMode
+import com.rosan.installer.domain.settings.model.preferences.theme.UiStyle
 
 sealed interface ThemeSettingsAction {
+    data class SetUiStyle(val style: UiStyle) : ThemeSettingsAction
     data class ChangeUseMiuix(val useMiuix: Boolean) : ThemeSettingsAction
     data class SetUseBlur(val enable: Boolean) : ThemeSettingsAction
     data class SetThemeMode(val mode: ThemeMode) : ThemeSettingsAction

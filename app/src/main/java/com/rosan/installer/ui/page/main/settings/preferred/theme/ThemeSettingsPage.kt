@@ -61,6 +61,7 @@ import com.rosan.installer.domain.settings.model.preferences.PredictiveBackAnima
 import com.rosan.installer.domain.settings.model.preferences.PredictiveBackExitDirection
 import com.rosan.installer.domain.settings.model.preferences.theme.PaletteStyle
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeMode
+import com.rosan.installer.domain.settings.model.preferences.theme.UiStyle
 import com.rosan.installer.ui.icons.AppIcons
 import com.rosan.installer.ui.navigation.LocalNavigator
 import com.rosan.installer.ui.page.main.widget.card.ColorSwatchPreview
@@ -175,49 +176,49 @@ fun ThemeSettingsPage(viewModel: ThemeSettingsViewModel = koinViewModel()) {
                 SegmentedColumn(
                     title = stringResource(R.string.theme_settings_ui_style),
                 ) {
-                    // Option 1: Google UI
-                    item {
-                        val selected = !uiState.showMiuixUI
-                        val onClick = {
-                            if (uiState.showMiuixUI) {
-                                viewModel.dispatch(ThemeSettingsAction.ChangeUseMiuix(false))
-                            }
+                    UiStyle.entries.forEach { style ->
+                        item {
+                            RadioButtonWidget(
+                                title = stringResource(style.titleRes()),
+                                description = stringResource(style.descriptionRes()),
+                                iconPlaceholder = false,
+                                selected = uiState.uiStyle == style,
+                                onClick = { viewModel.dispatch(ThemeSettingsAction.SetUiStyle(style)) },
+                            )
                         }
-                        RadioButtonWidget(
-                            title = stringResource(R.string.theme_settings_google_ui),
-                            description = stringResource(R.string.theme_settings_google_ui_desc),
-                            iconPlaceholder = false,
-                            selected = selected,
-                            onClick = onClick,
-                        )
                     }
-                    // Option 2: MIUIX UI
-                    item {
-                        val selected = uiState.showMiuixUI
-                        val onClick = {
-                            if (!uiState.showMiuixUI) {
-                                viewModel.dispatch(ThemeSettingsAction.ChangeUseMiuix(true))
-                            }
+                    if (uiState.uiStyle == UiStyle.CURRENT) {
+                        item {
+                            RadioButtonWidget(
+                                title = stringResource(R.string.theme_settings_google_ui),
+                                description = stringResource(R.string.theme_settings_google_ui_desc),
+                                iconPlaceholder = false,
+                                selected = !uiState.showMiuixUI,
+                                onClick = { viewModel.dispatch(ThemeSettingsAction.ChangeUseMiuix(false)) },
+                            )
                         }
-                        RadioButtonWidget(
-                            title = stringResource(R.string.theme_settings_miuix_ui),
-                            description = stringResource(R.string.theme_settings_miuix_ui_desc),
-                            iconPlaceholder = false,
-                            selected = selected,
-                            onClick = onClick,
-                        )
+                        item {
+                            RadioButtonWidget(
+                                title = stringResource(R.string.theme_settings_miuix_ui),
+                                description = stringResource(R.string.theme_settings_miuix_ui_desc),
+                                iconPlaceholder = false,
+                                selected = uiState.showMiuixUI,
+                                onClick = { viewModel.dispatch(ThemeSettingsAction.ChangeUseMiuix(true)) },
+                            )
+                        }
                     }
-                    // Option 3: Floating Bottom Bar
-                    item {
-                        SwitchWidget(
-                            iconPlaceholder = false,
-                            title = stringResource(R.string.theme_settings_use_apple_floating_bar),
-                            description = stringResource(R.string.theme_settings_use_apple_floating_bar_desc),
-                            checked = uiState.useAppleFloatingBar,
-                            onCheckedChange = {
-                                viewModel.dispatch(ThemeSettingsAction.SetUseAppleFloatingBar(it))
-                            },
-                        )
+                    if (uiState.uiStyle == UiStyle.CURRENT) {
+                        item {
+                            SwitchWidget(
+                                iconPlaceholder = false,
+                                title = stringResource(R.string.theme_settings_use_apple_floating_bar),
+                                description = stringResource(R.string.theme_settings_use_apple_floating_bar_desc),
+                                checked = uiState.useAppleFloatingBar,
+                                onCheckedChange = {
+                                    viewModel.dispatch(ThemeSettingsAction.SetUseAppleFloatingBar(it))
+                                },
+                            )
+                        }
                     }
                 }
             }
@@ -227,7 +228,7 @@ fun ThemeSettingsPage(viewModel: ThemeSettingsViewModel = koinViewModel()) {
                 SegmentedColumn(
                     title = stringResource(R.string.theme_settings_google_ui),
                 ) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if (uiState.uiStyle == UiStyle.CURRENT && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         item {
                             SwitchWidget(
                                 icon = AppIcons.Blur,

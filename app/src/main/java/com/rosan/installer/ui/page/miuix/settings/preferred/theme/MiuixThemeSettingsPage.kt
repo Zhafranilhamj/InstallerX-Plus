@@ -48,9 +48,11 @@ import com.rosan.installer.domain.settings.model.preferences.PredictiveBackExitD
 import com.rosan.installer.domain.settings.model.preferences.theme.PaletteStyle
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeColorSpec
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeMode
+import com.rosan.installer.domain.settings.model.preferences.theme.UiStyle
 import com.rosan.installer.ui.navigation.LocalNavigator
 import com.rosan.installer.ui.page.main.settings.preferred.theme.ThemeSettingsAction
 import com.rosan.installer.ui.page.main.settings.preferred.theme.ThemeSettingsViewModel
+import com.rosan.installer.ui.page.main.settings.preferred.theme.titleRes
 import com.rosan.installer.ui.page.main.widget.card.ColorSwatchPreview
 import com.rosan.installer.ui.page.miuix.widgets.MiuixBackButton
 import com.rosan.installer.ui.page.miuix.widgets.MiuixSwitchWidget
@@ -119,20 +121,30 @@ fun MiuixThemeSettingsPage(
                         .padding(horizontal = 12.dp)
                         .padding(bottom = 12.dp),
                 ) {
-                    MiuixThemeEngineWidget(
-                        currentThemeIsMiuix = uiState.showMiuixUI,
-                        onThemeChange = { useMiuix ->
-                            viewModel.dispatch(ThemeSettingsAction.ChangeUseMiuix(useMiuix))
-                        },
+                    WindowSpinnerPreference(
+                        title = stringResource(R.string.theme_settings_ui_style),
+                        items = UiStyle.entries.map { DropdownItem(title = stringResource(it.titleRes())) },
+                        selectedIndex = uiState.uiStyle.ordinal,
+                        onSelectedIndexChange = { viewModel.dispatch(ThemeSettingsAction.SetUiStyle(UiStyle.entries[it])) },
                     )
-                    MiuixSwitchWidget(
-                        title = stringResource(R.string.theme_settings_use_apple_floating_bar),
-                        description = stringResource(R.string.theme_settings_use_apple_floating_bar_desc),
-                        checked = uiState.useAppleFloatingBar,
-                        onCheckedChange = {
-                            viewModel.dispatch(ThemeSettingsAction.SetUseAppleFloatingBar(it))
-                        },
-                    )
+                    if (uiState.uiStyle == UiStyle.CURRENT) {
+                        MiuixThemeEngineWidget(
+                            currentThemeIsMiuix = uiState.showMiuixUI,
+                            onThemeChange = { useMiuix ->
+                                viewModel.dispatch(ThemeSettingsAction.ChangeUseMiuix(useMiuix))
+                            },
+                        )
+                    }
+                    if (uiState.uiStyle == UiStyle.CURRENT) {
+                        MiuixSwitchWidget(
+                            title = stringResource(R.string.theme_settings_use_apple_floating_bar),
+                            description = stringResource(R.string.theme_settings_use_apple_floating_bar_desc),
+                            checked = uiState.useAppleFloatingBar,
+                            onCheckedChange = {
+                                viewModel.dispatch(ThemeSettingsAction.SetUseAppleFloatingBar(it))
+                            },
+                        )
+                    }
                 }
             }
             item { SmallTitle(stringResource(R.string.theme_settings_miuix_ui)) }
@@ -148,7 +160,7 @@ fun MiuixThemeSettingsPage(
                             viewModel.dispatch(ThemeSettingsAction.SetThemeMode(newMode))
                         },
                     )
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if (uiState.uiStyle == UiStyle.CURRENT && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         MiuixSwitchWidget(
                             title = stringResource(R.string.theme_settings_use_blur),
                             description = stringResource(R.string.theme_settings_use_blur_desc),
