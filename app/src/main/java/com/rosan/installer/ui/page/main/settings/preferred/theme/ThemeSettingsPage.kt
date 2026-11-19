@@ -225,77 +225,79 @@ fun ThemeSettingsPage(viewModel: ThemeSettingsViewModel = koinViewModel()) {
             }
 
             // --- Group 2: Google UI Options ---
-            item(animatedVisibility = uiState.uiStyle != UiStyle.FRUTIGER_AERO || uiState.showLiveActivity) {
-                SegmentedColumn(
-                    title = stringResource(R.string.theme_settings_google_ui),
-                ) {
-                    if (uiState.uiStyle == UiStyle.CURRENT && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        item {
-                            SwitchWidget(
-                                icon = AppIcons.Blur,
-                                title = stringResource(R.string.theme_settings_use_blur),
-                                description = stringResource(R.string.theme_settings_use_blur_desc),
-                                checked = uiState.useBlur,
-                                onCheckedChange = { viewModel.dispatch(ThemeSettingsAction.SetUseBlur(it)) },
-                            )
+            if (uiState.uiStyle != UiStyle.FRUTIGER_AERO || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && uiState.showLiveActivity)) {
+                item {
+                    SegmentedColumn(
+                        title = stringResource(R.string.theme_settings_google_ui),
+                    ) {
+                        if (uiState.uiStyle == UiStyle.CURRENT && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            item {
+                                SwitchWidget(
+                                    icon = AppIcons.Blur,
+                                    title = stringResource(R.string.theme_settings_use_blur),
+                                    description = stringResource(R.string.theme_settings_use_blur_desc),
+                                    checked = uiState.useBlur,
+                                    onCheckedChange = { viewModel.dispatch(ThemeSettingsAction.SetUseBlur(it)) },
+                                )
+                            }
                         }
-                    }
-                    if (uiState.uiStyle != UiStyle.FRUTIGER_AERO) {
-                        item {
-                            BaseWidget(
-                                icon = Icons.Default.DarkMode,
-                                title = stringResource(R.string.theme_settings_theme_mode),
-                                description = when (uiState.themeMode) {
-                                    ThemeMode.LIGHT -> stringResource(R.string.theme_settings_theme_mode_light)
-                                    ThemeMode.DARK -> stringResource(R.string.theme_settings_theme_mode_dark)
-                                    ThemeMode.SYSTEM -> stringResource(R.string.theme_settings_theme_mode_system)
-                                },
-                                onClick = { showThemeModeDialog = true },
-                            )
+                        if (uiState.uiStyle != UiStyle.FRUTIGER_AERO) {
+                            item {
+                                BaseWidget(
+                                    icon = Icons.Default.DarkMode,
+                                    title = stringResource(R.string.theme_settings_theme_mode),
+                                    description = when (uiState.themeMode) {
+                                        ThemeMode.LIGHT -> stringResource(R.string.theme_settings_theme_mode_light)
+                                        ThemeMode.DARK -> stringResource(R.string.theme_settings_theme_mode_dark)
+                                        ThemeMode.SYSTEM -> stringResource(R.string.theme_settings_theme_mode_system)
+                                    },
+                                    onClick = { showThemeModeDialog = true },
+                                )
+                            }
+                            item {
+                                BaseWidget(
+                                    icon = AppIcons.Palette,
+                                    title = stringResource(R.string.theme_settings_palette_style),
+                                    description = uiState.paletteStyle.displayName,
+                                    onClick = { showPaletteDialog = true },
+                                )
+                            }
+                            item { ColorSpecSelector(viewModel) }
+                            item {
+                                SwitchWidget(
+                                    icon = Icons.TwoTone.InvertColors,
+                                    title = stringResource(R.string.theme_settings_dynamic_color),
+                                    description = stringResource(R.string.theme_settings_dynamic_color_desc),
+                                    checked = uiState.useDynamicColor,
+                                    onCheckedChange = { viewModel.dispatch(ThemeSettingsAction.SetUseDynamicColor(it)) },
+                                )
+                            }
+                            item {
+                                SwitchWidget(
+                                    icon = Icons.TwoTone.Colorize,
+                                    title = stringResource(R.string.theme_settings_dynamic_color_follow_icon),
+                                    description = stringResource(R.string.theme_settings_dynamic_color_follow_icon_desc),
+                                    checked = uiState.useDynColorFollowPkgIcon,
+                                    onCheckedChange = { viewModel.dispatch(ThemeSettingsAction.SetDynColorFollowPkgIcon(it)) },
+                                )
+                            }
                         }
-                        item {
-                            BaseWidget(
-                                icon = AppIcons.Palette,
-                                title = stringResource(R.string.theme_settings_palette_style),
-                                description = uiState.paletteStyle.displayName,
-                                onClick = { showPaletteDialog = true },
-                            )
-                        }
-                        item { ColorSpecSelector(viewModel) }
-                        item {
-                            SwitchWidget(
-                                icon = Icons.TwoTone.InvertColors,
-                                title = stringResource(R.string.theme_settings_dynamic_color),
-                                description = stringResource(R.string.theme_settings_dynamic_color_desc),
-                                checked = uiState.useDynamicColor,
-                                onCheckedChange = { viewModel.dispatch(ThemeSettingsAction.SetUseDynamicColor(it)) },
-                            )
-                        }
-                        item {
+                        // Conditional item for Live Activity
+                        item(animatedVisibility = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && uiState.showLiveActivity) {
                             SwitchWidget(
                                 icon = Icons.TwoTone.Colorize,
-                                title = stringResource(R.string.theme_settings_dynamic_color_follow_icon),
-                                description = stringResource(R.string.theme_settings_dynamic_color_follow_icon_desc),
-                                checked = uiState.useDynColorFollowPkgIcon,
-                                onCheckedChange = { viewModel.dispatch(ThemeSettingsAction.SetDynColorFollowPkgIcon(it)) },
+                                title = stringResource(R.string.theme_settings_live_activity_dynamic_color_follow_icon),
+                                description = stringResource(R.string.theme_settings_live_activity_dynamic_color_follow_icon_desc),
+                                checked = uiState.useDynColorFollowPkgIconForLiveActivity,
+                                onCheckedChange = {
+                                    viewModel.dispatch(
+                                        ThemeSettingsAction.SetDynColorFollowPkgIconForLiveActivity(
+                                            it,
+                                        ),
+                                    )
+                                },
                             )
                         }
-                    }
-                    // Conditional item for Live Activity
-                    item(animatedVisibility = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && uiState.showLiveActivity) {
-                        SwitchWidget(
-                            icon = Icons.TwoTone.Colorize,
-                            title = stringResource(R.string.theme_settings_live_activity_dynamic_color_follow_icon),
-                            description = stringResource(R.string.theme_settings_live_activity_dynamic_color_follow_icon_desc),
-                            checked = uiState.useDynColorFollowPkgIconForLiveActivity,
-                            onCheckedChange = {
-                                viewModel.dispatch(
-                                    ThemeSettingsAction.SetDynColorFollowPkgIconForLiveActivity(
-                                        it,
-                                    ),
-                                )
-                            },
-                        )
                     }
                 }
             }
