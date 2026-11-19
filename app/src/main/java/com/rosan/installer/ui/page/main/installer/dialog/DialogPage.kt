@@ -3,6 +3,7 @@
 package com.rosan.installer.ui.page.main.installer.dialog
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetValue
@@ -12,6 +13,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rosan.installer.domain.session.repository.InstallerSessionRepository
 import com.rosan.installer.ui.page.main.installer.InstallerStage
@@ -23,6 +25,9 @@ import com.rosan.installer.ui.page.main.widget.util.InstallerEventCollector
 import com.rosan.installer.ui.theme.InstallerMaterialExpressiveTheme
 import com.rosan.installer.ui.theme.InstallerTheme
 import com.rosan.installer.ui.theme.LocalInstallerColorScheme
+import com.rosan.installer.ui.theme.aero.AeroShapes
+import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
+import com.rosan.installer.ui.theme.aero.aeroChrome
 import com.rosan.installer.ui.theme.material.dynamicColorScheme
 import com.rosan.installer.ui.util.WindowBlurEffect
 import org.koin.compose.viewmodel.koinViewModel
@@ -35,7 +40,7 @@ fun DialogPage(session: InstallerSessionRepository, viewModel: InstallerViewMode
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val stage = uiState.stage
     val viewSettings = uiState.viewSettings
-    val temporarySeedColor = uiState.seedColor
+    val temporarySeedColor = uiState.seedColor.takeUnless { LocalFrutigerAero.current }
     val useBlur = viewSettings.useBlur
 
     val globalColorScheme = InstallerTheme.colorScheme
@@ -98,7 +103,9 @@ fun DialogPage(session: InstallerSessionRepository, viewModel: InstallerViewMode
                             viewModel.dispatch(InstallerViewAction.Close)
                         }
                     },
+                    modifier = Modifier.aeroChrome(AeroShapes.extraLarge),
                     sheetState = sheetState,
+                    shape = if (LocalFrutigerAero.current) AeroShapes.extraLarge else BottomSheetDefaults.ExpandedShape,
                     containerColor = colorScheme.surfaceContainer,
                     contentColor = colorScheme.onSurface,
                 ) {

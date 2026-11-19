@@ -12,15 +12,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -39,6 +36,9 @@ import com.rosan.installer.domain.appmanager.model.AppSort
 import com.rosan.installer.domain.appmanager.model.InstalledAppDetails
 import com.rosan.installer.domain.appmanager.model.UninstallState
 import com.rosan.installer.domain.appmanager.repository.InstalledAppsRepository
+import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerButton
+import com.rosan.installer.ui.theme.aero.InstallerTextButton
 import com.rosan.installer.ui.util.formatSize
 import org.koin.compose.koinInject
 
@@ -104,14 +104,14 @@ fun AppManagerPage() {
             }
         }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button(
+            InstallerButton(
                 enabled = selected.isNotEmpty(),
                 onClick = {
                     repository.uninstall(selected.toList())
                     selected = emptySet()
                 },
             ) { Text(stringResource(R.string.app_manager_uninstall, selected.size)) }
-            TextButton(onClick = { repository.clearLog() }) { Text(stringResource(R.string.app_manager_clear_log)) }
+            InstallerTextButton(onClick = { repository.clearLog() }) { Text(stringResource(R.string.app_manager_clear_log)) }
         }
         if (loading) Text(stringResource(R.string.app_manager_loading))
         LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f)) {
@@ -163,7 +163,7 @@ fun AppManagerPage() {
     }
 
     detail?.let { app ->
-        AlertDialog(
+        InstallerAlertDialog(
             onDismissRequest = { detail = null },
             title = { Text(app.label) },
             text = {
@@ -182,7 +182,7 @@ fun AppManagerPage() {
                     },
                 )
             },
-            confirmButton = { TextButton(onClick = { detail = null }) { Text(stringResource(R.string.close)) } },
+            confirmButton = { InstallerTextButton(onClick = { detail = null }) { Text(stringResource(R.string.close)) } },
         )
     }
 }

@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -34,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rosan.installer.R
 import com.rosan.installer.domain.settings.model.preferences.RootMode
+import com.rosan.installer.ui.theme.aero.InstallerButton
 import com.rosan.installer.ui.util.KeyEventBlocker
 
 /**
@@ -120,20 +120,20 @@ fun ModuleInstallSheetContent(
         // Action Button
         if (isFinished) {
             Column {
-                Button(
+                InstallerButton(
                     onClick = onReboot,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Text(stringResource(R.string.reboot))
                 }
                 /*if (rootMode == RootMode.KernelSU)
-                    Button(
+                    InstallerButton(
                         onClick = onSoftReboot,
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(stringResource(R.string.reboot_soft_reboot))
                     }*/
-                Button(
+                InstallerButton(
                     onClick = onClose,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
@@ -141,7 +141,7 @@ fun ModuleInstallSheetContent(
                 }
             }
         } else {
-            Button(
+            InstallerButton(
                 enabled = false, // Disabled while installing
                 onClick = {},
                 modifier = Modifier.fillMaxWidth(),

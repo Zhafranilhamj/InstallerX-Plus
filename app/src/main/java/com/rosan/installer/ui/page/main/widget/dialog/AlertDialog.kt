@@ -12,7 +12,6 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
@@ -20,7 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -42,6 +40,8 @@ import com.rosan.installer.core.env.DeviceConfig
 import com.rosan.installer.domain.settings.model.preferences.GithubUpdateChannel
 import com.rosan.installer.domain.settings.model.preferences.RootMode
 import com.rosan.installer.ui.icons.AppIcons
+import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerTextButton
 import com.rosan.installer.util.help
 
 /**
@@ -64,7 +64,7 @@ fun UnsavedChangesDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> 
             stringResource(R.string.config_dialog_title_unsaved_changes)
         }
 
-        AlertDialog(
+        InstallerAlertDialog(
             onDismissRequest = onDismiss,
             title = { Text(text = dialogTitle) },
             text = {
@@ -81,12 +81,12 @@ fun UnsavedChangesDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> 
                 }
             },
             confirmButton = {
-                TextButton(onClick = onConfirm) {
+                InstallerTextButton(onClick = onConfirm) {
                     Text(text = stringResource(R.string.discard))
                 }
             },
             dismissButton = {
-                TextButton(onClick = onDismiss) {
+                InstallerTextButton(onClick = onDismiss) {
                     Text(text = stringResource(R.string.back))
                 }
             },
@@ -97,7 +97,7 @@ fun UnsavedChangesDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> 
 @Composable
 fun UninstallConfirmationDialog(showDialog: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit, keepData: Boolean) {
     if (showDialog) {
-        AlertDialog(
+        InstallerAlertDialog(
             onDismissRequest = onDismiss,
             icon = { Icon(AppIcons.Delete, contentDescription = null) },
             title = {
@@ -115,7 +115,7 @@ fun UninstallConfirmationDialog(showDialog: Boolean, onDismiss: () -> Unit, onCo
                 Text(message)
             },
             confirmButton = {
-                TextButton(
+                InstallerTextButton(
                     onClick = {
                         onConfirm() // Execute the confirmation action
                         onDismiss() // Close the dialog
@@ -125,7 +125,7 @@ fun UninstallConfirmationDialog(showDialog: Boolean, onDismiss: () -> Unit, onCo
                 }
             },
             dismissButton = {
-                TextButton(
+                InstallerTextButton(
                     onClick = onDismiss, // Just close the dialog
                 ) {
                     Text(stringResource(R.string.cancel))
@@ -145,7 +145,7 @@ fun UninstallConfirmationDialog(showDialog: Boolean, onDismiss: () -> Unit, onCo
  */
 @Composable
 fun ErrorDisplayDialog(exception: Throwable, onDismissRequest: () -> Unit, onRetry: (() -> Unit)? = null, title: String) {
-    AlertDialog(
+    InstallerAlertDialog(
         onDismissRequest = onDismissRequest,
         title = { Text(title) },
         text = {
@@ -177,13 +177,13 @@ fun ErrorDisplayDialog(exception: Throwable, onDismissRequest: () -> Unit, onRet
         },
         confirmButton = {
             if (onRetry != null) {
-                TextButton(onClick = onRetry) {
+                InstallerTextButton(onClick = onRetry) {
                     Text(stringResource(R.string.retry))
                 }
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismissRequest) {
+            InstallerTextButton(onClick = onDismissRequest) {
                 Text(stringResource(/*if (onRetry != null)*/ R.string.cancel/* else R.string.ok)*/))
             }
         },
@@ -195,7 +195,7 @@ fun HideLauncherIconWarningDialog(show: Boolean, onDismiss: () -> Unit, onConfir
     if (show) {
         val dialogTitle = stringResource(R.string.warning)
 
-        AlertDialog(
+        InstallerAlertDialog(
             onDismissRequest = onDismiss,
             title = { Text(text = dialogTitle) },
             text = {
@@ -207,12 +207,12 @@ fun HideLauncherIconWarningDialog(show: Boolean, onDismiss: () -> Unit, onConfir
                 }
             },
             confirmButton = {
-                TextButton(onClick = onConfirm) {
+                InstallerTextButton(onClick = onConfirm) {
                     Text(text = stringResource(R.string.confirm))
                 }
             },
             dismissButton = {
-                TextButton(onClick = onDismiss) {
+                InstallerTextButton(onClick = onDismiss) {
                     Text(text = stringResource(R.string.cancel))
                 }
             },
@@ -235,7 +235,7 @@ fun RootImplementationSelectionDialog(currentSelection: RootMode, onDismiss: () 
         RootMode.APatch to "APatch",
     )
 
-    AlertDialog(
+    InstallerAlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.lab_module_select_root_impl)) },
         text = {
@@ -267,14 +267,14 @@ fun RootImplementationSelectionDialog(currentSelection: RootMode, onDismiss: () 
             }
         },
         confirmButton = {
-            TextButton(
+            InstallerTextButton(
                 onClick = { onConfirm(selectedOption) },
             ) {
                 Text(stringResource(R.string.confirm))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            InstallerTextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
         },
@@ -289,7 +289,7 @@ fun UninstallPackageDialog(onDismiss: () -> Unit, onConfirm: (String) -> Unit) {
     var packageName by remember { mutableStateOf("") }
     val isConfirmEnabled = packageName.isNotBlank()
 
-    AlertDialog(
+    InstallerAlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.uninstall_enter_package_name)) },
         text = {
@@ -303,7 +303,7 @@ fun UninstallPackageDialog(onDismiss: () -> Unit, onConfirm: (String) -> Unit) {
             }
         },
         confirmButton = {
-            TextButton(
+            InstallerTextButton(
                 onClick = { onConfirm(packageName) },
                 enabled = isConfirmEnabled,
             ) {
@@ -311,7 +311,7 @@ fun UninstallPackageDialog(onDismiss: () -> Unit, onConfirm: (String) -> Unit) {
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            InstallerTextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
         },
@@ -332,7 +332,7 @@ fun GithubUpdateChannelSelectionDialog(
         GithubUpdateChannel.CUSTOM to stringResource(R.string.lab_update_github_proxy_custom),
     )
 
-    AlertDialog(
+    InstallerAlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.lab_update_github_proxy)) },
         text = {
@@ -364,14 +364,14 @@ fun GithubUpdateChannelSelectionDialog(
             }
         },
         confirmButton = {
-            TextButton(
+            InstallerTextButton(
                 onClick = { onConfirm(selectedOption) },
             ) {
                 Text(stringResource(R.string.confirm))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            InstallerTextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
         },
@@ -382,7 +382,7 @@ fun GithubUpdateChannelSelectionDialog(
 fun CustomGithubProxyUrlDialog(initialUrl: String, onDismiss: () -> Unit, onConfirm: (String) -> Unit) {
     var url by remember { mutableStateOf(initialUrl) }
 
-    AlertDialog(
+    InstallerAlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.lab_update_github_proxy_custom)) },
         text = {
@@ -396,14 +396,14 @@ fun CustomGithubProxyUrlDialog(initialUrl: String, onDismiss: () -> Unit, onConf
             }
         },
         confirmButton = {
-            TextButton(
+            InstallerTextButton(
                 onClick = { onConfirm(url) },
             ) {
                 Text(stringResource(R.string.confirm))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            InstallerTextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
         },
@@ -414,7 +414,7 @@ fun CustomGithubProxyUrlDialog(initialUrl: String, onDismiss: () -> Unit, onConf
 fun CustomAuthorizerDialog(initialAuthorizer: String, onDismiss: () -> Unit, onConfirm: (String) -> Unit) {
     var authorizer by remember(initialAuthorizer) { mutableStateOf(initialAuthorizer) }
 
-    AlertDialog(
+    InstallerAlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.config_authorizer_customize)) },
         text = {
@@ -432,7 +432,7 @@ fun CustomAuthorizerDialog(initialAuthorizer: String, onDismiss: () -> Unit, onC
             }
         },
         confirmButton = {
-            TextButton(
+            InstallerTextButton(
                 onClick = { onConfirm(authorizer) },
                 enabled = authorizer.isNotBlank(),
             ) {
@@ -440,7 +440,7 @@ fun CustomAuthorizerDialog(initialAuthorizer: String, onDismiss: () -> Unit, onC
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            InstallerTextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
         },

@@ -15,10 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -41,6 +39,8 @@ import com.rosan.installer.data.share.QrCodeGenerator
 import com.rosan.installer.domain.share.model.LocalShareConfig
 import com.rosan.installer.domain.share.model.LocalShareProtocol
 import com.rosan.installer.framework.service.LocalShareService
+import com.rosan.installer.ui.theme.aero.InstallerButton
+import com.rosan.installer.ui.theme.aero.InstallerOutlinedButton
 import org.koin.compose.koinInject
 
 @Composable
@@ -95,11 +95,11 @@ fun LocalSharePage() {
                 Switch(checked = pin.isNotEmpty(), onCheckedChange = { enabled -> pin = if (enabled) generatePin() else "" })
             }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Button(onClick = {
+                InstallerButton(onClick = {
                     val config = LocalShareConfig(port.toIntOrNull() ?: LocalShareProtocol.DEFAULT_PORT, pin)
                     if (config.valid) LocalShareService.start(context, config)
                 }) { Text(stringResource(R.string.local_share_start)) }
-                OutlinedButton(onClick = { LocalShareService.stop(context) }) { Text(stringResource(R.string.local_share_stop)) }
+                InstallerOutlinedButton(onClick = { LocalShareService.stop(context) }) { Text(stringResource(R.string.local_share_stop)) }
             }
             Text(
                 text = if (state.running) stringResource(R.string.local_share_running) else stringResource(R.string.local_share_stopped),
@@ -119,7 +119,7 @@ fun LocalSharePage() {
                 }
                 Text(stringResource(R.string.local_share_qr_hint), style = MaterialTheme.typography.bodySmall)
             }
-            OutlinedButton(onClick = { treeLauncher.launch(null) }) {
+            InstallerOutlinedButton(onClick = { treeLauncher.launch(null) }) {
                 Text(stringResource(R.string.local_share_saf_folder))
             }
             Text(

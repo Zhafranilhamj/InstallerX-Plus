@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.rosan.installer.R
@@ -26,6 +28,8 @@ import com.rosan.installer.ui.navigation.InstallerNavContainer
 import com.rosan.installer.ui.navigation.Route
 import com.rosan.installer.ui.theme.InstallerTheme
 import com.rosan.installer.ui.theme.LocalWindowLayoutInfo
+import com.rosan.installer.ui.theme.aero.AeroAquarium
+import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
 import com.rosan.installer.ui.theme.rememberWindowLayoutInfo
 import com.rosan.installer.util.toast
 import kotlinx.coroutines.Dispatchers
@@ -89,7 +93,17 @@ class SettingsActivity :
                     useDynamicColor = uiState.useDynamicColor,
                     useMiuixMonet = uiState.useMiuixMonet,
                     seedColor = androidx.compose.ui.graphics.Color(uiState.seedColor),
+                    uiStyle = uiState.uiStyle,
                 ) {
+                    val aero = LocalFrutigerAero.current
+                    if (aero) {
+                        DisposableEffect(window) {
+                            val controller = WindowCompat.getInsetsController(window, window.decorView)
+                            val previousAppearance = controller.isAppearanceLightNavigationBars
+                            controller.isAppearanceLightNavigationBars = true
+                            onDispose { controller.isAppearanceLightNavigationBars = previousAppearance }
+                        }
+                    }
                     val backgroundColor =
                         if (uiState.useMiuix) {
                             MiuixTheme.colorScheme.surface
@@ -101,6 +115,7 @@ class SettingsActivity :
                             .fillMaxSize()
                             .background(backgroundColor),
                     ) {
+                        if (aero) AeroAquarium()
                         InstallerNavContainer(uiState, initialRoute = initialRoute(intent))
                     }
                 }

@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.rosan.installer.ui.theme.aero.AeroShapes
+import com.rosan.installer.ui.theme.aero.aeroChrome
 
 /**
  * The shared layout shell for expressive dropdown menus.
@@ -43,7 +45,7 @@ fun GroupedDropdownMenuPopup(
     DropdownMenuPopup(
         expanded = expanded,
         onDismissRequest = onDismissRequest,
-        modifier = modifier,
+        modifier = modifier.aeroChrome(AeroShapes.large),
     ) {
         val nonEmptyGroups = groupSizes.mapIndexedNotNull { groupIndex, itemCount ->
             itemCount.takeIf { it > 0 }?.let { groupIndex to it }

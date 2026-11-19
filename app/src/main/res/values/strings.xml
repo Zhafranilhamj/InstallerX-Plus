@@ -119,6 +119,8 @@
     <string name="enable_storage_permission_hint">Please enable All Files Access to install!</string>
     <string name="combined_description_format" translatable="false">%1$s\n%2$s</string>
     <string name="theme_settings">Theme Settings</string>
+    <string name="ui_style_aero">Frutiger Aero</string>
+    <string name="ui_style_aero_desc">A sunny aquarium look with glossy aqua controls and gently drifting bubbles.</string>
     <string name="theme_settings_ui_style">UI Style</string>
     <string name="theme_settings_desc">Change the theme of the app</string>
     <string name="theme_settings_miuix_ui">Miuix</string>

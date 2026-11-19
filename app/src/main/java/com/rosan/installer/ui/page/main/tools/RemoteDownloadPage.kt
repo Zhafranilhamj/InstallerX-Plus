@@ -10,13 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,6 +32,8 @@ import com.rosan.installer.R
 import com.rosan.installer.domain.downloader.model.DownloadStatus
 import com.rosan.installer.domain.downloader.repository.DownloadRepository
 import com.rosan.installer.ui.activity.InstallerActivity
+import com.rosan.installer.ui.theme.aero.InstallerButton
+import com.rosan.installer.ui.theme.aero.InstallerTextButton
 import com.rosan.installer.ui.util.formatSize
 import java.io.File
 import kotlinx.coroutines.launch
@@ -60,7 +60,7 @@ fun RemoteDownloadPage() {
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
         )
-        Button(
+        InstallerButton(
             enabled = progress == null,
             onClick = {
                 scope.launch {
@@ -85,7 +85,7 @@ fun RemoteDownloadPage() {
         }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(stringResource(R.string.remote_download_history), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
-            TextButton(onClick = { scope.launch { repository.clear() } }) { Text(stringResource(R.string.remote_download_clear)) }
+            InstallerTextButton(onClick = { scope.launch { repository.clear() } }) { Text(stringResource(R.string.remote_download_clear)) }
         }
         LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f)) {
             items(history, key = { it.id }) { record ->
@@ -99,11 +99,11 @@ fun RemoteDownloadPage() {
                         )
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             if (record.status == DownloadStatus.COMPLETED) {
-                                TextButton(onClick = { openPackage(context, File(record.localPath)) }) {
+                                InstallerTextButton(onClick = { openPackage(context, File(record.localPath)) }) {
                                     Text(stringResource(R.string.remote_download_install))
                                 }
                             }
-                            TextButton(onClick = { scope.launch { repository.remove(record.id) } }) {
+                            InstallerTextButton(onClick = { scope.launch { repository.remove(record.id) } }) {
                                 Text(stringResource(R.string.remote_download_remove))
                             }
                         }

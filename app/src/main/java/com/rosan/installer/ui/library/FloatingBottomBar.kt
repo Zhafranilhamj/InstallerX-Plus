@@ -76,6 +76,8 @@ import com.rosan.installer.ui.library.liquid.lens
 import com.rosan.installer.ui.library.liquid.rememberCombinedBackdrop
 import com.rosan.installer.ui.library.liquid.vibrancy
 import com.rosan.installer.ui.theme.InstallerTheme
+import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
+import com.rosan.installer.ui.theme.aero.aeroGlass
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.cos
@@ -442,7 +444,11 @@ fun <T> FloatingBottomBar(
                                 },
                             )
                         } else {
-                            Modifier.background(containerColor, pillShape)
+                            if (LocalFrutigerAero.current) {
+                                Modifier.aeroGlass(pillShape, containerColor.copy(alpha = 0.9f))
+                            } else {
+                                Modifier.background(containerColor, pillShape)
+                            }
                         },
                     )
                     .then(

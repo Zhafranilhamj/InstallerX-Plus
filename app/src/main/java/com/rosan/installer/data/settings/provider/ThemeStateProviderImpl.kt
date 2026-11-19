@@ -50,6 +50,7 @@ class ThemeStateProviderImpl(appSettingsRepo: AppSettingsRepository, appScope: C
 
         ThemeState(
             isLoaded = true,
+            uiStyle = prefs.uiStyle,
             useMiuix = prefs.showMiuixUI,
             themeMode = prefs.themeMode,
             paletteStyle = prefs.paletteStyle,

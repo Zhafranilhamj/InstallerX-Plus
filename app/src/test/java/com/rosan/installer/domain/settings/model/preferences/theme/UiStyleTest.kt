@@ -31,6 +31,17 @@ class UiStyleTest {
     }
 
     @Test
+    fun frutigerAeroUsesFloatingMaterialControlsWithoutPlatformBlur() {
+        val style = UiStyle.fromValue("FRUTIGER_AERO")
+        assertEquals(UiStyle.FRUTIGER_AERO, style)
+        for (previousSetting in listOf(false, true)) {
+            assertFalse(style.useMiuix(previousSetting))
+            assertFalse(style.useBlur(previousSetting, supported = true))
+            assertTrue(style.useFloatingBar(previousSetting))
+        }
+    }
+
+    @Test
     fun unsupportedBlurAndUnknownValuesFallBackSafely() {
         UiStyle.entries.forEach { assertFalse(it.useBlur(true, supported = false)) }
         assertEquals(UiStyle.CURRENT, UiStyle.fromValue(null))

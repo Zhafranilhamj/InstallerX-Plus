@@ -15,11 +15,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +32,8 @@ import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.rosan.installer.R
+import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerTextButton
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -98,10 +98,10 @@ fun InstallInfoChipGroup(modifier: Modifier = Modifier, notices: List<NoticeMode
 
     // Dialog handling
     selectedNotice?.let { notice ->
-        AlertDialog(
+        InstallerAlertDialog(
             onDismissRequest = { selectedNotice = null },
             confirmButton = {
-                TextButton(onClick = { selectedNotice = null }) {
+                InstallerTextButton(onClick = { selectedNotice = null }) {
                     Text(stringResource(R.string.confirm)) // Or use a common "OK" string
                 }
             },

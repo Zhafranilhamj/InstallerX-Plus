@@ -15,7 +15,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +25,8 @@ import com.rosan.installer.R
 import com.rosan.installer.ui.icons.AppIcons
 import com.rosan.installer.ui.page.main.settings.config.all.AllViewAction
 import com.rosan.installer.ui.page.main.settings.config.all.AllViewModel
+import com.rosan.installer.ui.theme.aero.InstallerTextButton
+import com.rosan.installer.ui.theme.aero.aeroChrome
 
 /**
  * A general-purpose card for displaying tips or important information.
@@ -45,15 +46,10 @@ private fun TipCard(
     tipContent: @Composable () -> Unit,
     actionContent: @Composable ColumnScope.() -> Unit,
 ) {
+    val cardModifier = modifier.fillMaxWidth()
+    val paddedModifier = if (noPadding) cardModifier else cardModifier.padding(horizontal = 16.dp, vertical = 8.dp)
     Card(
-        modifier = if (noPadding) {
-            modifier
-                .fillMaxWidth()
-        } else {
-            modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-        },
+        modifier = paddedModifier.aeroChrome(cardShape),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.8f),
         ),
@@ -101,7 +97,7 @@ fun ScopeTipCard(
             }
         },
     ) {
-        TextButton(
+        InstallerTextButton(
             onClick = { viewModel.dispatch(AllViewAction.UserReadScopeTips) },
             modifier = Modifier
                 .align(Alignment.End)

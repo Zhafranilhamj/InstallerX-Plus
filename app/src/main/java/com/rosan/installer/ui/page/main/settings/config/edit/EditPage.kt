@@ -20,18 +20,15 @@ import androidx.compose.foundation.layout.plus
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallExtendedFloatingActionButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -57,6 +54,10 @@ import com.rosan.installer.ui.page.main.widget.setting.ExpressiveBackButton
 import com.rosan.installer.ui.page.main.widget.setting.SegmentedColumn
 import com.rosan.installer.ui.page.main.widget.snackbar.SwipeableSnackbarHost
 import com.rosan.installer.ui.page.main.widget.util.EditEventCollector
+import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerScaffold
+import com.rosan.installer.ui.theme.aero.InstallerTextButton
+import com.rosan.installer.ui.theme.aero.aeroToolbar
 import com.rosan.installer.ui.theme.getMaterial3AppBarColor
 import com.rosan.installer.ui.theme.installerMaterial3BlurEffect
 import com.rosan.installer.ui.theme.rememberMaterial3BlurBackdrop
@@ -99,7 +100,7 @@ fun EditPage(id: Long? = null, viewModel: EditViewModel = koinViewModel { parame
     )
 
     if (showAutoApproveSessionDialog) {
-        AlertDialog(
+        InstallerAlertDialog(
             onDismissRequest = {
                 showAutoApproveSessionDialog = false
             },
@@ -110,7 +111,7 @@ fun EditPage(id: Long? = null, viewModel: EditViewModel = koinViewModel { parame
                 Text(text = stringResource(R.string.config_auto_approve_session_warning))
             },
             confirmButton = {
-                TextButton(
+                InstallerTextButton(
                     onClick = {
                         showAutoApproveSessionDialog = false
                         dispatch(EditViewAction.ChangeDataAutoApproveSession(true))
@@ -120,7 +121,7 @@ fun EditPage(id: Long? = null, viewModel: EditViewModel = koinViewModel { parame
                 }
             },
             dismissButton = {
-                TextButton(
+                InstallerTextButton(
                     onClick = {
                         showAutoApproveSessionDialog = false
                     },
@@ -146,7 +147,7 @@ fun EditPage(id: Long? = null, viewModel: EditViewModel = koinViewModel { parame
     val isAtLeastTiramisu = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
     val isAtLeastUpsideDownCake = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
 
-    Scaffold(
+    InstallerScaffold(
         modifier = Modifier
             .fillMaxSize()
             .imePadding()
@@ -160,7 +161,7 @@ fun EditPage(id: Long? = null, viewModel: EditViewModel = koinViewModel { parame
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         topBar = {
             LargeFlexibleTopAppBar(
-                modifier = Modifier.installerMaterial3BlurEffect(backdrop),
+                modifier = Modifier.installerMaterial3BlurEffect(backdrop).aeroToolbar(),
                 windowInsets = TopAppBarDefaults.windowInsets.add(WindowInsets(left = 12.dp)),
                 title = { Text(text = stringResource(id = if (id == null) R.string.add else R.string.update)) },
                 navigationIcon = {

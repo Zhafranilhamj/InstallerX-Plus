@@ -42,6 +42,10 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.rosan.installer.ui.theme.CornerRadius
+import com.rosan.installer.ui.theme.aero.AeroIcon
+import com.rosan.installer.ui.theme.aero.AeroShapes
+import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
+import com.rosan.installer.ui.theme.aero.aeroChrome
 
 /**
  * A [CompositionLocal] that provides the dynamically calculated [Shape] for items
@@ -121,7 +125,8 @@ fun BaseWidget(
     val defaultMinHeight = if (description == null) 56.dp else 72.dp
     val adaptiveMinHeight = (defaultMinHeight * fontScale).coerceAtLeast(48.dp)
 
-    val baseShape = LocalSegmentedItemShape.current
+    val aero = LocalFrutigerAero.current
+    val baseShape = if (aero) AeroShapes.large else LocalSegmentedItemShape.current
 
     val backgroundColor = if (selected) {
         MaterialTheme.colorScheme.primaryContainer
@@ -186,6 +191,7 @@ fun BaseWidget(
     val itemModifier = modifier
         .fillMaxWidth()
         .heightIn(min = adaptiveMinHeight)
+        .aeroChrome(baseShape)
 
     val leadingContent: (@Composable () -> Unit)? =
         if (icon != null || iconPlaceholder) {
@@ -197,11 +203,14 @@ fun BaseWidget(
                     contentAlignment = Alignment.Center,
                 ) {
                     if (icon != null) {
-                        Icon(
-                            imageVector = icon,
-                            contentDescription = null,
-                            tint = resolvedIconColor,
-                        )
+                        AeroIcon {
+                            Icon(
+                                imageVector = icon,
+                                contentDescription = null,
+                                modifier = if (aero) Modifier.padding(3.dp) else Modifier,
+                                tint = resolvedIconColor,
+                            )
+                        }
                     } else {
                         Spacer(modifier = Modifier.size(24.dp))
                     }

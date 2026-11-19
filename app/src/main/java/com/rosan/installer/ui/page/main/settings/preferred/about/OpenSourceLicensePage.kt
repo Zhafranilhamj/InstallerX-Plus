@@ -18,16 +18,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -55,6 +51,11 @@ import com.rosan.installer.R
 import com.rosan.installer.ui.navigation.LocalNavigator
 import com.rosan.installer.ui.page.main.widget.setting.ExpressiveBackButton
 import com.rosan.installer.ui.theme.CornerRadius
+import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerButton
+import com.rosan.installer.ui.theme.aero.InstallerOutlinedButton
+import com.rosan.installer.ui.theme.aero.InstallerScaffold
+import com.rosan.installer.ui.theme.aero.aeroToolbar
 import com.rosan.installer.ui.theme.getMaterial3AppBarColor
 import com.rosan.installer.ui.theme.installerMaterial3BlurEffect
 import com.rosan.installer.ui.theme.rememberMaterial3BlurBackdrop
@@ -76,14 +77,14 @@ fun OpenSourceLicensePage(useBlur: Boolean) {
 
     val backdrop = rememberMaterial3BlurBackdrop(useBlur)
 
-    Scaffold(
+    InstallerScaffold(
         modifier = Modifier
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         topBar = {
             LargeFlexibleTopAppBar(
-                modifier = Modifier.installerMaterial3BlurEffect(backdrop),
+                modifier = Modifier.installerMaterial3BlurEffect(backdrop).aeroToolbar(),
                 windowInsets = TopAppBarDefaults.windowInsets.add(WindowInsets(left = 12.dp)),
                 title = { Text(text = stringResource(id = R.string.open_source_license)) },
                 scrollBehavior = scrollBehavior,
@@ -138,16 +139,16 @@ fun OpenSourceLicensePage(useBlur: Boolean) {
         if (selectedLibrary != null) {
             val library = selectedLibrary!!
             val uriHandler = LocalUriHandler.current
-            AlertDialog(
+            InstallerAlertDialog(
                 onDismissRequest = { selectedLibrary = null },
                 confirmButton = {
-                    Button(onClick = { selectedLibrary = null }) {
+                    InstallerButton(onClick = { selectedLibrary = null }) {
                         Text(stringResource(R.string.close))
                     }
                 },
                 dismissButton = {
                     library.website.let { url ->
-                        OutlinedButton(onClick = {
+                        InstallerOutlinedButton(onClick = {
                             uriHandler.openUri(url!!)
                         }) {
                             Text(stringResource(R.string.visit_home_page))

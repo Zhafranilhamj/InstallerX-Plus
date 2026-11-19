@@ -51,6 +51,7 @@ import com.rosan.installer.ui.page.miuix.settings.preferred.lab.MiuixLabPage
 import com.rosan.installer.ui.page.miuix.settings.preferred.network.MiuixNetworkPage
 import com.rosan.installer.ui.page.miuix.settings.preferred.theme.MiuixThemeSettingsPage
 import com.rosan.installer.ui.page.miuix.settings.preferred.uninstaller.MiuixUninstallerGlobalSettingsPage
+import com.rosan.installer.ui.theme.aero.aeroPageColor
 import com.rosan.installer.ui.util.rememberDeviceCornerRadius
 import org.koin.androidx.compose.koinViewModel
 import top.yukonga.miuix.kmp.nav.core.NavCornerClipMode
@@ -81,7 +82,7 @@ fun InstallerNavContainer(uiState: ThemeState, initialRoute: Route = Route.Main)
         val backdropColor = if (uiState.useMiuix) {
             MiuixTheme.colorScheme.surface
         } else {
-            MaterialTheme.colorScheme.surfaceContainer
+            aeroPageColor(MaterialTheme.colorScheme.surfaceContainer)
         }
         val effects = remember(navCornerRadius, roundAllCorners, backdropColor) {
             NavDisplayEffects(

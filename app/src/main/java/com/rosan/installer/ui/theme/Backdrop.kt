@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
+import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
 import top.yukonga.miuix.kmp.blur.BlendColorEntry
 import top.yukonga.miuix.kmp.blur.BlurColors
 import top.yukonga.miuix.kmp.blur.LayerBackdrop
@@ -95,7 +96,11 @@ fun rememberMaterial3BlurBackdrop(enableBlur: Boolean): LayerBackdrop? {
  * @return Transparent if Backdrop is active, otherwise the surfaceContainer color.
  */
 @Composable
-fun LayerBackdrop?.getMaterial3AppBarColor(): Color = this?.let { Color.Transparent } ?: MaterialTheme.colorScheme.surfaceContainer
+fun LayerBackdrop?.getMaterial3AppBarColor(): Color = when {
+    LocalFrutigerAero.current -> Color.Transparent
+    this != null -> Color.Transparent
+    else -> MaterialTheme.colorScheme.surfaceContainer
+}
 
 /**
  * Apply a standard glassmorphism blur effect using Material 3 color schemes.

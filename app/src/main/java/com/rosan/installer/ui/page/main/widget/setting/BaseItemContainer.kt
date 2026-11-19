@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.rosan.installer.ui.theme.aero.aeroChrome
 
 @Composable
 fun BaseItemContainer(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
@@ -16,7 +17,7 @@ fun BaseItemContainer(modifier: Modifier = Modifier, content: @Composable () -> 
     val backgroundColor = MaterialTheme.colorScheme.surfaceBright
 
     Surface(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().aeroChrome(baseShape),
         color = backgroundColor,
         shape = baseShape,
     ) {

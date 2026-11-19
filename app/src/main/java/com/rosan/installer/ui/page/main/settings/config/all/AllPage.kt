@@ -33,7 +33,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallExtendedFloatingActionButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -63,6 +62,8 @@ import com.rosan.installer.ui.page.main.widget.card.ScopeTipCard
 import com.rosan.installer.ui.page.main.widget.chip.CapsuleTag
 import com.rosan.installer.ui.page.main.widget.snackbar.SwipeableSnackbarHost
 import com.rosan.installer.ui.page.main.widget.util.AllViewEventCollector
+import com.rosan.installer.ui.theme.aero.InstallerScaffold
+import com.rosan.installer.ui.theme.aero.aeroToolbar
 import com.rosan.installer.ui.theme.getMaterial3AppBarColor
 import com.rosan.installer.ui.theme.installerMaterial3BlurEffect
 import com.rosan.installer.ui.theme.rememberMaterial3BlurBackdrop
@@ -125,14 +126,14 @@ fun AllPage(
 
     val backdrop = rememberMaterial3BlurBackdrop(useBlur)
 
-    Scaffold(
+    InstallerScaffold(
         modifier = Modifier
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         topBar = {
             LargeFlexibleTopAppBar(
-                modifier = Modifier.installerMaterial3BlurEffect(backdrop),
+                modifier = Modifier.installerMaterial3BlurEffect(backdrop).aeroToolbar(),
                 title = {
                     Text(
                         text = title,

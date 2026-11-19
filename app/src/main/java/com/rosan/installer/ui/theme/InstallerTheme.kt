@@ -26,6 +26,11 @@ import androidx.core.view.WindowCompat
 import com.rosan.installer.domain.settings.model.preferences.theme.PaletteStyle
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeColorSpec
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeMode
+import com.rosan.installer.domain.settings.model.preferences.theme.UiStyle
+import com.rosan.installer.ui.theme.aero.AeroColors
+import com.rosan.installer.ui.theme.aero.AeroShapes
+import com.rosan.installer.ui.theme.aero.AeroTypography
+import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
 import com.rosan.installer.ui.theme.material.animateAsState
 import com.rosan.installer.ui.theme.material.dynamicColorScheme
 import top.yukonga.miuix.kmp.theme.ColorSchemeMode
@@ -93,6 +98,7 @@ fun InstallerTheme(
     useDynamicColor: Boolean,
     useMiuixMonet: Boolean,
     seedColor: Color,
+    uiStyle: UiStyle = UiStyle.CURRENT,
     content: @Composable () -> Unit,
 ) {
     val preservedContent = remember {
@@ -101,32 +107,39 @@ fun InstallerTheme(
         }
     }
 
-    val isDark = when (themeMode) {
+    val isAero = uiStyle == UiStyle.FRUTIGER_AERO
+    val isDark = !isAero && when (themeMode) {
         ThemeMode.LIGHT -> false
         ThemeMode.DARK -> true
         ThemeMode.SYSTEM -> isSystemInDarkTheme()
     }
 
-    val keyColor = if (useDynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+    val keyColor = if (!isAero && useDynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         colorResource(id = android.R.color.system_accent1_500)
     } else {
         seedColor
     }
 
     // 1. Generate the base scheme with spec support
-    val baseColorScheme = remember(keyColor, isDark, paletteStyle, colorSpec) {
-        dynamicColorScheme(
-            keyColor = keyColor,
-            isDark = isDark,
-            style = paletteStyle,
-            colorSpec = colorSpec,
-        )
+    val baseColorScheme = remember(isAero, keyColor, isDark, paletteStyle, colorSpec) {
+        if (isAero) {
+            AeroColors
+        } else {
+            dynamicColorScheme(
+                keyColor = keyColor,
+                isDark = isDark,
+                style = paletteStyle,
+                colorSpec = colorSpec,
+            )
+        }
     }
 
     // 2. Wrap it with smooth transitions
-    val animatedColorScheme = baseColorScheme.animateAsState()
+    val transitioningColorScheme = baseColorScheme.animateAsState()
+    val animatedColorScheme = if (isAero) AeroColors else transitioningColorScheme
 
     CompositionLocalProvider(
+        LocalFrutigerAero provides isAero,
         LocalIsDark provides isDark,
         LocalPaletteStyle provides paletteStyle,
         LocalSeedColor provides seedColor,
@@ -181,11 +194,12 @@ fun InstallerMaterialExpressiveTheme(
         }
     }
 
-    // Applies Material 3 Expressive defaults including the expressive MotionScheme
+    val isAero = LocalFrutigerAero.current
     MaterialExpressiveTheme(
         colorScheme = colorScheme,
         motionScheme = ExpressiveMotionScheme,
-        typography = Typography,
+        shapes = if (isAero) AeroShapes else null,
+        typography = if (isAero) AeroTypography else Typography,
         content = content,
     )
 }

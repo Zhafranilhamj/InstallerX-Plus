@@ -10,6 +10,7 @@ fun UiStyle.titleRes(): Int = when (this) {
     UiStyle.LIQUID_GLASS -> R.string.ui_style_glass
     UiStyle.MATERIAL_EXPRESSIVE -> R.string.ui_style_material
     UiStyle.MIXED -> R.string.ui_style_mixed
+    UiStyle.FRUTIGER_AERO -> R.string.ui_style_aero
 }
 
 fun UiStyle.descriptionRes(): Int = when (this) {
@@ -17,4 +18,5 @@ fun UiStyle.descriptionRes(): Int = when (this) {
     UiStyle.LIQUID_GLASS -> R.string.ui_style_glass_desc
     UiStyle.MATERIAL_EXPRESSIVE -> R.string.ui_style_material_desc
     UiStyle.MIXED -> R.string.ui_style_mixed_desc
+    UiStyle.FRUTIGER_AERO -> R.string.ui_style_aero_desc
 }
