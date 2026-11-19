@@ -7,13 +7,10 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
@@ -30,12 +27,6 @@ private val GlassReflection = Brush.verticalGradient(
     0.42f to Color.Transparent,
     0.71f to Color.Transparent,
     1f to Color(0x3059D5EE),
-)
-private val GelOrb = Brush.verticalGradient(
-    0f to Color.White,
-    0.43f to Color(0xFFA9F4FF),
-    0.46f to Color(0xFF74DCED),
-    1f to Color(0xFFC6F2BD),
 )
 
 /** Make full-page surfaces transparent without changing the color roles of controls or popups. */
@@ -74,19 +65,6 @@ internal fun Modifier.aeroRise(): Modifier {
     return graphicsLayer {
         translationY = (1f - progress.value) * 20.dp.toPx()
         alpha = progress.value.coerceIn(0f, 1f)
-    }
-}
-
-/** Keep the recognizable action glyph; the glass orb around it is decorative. */
-@Composable
-internal fun AeroIcon(content: @Composable () -> Unit) {
-    val chrome = if (LocalFrutigerAero.current) {
-        Modifier.background(if (InstallerTheme.isDark) NightGlass else GelOrb, CircleShape).border(1.dp, Color(0xFFB4E2ED), CircleShape)
-    } else {
-        Modifier
-    }
-    Box(modifier = chrome, contentAlignment = Alignment.Center) {
-        content()
     }
 }
 

@@ -27,7 +27,6 @@ import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationItemIconPosition
@@ -62,9 +61,8 @@ import com.rosan.installer.ui.page.main.settings.config.all.AllPage
 import com.rosan.installer.ui.page.main.settings.history.HistoryPage
 import com.rosan.installer.ui.page.main.settings.home.HomePage
 import com.rosan.installer.ui.page.main.settings.preferred.PreferredPage
-import com.rosan.installer.ui.theme.aero.AeroIcon
+import com.rosan.installer.ui.theme.aero.InstallerIcon as Icon
 import com.rosan.installer.ui.theme.aero.InstallerScaffold
-import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
 import com.rosan.installer.ui.theme.installerMaterial3BlurEffect
 import kotlinx.coroutines.launch
 import top.yukonga.miuix.kmp.blur.LayerBackdrop
@@ -233,13 +231,10 @@ private fun Material3FloatingBottomBar(
                         ConfigBadge(showBadge = showBadge, configCount = configCount)
                     },
                 ) {
-                    AeroIcon {
-                        Icon(
-                            imageVector = tab.icon,
-                            contentDescription = null,
-                            modifier = if (LocalFrutigerAero.current) Modifier.padding(3.dp) else Modifier,
-                        )
-                    }
+                    Icon(
+                        imageVector = tab.icon,
+                        contentDescription = null,
+                    )
                 }
             },
             labelContent = { tab, _ ->

@@ -158,6 +158,10 @@ InstallerX Revived 基于 [GNU General Public License v3](http://www.gnu.org/lic
 - [vvb2060/PackageInstaller](https://github.com/vvb2060/PackageInstaller)
 - [compose-miuix-ui/miuix](https://github.com/compose-miuix-ui/miuix)
 
+## Frutiger Aero 外观
+
+选择 **Frutiger Aero** 可启用水族箱背景、亮面水蓝色控件和缓缓飘动的气泡。操作图标具有立体倒角和玻璃高光；应用图标在保留原有图案的同时增加亮面效果。动画鱼始终位于背景的水面下方，旋转屏幕或调整窗口大小后也不会游到天空或草地中。二维码保持原样，以确保正常扫描。选择 **当前** 可恢复原有的外观设置。
+
 ## Star History
 
 <a href="https://www.star-history.com/?repos=wxxsfxyzm%2FInstallerX-Revived&type=date&legend=top-left">

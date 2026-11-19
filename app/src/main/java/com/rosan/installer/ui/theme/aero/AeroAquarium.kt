@@ -13,14 +13,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -43,25 +46,28 @@ private val SurfaceWash = Brush.verticalGradient(
 @Composable
 internal fun AeroAquarium() {
     val dark = InstallerTheme.isDark
+    val backdrop = painterResource(R.drawable.aero_aquarium)
+    val artwork = backdrop.intrinsicSize
     val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
     Box(Modifier.fillMaxSize()) {
         Image(
-            painter = painterResource(R.drawable.aero_aquarium),
+            painter = backdrop,
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop,
+            alignment = Alignment.BottomCenter,
         )
         if (lifecycleState.isAtLeast(Lifecycle.State.RESUMED)) {
             val clock = rememberInfiniteTransition(label = "Aquarium")
             val phase = clock.animateFloat(0f, 1f, infiniteRepeatable(tween(28000, easing = LinearEasing)), label = "Drift")
-            Canvas(Modifier.fillMaxSize()) { drawAquarium(phase.value, dark) }
+            Canvas(Modifier.fillMaxSize()) { drawAquarium(phase.value, dark, aquariumWaterBounds(size, artwork)) }
         } else {
-            Canvas(Modifier.fillMaxSize()) { drawAquarium(0f, dark) }
+            Canvas(Modifier.fillMaxSize()) { drawAquarium(0f, dark, aquariumWaterBounds(size, artwork)) }
         }
     }
 }
 
-private fun DrawScope.drawAquarium(phase: Float, dark: Boolean) {
+private fun DrawScope.drawAquarium(phase: Float, dark: Boolean, water: Rect) {
     if (dark) drawRect(Color(0xDE031629)) else drawRect(SurfaceWash)
     val light = Offset(size.width * (0.19f + 0.07f * sin(phase * Turn)), size.height * 0.08f)
     drawCircle(
@@ -82,8 +88,14 @@ private fun DrawScope.drawAquarium(phase: Float, dark: Boolean) {
             drawSparkle(Offset(x, y), radius * 0.6f, (1f - progress) * 7f)
         }
     }
-    drawFish(phase, 0.66f, 0.84f, Color(0xFF11A3B9))
-    drawFish((phase + 0.34f) % 1f, 0.78f, 1.1f, Color(0xFF75BC48))
+    // Only the narrow strip below the actual painted wave is water, not the sky above the grass.
+    if (water.height > 0f) {
+        clipRect(left = water.left, top = water.top, right = water.right, bottom = water.bottom) {
+            drawFish(phase, aquariumFishPose(water, phase, 0.25f, 16.dp.toPx()), Color(0xFF11A3B9))
+            val secondPhase = (phase + 0.34f) % 1f
+            drawFish(secondPhase, aquariumFishPose(water, secondPhase, 0.78f, 19.dp.toPx()), Color(0xFF75BC48))
+        }
+    }
 }
 
 internal fun DrawScope.drawAeroBubble(center: Offset, radius: Float, opacity: Float) {
@@ -113,12 +125,10 @@ private fun DrawScope.drawSparkle(center: Offset, length: Float, opacity: Float)
     drawLine(white, center - Offset(0f, length), center + Offset(0f, length), strokeWidth = 1.dp.toPx())
 }
 
-private fun DrawScope.drawFish(phase: Float, lane: Float, scale: Float, tint: Color) {
-    val r = 18.dp.toPx() * scale
-    val x = size.width * phase + (2 * phase - 1) * r * 2
-    val y = size.height * lane + r * sin(phase * Turn * 2)
+private fun DrawScope.drawFish(phase: Float, pose: AquariumFishPose, tint: Color) {
+    val r = pose.radius
     val tail = r * (0.5f + 0.15f * sin(phase * Turn * 22))
-    translate(x, y) {
+    translate(pose.x, pose.y) {
         val fin = Path().apply {
             moveTo(-r * 0.45f, 0f)
             quadraticTo(-r * 1.4f, -tail, -r * 1.5f, -tail)
@@ -134,7 +144,7 @@ private fun DrawScope.drawFish(phase: Float, lane: Float, scale: Float, tint: Co
             topLeft = origin,
             size = bodySize,
         )
-        drawOval(Color.White.copy(alpha = 0.5f), origin, bodySize, style = Stroke(0.7.dp.toPx()))
+        drawOval(Color.White.copy(alpha = 0.5f), origin, bodySize, style = Stroke(r * 0.04f))
         drawCircle(Color(0xE0105472), r * 0.095f, Offset(r * 0.53f, -r * 0.07f))
     }
 }

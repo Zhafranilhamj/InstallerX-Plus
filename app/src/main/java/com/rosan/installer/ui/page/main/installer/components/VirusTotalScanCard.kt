@@ -29,7 +29,6 @@ import androidx.compose.material.icons.filled.UploadFile
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -59,6 +58,7 @@ import com.rosan.installer.domain.virustotal.model.VirusTotalScanMethod
 import com.rosan.installer.domain.virustotal.model.VirusTotalVerdict
 import com.rosan.installer.ui.page.main.installer.VirusTotalScanState
 import com.rosan.installer.ui.page.main.installer.VirusTotalScanStatus
+import com.rosan.installer.ui.theme.aero.InstallerIcon as Icon
 import com.rosan.installer.ui.theme.aero.InstallerOutlinedButton
 import com.rosan.installer.ui.theme.aero.InstallerTextButton
 import com.rosan.installer.ui.util.formatSize

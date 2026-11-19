@@ -1,0 +1,2 @@
+- Gave Frutiger Aero icons a glossy 3D look, with raised edges, reflections, and shadows. App logos keep their familiar designs with a glossy finish.
+- Moved the animated fish into the water so they no longer swim through the sky or grass, even when you rotate your screen.
