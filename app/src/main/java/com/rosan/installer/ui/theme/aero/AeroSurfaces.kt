@@ -79,14 +79,12 @@ internal fun Modifier.aeroRise(): Modifier {
 /** Keep the recognizable action glyph; the glass orb around it is decorative. */
 @Composable
 internal fun AeroIcon(content: @Composable () -> Unit) {
-    if (LocalFrutigerAero.current) {
-        Box(
-            modifier = Modifier.background(GelOrb, CircleShape).border(1.dp, Color(0xFFB4E2ED), CircleShape),
-            contentAlignment = Alignment.Center,
-        ) {
-            content()
-        }
+    val chrome = if (LocalFrutigerAero.current) {
+        Modifier.background(GelOrb, CircleShape).border(1.dp, Color(0xFFB4E2ED), CircleShape)
     } else {
+        Modifier
+    }
+    Box(modifier = chrome, contentAlignment = Alignment.Center) {
         content()
     }
 }
