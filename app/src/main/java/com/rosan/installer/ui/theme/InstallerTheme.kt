@@ -40,6 +40,7 @@ import top.yukonga.miuix.kmp.theme.ThemeColorSpec as MiuixColorSpec
 import top.yukonga.miuix.kmp.theme.ThemeController
 import top.yukonga.miuix.kmp.theme.ThemePaletteStyle as MiuixPaletteStyle
 
+internal val LocalUiStyle = staticCompositionLocalOf { UiStyle.CURRENT }
 private val LocalIsDark = staticCompositionLocalOf { false }
 private val LocalPaletteStyle = staticCompositionLocalOf { PaletteStyle.Expressive }
 private val LocalThemeColorSpec = staticCompositionLocalOf { ThemeColorSpec.SPEC_2025 }
@@ -140,6 +141,7 @@ fun InstallerTheme(
     val animatedColorScheme = if (isAero) baseColorScheme else transitioningColorScheme
 
     CompositionLocalProvider(
+        LocalUiStyle provides uiStyle,
         LocalFrutigerAero provides isAero,
         LocalIsDark provides isDark,
         LocalPaletteStyle provides paletteStyle,

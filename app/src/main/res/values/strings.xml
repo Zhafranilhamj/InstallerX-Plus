@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">InstallerX-Plus</string>
-    <string name="ui_style_current">Current</string>
+    <string name="ui_style_current">Default</string>
     <string name="ui_style_current_desc">Keep your existing appearance settings.</string>
     <string name="ui_style_glass">Liquid glass</string>
     <string name="ui_style_glass_desc">Miuix controls with a floating bar and translucent blur where supported.</string>

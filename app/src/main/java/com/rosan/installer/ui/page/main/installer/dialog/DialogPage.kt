@@ -19,6 +19,7 @@ import com.rosan.installer.domain.session.repository.InstallerSessionRepository
 import com.rosan.installer.ui.page.main.installer.InstallerStage
 import com.rosan.installer.ui.page.main.installer.InstallerViewAction
 import com.rosan.installer.ui.page.main.installer.InstallerViewModel
+import com.rosan.installer.ui.page.main.installer.components.aeroInstallBackdrop
 import com.rosan.installer.ui.page.main.installer.components.PositionDialog
 import com.rosan.installer.ui.page.main.installer.dialog.inner.ModuleInstallSheetContent
 import com.rosan.installer.ui.page.main.widget.util.InstallerEventCollector
@@ -150,6 +151,11 @@ fun DialogPage(session: InstallerSessionRepository, viewModel: InstallerViewMode
                                 viewModel.dispatch(InstallerViewAction.Background)
                             }
                         }
+                    },
+                    bodyModifier = if (LocalFrutigerAero.current && stage is InstallerStage.Installing) {
+                        Modifier.aeroInstallBackdrop()
+                    } else {
+                        Modifier
                     },
                     centerIcon = dialogInnerWidget(params.icon),
                     centerTitle = dialogInnerWidget(params.title),

@@ -1,0 +1,4 @@
+- Frutiger Aero now shows install and update progress as bubbling water, with drifting sunlight in light mode and glowing plankton in dark mode.
+- Liquid glass and Mix of both now show progress as a flowing glass bar that changes tint with your theme.
+- Material 3 Expressive now shows a wavy progress ring.
+- The “Current” style is now called “Default.” Its appearance and your settings are unchanged.
