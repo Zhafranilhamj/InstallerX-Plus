@@ -41,6 +41,7 @@ class LiquidInstallGaugeTest {
             compose.runOnIdle { style.value = preset }
             node.assert(SemanticsMatcher.expectValue(SemanticsProperties.ProgressBarRangeInfo, ProgressBarRangeInfo(0.5f, 0f..1f)))
             val pixels = node.captureToImage().toPixelMap()
+
             // Compare broad samples, so a passing bubble or pixel rounding cannot hide the fill.
             fun meanRed(start: Int) = (start until start + pixels.width / 6).map { pixels[it, pixels.height / 2].red }.average()
             assertTrue("Filled side must be visibly tinted in $preset", meanRed(pixels.width / 6) + 0.15 < meanRed(pixels.width * 2 / 3))

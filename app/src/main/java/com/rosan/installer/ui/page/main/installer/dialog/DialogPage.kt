@@ -19,8 +19,8 @@ import com.rosan.installer.domain.session.repository.InstallerSessionRepository
 import com.rosan.installer.ui.page.main.installer.InstallerStage
 import com.rosan.installer.ui.page.main.installer.InstallerViewAction
 import com.rosan.installer.ui.page.main.installer.InstallerViewModel
-import com.rosan.installer.ui.page.main.installer.components.aeroInstallBackdrop
 import com.rosan.installer.ui.page.main.installer.components.PositionDialog
+import com.rosan.installer.ui.page.main.installer.components.aeroInstallBackdrop
 import com.rosan.installer.ui.page.main.installer.dialog.inner.ModuleInstallSheetContent
 import com.rosan.installer.ui.page.main.widget.util.InstallerEventCollector
 import com.rosan.installer.ui.theme.InstallerMaterialExpressiveTheme
