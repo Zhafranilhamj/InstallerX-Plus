@@ -23,7 +23,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -61,6 +60,7 @@ import com.rosan.installer.ui.page.main.widget.setting.BlockingLoadingIndicator
 import com.rosan.installer.ui.page.main.widget.setting.ExpressiveBackButton
 import com.rosan.installer.ui.page.main.widget.setting.SegmentedColumn
 import com.rosan.installer.ui.page.main.widget.setting.SwitchWidget
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 import com.rosan.installer.ui.theme.aero.InstallerScaffold
 import com.rosan.installer.ui.theme.aero.aeroToolbar
 import com.rosan.installer.ui.theme.getMaterial3AppBarColor
@@ -236,7 +236,7 @@ fun DefaultInstallerPage(useBlur: Boolean, viewModel: HomePageViewModel = koinVi
                         Column(
                             modifier = Modifier.padding(16.dp),
                         ) {
-                            Icon(
+                            InstallerIcon(
                                 imageVector = Icons.Outlined.Info,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,

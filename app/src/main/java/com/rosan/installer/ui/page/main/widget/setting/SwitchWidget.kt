@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -21,6 +20,7 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.toggleableState
 import androidx.compose.ui.state.ToggleableState
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 
 /**
  * A setting widget with a [Switch] trailing content.
@@ -107,7 +107,7 @@ fun SwitchWidget(
                 uncheckedIconColor = MaterialTheme.colorScheme.surfaceContainerHighest,
             ),
             thumbContent = {
-                Icon(
+                InstallerIcon(
                     imageVector = if (checked) Icons.Filled.Check else Icons.Filled.Close,
                     contentDescription = null,
                     modifier = Modifier.size(SwitchDefaults.IconSize),

@@ -17,7 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,6 +32,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.rosan.installer.domain.settings.model.preferences.theme.PaletteStyle
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeColorSpec
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 import com.rosan.installer.ui.theme.material.RawColor
 import com.rosan.installer.ui.theme.material.dynamicColorScheme
 import com.rosan.installer.ui.util.getDisplayName
@@ -150,7 +150,7 @@ private fun FullSwatchContent(scheme: ColorScheme, isSelected: Boolean) {
                 contentAlignment = Alignment.Center,
             ) {
                 if (isSelected) {
-                    Icon(
+                    InstallerIcon(
                         imageVector = Icons.Default.Check,
                         contentDescription = null,
                         tint = scheme.inversePrimary,
@@ -186,7 +186,7 @@ private fun FallbackSwatchContent(baseColor: Color, isSelected: Boolean) {
                 contentAlignment = Alignment.Center,
             ) {
                 if (isSelected) {
-                    Icon(
+                    InstallerIcon(
                         imageVector = Icons.Default.Check,
                         contentDescription = null,
                         tint = Color.White,

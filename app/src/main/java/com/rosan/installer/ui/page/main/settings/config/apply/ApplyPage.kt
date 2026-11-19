@@ -34,7 +34,6 @@ import androidx.compose.material3.ContainedLoadingIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.IconButtonShapes
@@ -72,6 +71,7 @@ import com.rosan.installer.ui.navigation.LocalNavigator
 import com.rosan.installer.ui.page.main.widget.menu.GroupedDropdownMenuPopup
 import com.rosan.installer.ui.page.main.widget.setting.ExpressiveBackButton
 import com.rosan.installer.ui.page.main.widget.setting.LabelWidget
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 import com.rosan.installer.ui.theme.aero.InstallerScaffold
 import com.rosan.installer.ui.theme.aero.aeroToolbar
 import com.rosan.installer.ui.theme.bottomShape
@@ -128,7 +128,7 @@ fun ApplyPage(id: Long, useBlur: Boolean, viewModel: ApplyViewModel = koinViewMo
                                 onValueChange = { viewModel.dispatch(ApplyViewAction.Search(it)) },
                                 singleLine = true,
                                 leadingIcon = {
-                                    Icon(
+                                    InstallerIcon(
                                         imageVector = AppIcons.Search,
                                         contentDescription = stringResource(R.string.search),
                                     )
@@ -144,7 +144,7 @@ fun ApplyPage(id: Long, useBlur: Boolean, viewModel: ApplyViewModel = koinViewMo
                                             viewModel.dispatch(ApplyViewAction.Search(""))
                                         },
                                     ) {
-                                        Icon(
+                                        InstallerIcon(
                                             imageVector = AppIcons.Close,
                                             contentDescription = stringResource(R.string.close),
                                         )
@@ -172,7 +172,7 @@ fun ApplyPage(id: Long, useBlur: Boolean, viewModel: ApplyViewModel = koinViewMo
                 actions = {
                     AnimatedVisibility(visible = !searchBarActivated) {
                         IconButton(onClick = { searchBarActivated = !searchBarActivated }) {
-                            Icon(
+                            InstallerIcon(
                                 imageVector = AppIcons.Search,
                                 contentDescription = stringResource(R.string.search),
                             )
@@ -180,7 +180,7 @@ fun ApplyPage(id: Long, useBlur: Boolean, viewModel: ApplyViewModel = koinViewMo
                     }
                     Box {
                         IconButton(onClick = { showOptionsMenu = true }) {
-                            Icon(
+                            InstallerIcon(
                                 imageVector = AppIcons.Menu,
                                 contentDescription = stringResource(R.string.menu),
                             )
@@ -209,7 +209,7 @@ fun ApplyPage(id: Long, useBlur: Boolean, viewModel: ApplyViewModel = koinViewMo
                         lazyListState.animateScrollToItem(0)
                     }
                 }) {
-                    Icon(imageVector = AppIcons.ArrowUp, contentDescription = null)
+                    InstallerIcon(imageVector = AppIcons.ArrowUp, contentDescription = null)
                 }
             }
         },
@@ -487,7 +487,7 @@ private fun ApplyOptionsDropdown(
             text = { Text(stringResource(labelResId)) },
             trailingContent = if (checked) {
                 {
-                    Icon(imageVector = AppIcons.Check, contentDescription = null)
+                    InstallerIcon(imageVector = AppIcons.Check, contentDescription = null)
                 }
             } else {
                 null

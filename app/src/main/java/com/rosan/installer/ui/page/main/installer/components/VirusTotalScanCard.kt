@@ -29,7 +29,6 @@ import androidx.compose.material.icons.filled.UploadFile
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -59,6 +58,7 @@ import com.rosan.installer.domain.virustotal.model.VirusTotalScanMethod
 import com.rosan.installer.domain.virustotal.model.VirusTotalVerdict
 import com.rosan.installer.ui.page.main.installer.VirusTotalScanState
 import com.rosan.installer.ui.page.main.installer.VirusTotalScanStatus
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 import com.rosan.installer.ui.theme.aero.InstallerOutlinedButton
 import com.rosan.installer.ui.theme.aero.InstallerTextButton
 import com.rosan.installer.ui.util.formatSize
@@ -102,7 +102,7 @@ fun VirusTotalScanCard(
         ) {
             Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
+                    InstallerIcon(
                         imageVector = state.report?.verdict?.icon() ?: Icons.Default.Security,
                         contentDescription = null,
                         tint = state.report?.verdict?.color() ?: MaterialTheme.colorScheme.primary,
@@ -126,7 +126,7 @@ fun VirusTotalScanCard(
                     if (state.isScanning) {
                         CircularProgressIndicator(modifier = Modifier.padding(start = 8.dp).size(18.dp), strokeWidth = 2.dp)
                     } else {
-                        Icon(
+                        InstallerIcon(
                             imageVector = if (showDetails) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                             contentDescription = null,
                             modifier = Modifier.padding(start = 4.dp),
@@ -223,7 +223,7 @@ private fun VirusTotalActionCard(text: String, icon: ImageVector, enabled: Boole
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically),
         ) {
-            Icon(icon, contentDescription = null, modifier = Modifier.size(20.dp))
+            InstallerIcon(icon, contentDescription = null, modifier = Modifier.size(20.dp))
             Text(text, style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center)
         }
     }
@@ -239,7 +239,7 @@ private fun VirusTotalReportView(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(report.verdict.icon(), null, tint = report.verdict.color(), modifier = Modifier.size(18.dp))
+            InstallerIcon(report.verdict.icon(), null, tint = report.verdict.color(), modifier = Modifier.size(18.dp))
             Spacer(Modifier.size(8.dp))
             Text(report.verdict.displayLabel(), style = MaterialTheme.typography.titleSmall, color = report.verdict.color(), modifier = Modifier.weight(1f))
         }
@@ -339,7 +339,7 @@ private fun CommunityVoteButton(verdict: VirusTotalCommunityVerdict, state: Viru
         modifier = modifier.heightIn(min = 40.dp),
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
     ) {
-        Icon(
+        InstallerIcon(
             imageVector = if (selected) {
                 Icons.Default.Check
             } else if (harmless) {

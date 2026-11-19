@@ -4,7 +4,6 @@ package com.rosan.installer.ui.page.main.widget.setting
 
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +14,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.rosan.installer.R
 import com.rosan.installer.ui.icons.AppIcons
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 
 /**
  * A standardized back button for the application.
@@ -53,7 +53,7 @@ fun ExpressiveBackButton(
             contentColor = contentColor,
         ),
     ) {
-        Icon(
+        InstallerIcon(
             imageVector = icon,
             contentDescription = contentDescription,
         )

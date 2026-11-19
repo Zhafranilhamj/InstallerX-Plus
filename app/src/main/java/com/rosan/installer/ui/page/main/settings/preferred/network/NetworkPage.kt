@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
@@ -70,6 +69,7 @@ import com.rosan.installer.ui.page.main.widget.setting.DropDownMenuWidget
 import com.rosan.installer.ui.page.main.widget.setting.ExpressiveBackButton
 import com.rosan.installer.ui.page.main.widget.setting.SegmentedColumn
 import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 import com.rosan.installer.ui.theme.aero.InstallerScaffold
 import com.rosan.installer.ui.theme.aero.InstallerTextButton
 import com.rosan.installer.ui.theme.aero.aeroToolbar
@@ -351,7 +351,7 @@ private fun VirusTotalApiKeyWidget(
     BaseItemContainer {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
+                InstallerIcon(
                     imageVector = Icons.Default.Security,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -383,7 +383,7 @@ private fun VirusTotalApiKeyWidget(
                 },
                 trailingIcon = {
                     IconButton(onClick = { showKey = !showKey }) {
-                        Icon(
+                        InstallerIcon(
                             imageVector = if (showKey) {
                                 Icons.Default.VisibilityOff
                             } else {
@@ -413,7 +413,7 @@ private fun VirusTotalApiKeyWidget(
                     )
                     Spacer(modifier = Modifier.size(8.dp))
                 } else if (status == VirusTotalKeyValidationStatus.VALID) {
-                    Icon(
+                    InstallerIcon(
                         imageVector = Icons.Default.Check,
                         contentDescription = null,
                         tint = statusColor,
@@ -421,7 +421,7 @@ private fun VirusTotalApiKeyWidget(
                     )
                     Spacer(modifier = Modifier.size(8.dp))
                 } else if (status != VirusTotalKeyValidationStatus.IDLE) {
-                    Icon(
+                    InstallerIcon(
                         imageVector = Icons.Default.Close,
                         contentDescription = null,
                         tint = statusColor,
@@ -597,7 +597,7 @@ private fun NetworkMasterSwitch(checked: Boolean, onCheckedChange: (Boolean) -> 
                 uncheckedIconColor = MaterialTheme.colorScheme.surfaceContainerHighest,
             ),
             thumbContent = {
-                Icon(
+                InstallerIcon(
                     imageVector = if (checked) Icons.Filled.Check else Icons.Filled.Close,
                     contentDescription = null,
                     modifier = Modifier.size(SwitchDefaults.IconSize),

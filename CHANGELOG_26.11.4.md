@@ -1,0 +1,3 @@
+- Frutiger Aero now draws every icon as a raised, glossy object: a gradient body lit from above, a specular highlight, a shaded foot and a soft drop shadow.
+- The Frutiger Aero glass orbs behind the leading and navigation icons gained a specular highlight so they read as rounded, glossy domes.
+- The aquarium backdrop now has a real pond along the bottom instead of a thin strip of water. The animated fish swim inside that pond and never cross the water surface.

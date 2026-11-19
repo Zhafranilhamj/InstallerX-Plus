@@ -31,7 +31,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
@@ -71,6 +70,7 @@ import com.rosan.installer.ui.page.main.widget.setting.NavigationItemWidget
 import com.rosan.installer.ui.page.main.widget.setting.SegmentedColumn
 import com.rosan.installer.ui.page.main.widget.setting.SwitchWidget
 import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 import com.rosan.installer.ui.theme.aero.InstallerScaffold
 import com.rosan.installer.ui.theme.aero.InstallerTextButton
 import com.rosan.installer.ui.theme.aero.aeroToolbar
@@ -547,7 +547,7 @@ private fun ManagedPackagesWidget(
         noContentTitle = noContentTitle,
         trailingContent = { item ->
             IconButton(onClick = { deleteTarget = item }) {
-                Icon(
+                InstallerIcon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = stringResource(R.string.delete),
                     tint = MaterialTheme.colorScheme.error,
@@ -577,7 +577,7 @@ private fun ManagedPackagesWidget(
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 InstallerTextButton(onClick = { showAddDialog = true }) {
-                    Icon(Icons.Default.Add, null, modifier = Modifier.size(18.dp))
+                    InstallerIcon(Icons.Default.Add, null, modifier = Modifier.size(18.dp))
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(stringResource(R.string.add))
                 }
@@ -632,7 +632,7 @@ private fun ManagedUidsWidget(
         noContentTitle = noContentTitle,
         trailingContent = { item ->
             IconButton(onClick = { deleteTarget = item }) {
-                Icon(
+                InstallerIcon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = stringResource(R.string.delete),
                     tint = MaterialTheme.colorScheme.error,
@@ -647,7 +647,7 @@ private fun ManagedUidsWidget(
                 horizontalArrangement = Arrangement.End,
             ) {
                 InstallerTextButton(onClick = { showAddDialog = true }) {
-                    Icon(Icons.Default.Add, null, modifier = Modifier.size(18.dp))
+                    InstallerIcon(Icons.Default.Add, null, modifier = Modifier.size(18.dp))
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(stringResource(R.string.add))
                 }

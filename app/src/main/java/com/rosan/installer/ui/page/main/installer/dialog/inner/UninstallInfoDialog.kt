@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -43,6 +42,7 @@ import com.rosan.installer.ui.page.main.installer.InstallerViewModel
 import com.rosan.installer.ui.page.main.installer.dialog.DialogInnerParams
 import com.rosan.installer.ui.page.main.installer.dialog.DialogParams
 import com.rosan.installer.ui.page.main.installer.dialog.DialogParamsType
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 
 /**
  * Provides a base dialog structure for the uninstall process.
@@ -114,7 +114,7 @@ fun uninstallInfoDialog(
                             ),
                             onClick = onTitleExtraClick,
                         ) {
-                            Icon(
+                            InstallerIcon(
                                 imageVector = AppIcons.AutoFixHigh,
                                 contentDescription = null,
                                 modifier = Modifier.padding(4.dp),

@@ -21,7 +21,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -39,6 +38,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.rosan.installer.ui.icons.AppIcons
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 
 /**
  * A reusable item widget for displaying app information with a toggle switch.
@@ -139,7 +139,7 @@ fun ApplyItemWidget(
             thumbContent = if (isM3e) {
                 {
                     val iconVector = if (isApplied) Icons.Filled.Check else Icons.Filled.Close
-                    Icon(
+                    InstallerIcon(
                         imageVector = iconVector,
                         contentDescription = null,
                         modifier = Modifier.size(SwitchDefaults.IconSize),
@@ -176,7 +176,7 @@ fun UnknownScopeItemWidget(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(
+        InstallerIcon(
             imageVector = AppIcons.InstallSource,
             contentDescription = null,
             modifier = Modifier.size(40.dp),
@@ -198,7 +198,7 @@ fun UnknownScopeItemWidget(
             ),
             thumbContent = {
                 val iconVector = if (isApplied) Icons.Filled.Check else Icons.Filled.Close
-                Icon(
+                InstallerIcon(
                     imageVector = iconVector,
                     contentDescription = null,
                     modifier = Modifier.size(SwitchDefaults.IconSize),

@@ -21,7 +21,6 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -53,6 +52,7 @@ import com.rosan.installer.ui.page.main.widget.setting.DropDownMenuWidget
 import com.rosan.installer.ui.page.main.widget.setting.SegmentedColumnScope
 import com.rosan.installer.ui.page.main.widget.setting.SwitchWidget
 import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 import com.rosan.installer.ui.theme.aero.InstallerTextButton
 import com.rosan.installer.ui.util.isSystemPackageInstallerActive
 import org.koin.compose.koinInject
@@ -69,7 +69,7 @@ fun DataNameWidget(state: EditViewState, dispatch: (EditViewAction) -> Unit, tra
                     .padding(vertical = 8.dp, horizontal = 16.dp)
                     .focusable(),
                 leadingIcon = {
-                    Icon(imageVector = Icons.TwoTone.Edit, contentDescription = null)
+                    InstallerIcon(imageVector = Icons.TwoTone.Edit, contentDescription = null)
                 },
                 label = {
                     Text(text = stringResource(id = R.string.config_name))
@@ -93,7 +93,7 @@ fun DataDescriptionWidget(state: EditViewState, dispatch: (EditViewAction) -> Un
             .padding(vertical = 8.dp, horizontal = 16.dp)
             .focusable(),
         leadingIcon = {
-            Icon(imageVector = Icons.AutoMirrored.TwoTone.More, contentDescription = null)
+            InstallerIcon(imageVector = Icons.AutoMirrored.TwoTone.More, contentDescription = null)
         },
         label = {
             Text(text = stringResource(id = R.string.config_description))
@@ -195,7 +195,7 @@ fun SegmentedColumnScope.dataAuthorizerWidget(state: EditViewState, dispatch: (E
                         .focusable(),
                     shape = bottomShape,
                     leadingIcon = {
-                        Icon(imageVector = Icons.TwoTone.Terminal, contentDescription = null)
+                        InstallerIcon(imageVector = Icons.TwoTone.Terminal, contentDescription = null)
                     },
                     label = {
                         Text(text = stringResource(R.string.config_authorizer_customize))
@@ -446,7 +446,7 @@ fun SegmentedColumnScope.dataInstallRequesterWidget(
                     onValueChange = { dispatch(EditViewAction.ChangeDataInstallRequester(it)) },
                     label = { Text(text = stringResource(id = R.string.config_install_requester)) },
                     leadingIcon = {
-                        Icon(imageVector = AppIcons.InstallSourceInput, contentDescription = null)
+                        InstallerIcon(imageVector = AppIcons.InstallSourceInput, contentDescription = null)
                     },
                     singleLine = true,
                     isError = isPackageNotFound || (isError && packageName.isEmpty()),
@@ -566,7 +566,7 @@ fun DataInstallerWidget(state: EditViewState, dispatch: (EditViewAction) -> Unit
                 },
                 label = { Text(text = stringResource(id = R.string.config_installer)) },
                 leadingIcon = {
-                    Icon(imageVector = AppIcons.InstallSourceInput, contentDescription = null)
+                    InstallerIcon(imageVector = AppIcons.InstallSourceInput, contentDescription = null)
                 },
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)

@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -40,6 +39,7 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 import kotlin.math.roundToInt
 
 @Composable
@@ -86,7 +86,7 @@ fun IntNumberPickerWidget(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if (icon != null) {
-                Icon(
+                InstallerIcon(
                     modifier = Modifier.size(24.dp),
                     imageVector = icon,
                     contentDescription = null,

@@ -17,7 +17,6 @@ import androidx.compose.material.icons.twotone.DoneAll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +37,7 @@ import com.rosan.installer.ui.page.main.installer.dialog.DialogInnerParams
 import com.rosan.installer.ui.page.main.installer.dialog.DialogParams
 import com.rosan.installer.ui.page.main.installer.dialog.DialogParamsType
 import com.rosan.installer.ui.page.main.installer.dialog.dialogButtons
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 
 @Composable
 fun installCompletedDialog(viewModel: InstallerViewModel, results: List<InstallResult>): DialogParams {
@@ -48,7 +48,7 @@ fun installCompletedDialog(viewModel: InstallerViewModel, results: List<InstallR
         icon = DialogInnerParams(
             DialogParamsType.InstallerInstallCompleted.id,
             {
-                /*Icon(
+                /*InstallerIcon(
                     imageVector = if (failureCount == 0) Icons.TwoTone.DoneAll*//*AppIcons.Success*//* else Icons.TwoTone.SmsFailed*//*AppIcons.Error*//*,
                     contentDescription = null
                 )*/
@@ -128,7 +128,7 @@ private fun SuccessCard() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Icon(
+            InstallerIcon(
                 imageVector = Icons.TwoTone.DoneAll,
                 contentDescription = "Success",
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,

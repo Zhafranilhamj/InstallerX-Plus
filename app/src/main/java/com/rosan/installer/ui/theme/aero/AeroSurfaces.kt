@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -77,11 +78,36 @@ internal fun Modifier.aeroRise(): Modifier {
     }
 }
 
-/** Keep the recognizable action glyph; the glass orb around it is decorative. */
+/**
+ * The glass dome that carries a glossy action glyph.
+ *
+ * The dome is lit from the upper left with a specular highlight and a bounce light along its
+ * lower rim, so it reads as a rounded, glossy object rather than a flat disc.
+ */
 @Composable
 internal fun AeroIcon(content: @Composable () -> Unit) {
     val chrome = if (LocalFrutigerAero.current) {
-        Modifier.background(if (InstallerTheme.isDark) NightGlass else GelOrb, CircleShape).border(1.dp, Color(0xFFB4E2ED), CircleShape)
+        val dark = InstallerTheme.isDark
+        Modifier
+            .drawWithCache {
+                val sheen = Brush.radialGradient(
+                    colors = listOf(Color.White.copy(alpha = 0.85f), Color.White.copy(alpha = 0f)),
+                    center = Offset(size.width * 0.33f, size.height * 0.22f),
+                    radius = size.minDimension * 0.7f,
+                )
+                val bounce = Brush.verticalGradient(
+                    colors = listOf(Color.Transparent, Color(0x40FFFFFF)),
+                    startY = size.height * 0.55f,
+                    endY = size.height,
+                )
+                onDrawWithContent {
+                    drawContent()
+                    drawCircle(brush = sheen)
+                    drawCircle(brush = bounce)
+                }
+            }
+            .background(if (dark) NightGlass else GelOrb, CircleShape)
+            .border(1.dp, Color(0xFFB4E2ED), CircleShape)
     } else {
         Modifier
     }

@@ -29,7 +29,6 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
@@ -62,6 +61,7 @@ import com.rosan.installer.ui.page.main.widget.card.ScopeTipCard
 import com.rosan.installer.ui.page.main.widget.chip.CapsuleTag
 import com.rosan.installer.ui.page.main.widget.snackbar.SwipeableSnackbarHost
 import com.rosan.installer.ui.page.main.widget.util.AllViewEventCollector
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 import com.rosan.installer.ui.theme.aero.InstallerScaffold
 import com.rosan.installer.ui.theme.aero.aeroToolbar
 import com.rosan.installer.ui.theme.getMaterial3AppBarColor
@@ -158,7 +158,7 @@ fun AllPage(
             ) {
                 SmallExtendedFloatingActionButton(
                     icon = {
-                        Icon(
+                        InstallerIcon(
                             imageVector = AppIcons.Add,
                             contentDescription = stringResource(id = R.string.add),
                         )
@@ -326,14 +326,14 @@ private fun DataItemWidget(viewModel: AllViewModel, entity: ConfigModel, isDefau
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 IconButton(onClick = { viewModel.dispatch(AllViewAction.EditDataConfig(entity)) }) {
-                    Icon(
+                    InstallerIcon(
                         imageVector = AppIcons.Edit,
                         contentDescription = stringResource(id = R.string.edit),
                     )
                 }
                 if (!isDefault) {
                     IconButton(onClick = { viewModel.dispatch(AllViewAction.DeleteDataConfig(entity)) }) {
-                        Icon(
+                        InstallerIcon(
                             imageVector = AppIcons.Delete,
                             contentDescription = stringResource(id = R.string.delete),
                         )
@@ -343,7 +343,7 @@ private fun DataItemWidget(viewModel: AllViewModel, entity: ConfigModel, isDefau
                     IconButton(onClick = {
                         viewModel.dispatch(AllViewAction.ApplyConfig(entity))
                     }) {
-                        Icon(
+                        InstallerIcon(
                             imageVector = AppIcons.Rule,
                             contentDescription = stringResource(id = R.string.apply),
                         )

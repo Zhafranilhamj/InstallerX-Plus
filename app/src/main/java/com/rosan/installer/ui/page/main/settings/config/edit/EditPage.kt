@@ -22,7 +22,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SmallExtendedFloatingActionButton
@@ -55,6 +54,7 @@ import com.rosan.installer.ui.page.main.widget.setting.SegmentedColumn
 import com.rosan.installer.ui.page.main.widget.snackbar.SwipeableSnackbarHost
 import com.rosan.installer.ui.page.main.widget.util.EditEventCollector
 import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 import com.rosan.installer.ui.theme.aero.InstallerScaffold
 import com.rosan.installer.ui.theme.aero.InstallerTextButton
 import com.rosan.installer.ui.theme.aero.aeroToolbar
@@ -184,7 +184,7 @@ fun EditPage(id: Long? = null, viewModel: EditViewModel = koinViewModel { parame
                     bottom = 16.dp,
                 ),
                 icon = {
-                    Icon(
+                    InstallerIcon(
                         imageVector = AppIcons.Save,
                         contentDescription = stringResource(R.string.save),
                     )

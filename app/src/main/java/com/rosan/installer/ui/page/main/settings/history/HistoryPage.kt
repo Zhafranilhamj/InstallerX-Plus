@@ -29,7 +29,6 @@ import androidx.compose.material3.CheckableDropdownMenuItem
 import androidx.compose.material3.ContainedLoadingIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
@@ -68,6 +67,7 @@ import com.rosan.installer.ui.icons.AppIcons
 import com.rosan.installer.ui.page.main.widget.chip.CapsuleTag
 import com.rosan.installer.ui.page.main.widget.menu.GroupedDropdownMenuPopup
 import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 import com.rosan.installer.ui.theme.aero.InstallerScaffold
 import com.rosan.installer.ui.theme.aero.InstallerTextButton
 import com.rosan.installer.ui.theme.aero.aeroToolbar
@@ -144,14 +144,14 @@ private fun HistoryPageContent(
                         enabled = state.isHistoryEnabled && state.records.isNotEmpty(),
                         onClick = { showClearConfirmDialog = true },
                     ) {
-                        Icon(
+                        InstallerIcon(
                             imageVector = AppIcons.Delete,
                             contentDescription = stringResource(R.string.history_clear),
                         )
                     }
                     Box {
                         IconButton(onClick = { showHistoryMenu = true }) {
-                            Icon(
+                            InstallerIcon(
                                 imageVector = AppIcons.MoreVert,
                                 contentDescription = stringResource(R.string.history_recording),
                             )
@@ -193,7 +193,7 @@ private fun HistoryPageContent(
                                 },
                                 trailingContent = if (checked) {
                                     {
-                                        Icon(imageVector = AppIcons.Check, contentDescription = null)
+                                        InstallerIcon(imageVector = AppIcons.Check, contentDescription = null)
                                     }
                                 } else {
                                     null

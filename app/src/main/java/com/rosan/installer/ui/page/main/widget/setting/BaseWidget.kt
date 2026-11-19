@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import com.rosan.installer.ui.theme.CornerRadius
 import com.rosan.installer.ui.theme.aero.AeroIcon
 import com.rosan.installer.ui.theme.aero.AeroShapes
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
 import com.rosan.installer.ui.theme.aero.aeroChrome
 
@@ -204,7 +204,7 @@ fun BaseWidget(
                 ) {
                     if (icon != null) {
                         AeroIcon {
-                            Icon(
+                            InstallerIcon(
                                 imageVector = icon,
                                 contentDescription = null,
                                 modifier = if (aero) Modifier.padding(3.dp) else Modifier,

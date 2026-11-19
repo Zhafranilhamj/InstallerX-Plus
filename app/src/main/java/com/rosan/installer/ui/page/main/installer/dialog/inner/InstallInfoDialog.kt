@@ -34,7 +34,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -73,6 +72,7 @@ import com.rosan.installer.ui.page.main.installer.InstallerViewModel
 import com.rosan.installer.ui.page.main.installer.dialog.DialogInnerParams
 import com.rosan.installer.ui.page.main.installer.dialog.DialogParams
 import com.rosan.installer.ui.page.main.installer.dialog.DialogParamsType
+import com.rosan.installer.ui.theme.aero.InstallerIcon
 import com.rosan.installer.ui.util.formatSize
 import com.rosan.installer.ui.util.toAndroidVersionName
 import com.rosan.installer.util.toast
@@ -210,13 +210,13 @@ fun installInfoDialog(viewModel: InstallerViewModel, onTitleExtraClick: () -> Un
                             onClick = onTitleExtraClick,
                         ) {
                             if (isModule) {
-                                Icon(
+                                InstallerIcon(
                                     imageVector = AppIcons.Xposed,
                                     contentDescription = null,
                                     modifier = Modifier.padding(4.dp),
                                 )
                             } else {
-                                Icon(
+                                InstallerIcon(
                                     imageVector = AppIcons.Android,
                                     contentDescription = null,
                                     modifier = Modifier.padding(4.dp),
@@ -611,7 +611,7 @@ private fun ModuleVersionCompareMultiLine(installedModuleInfo: InstalledModuleIn
             modifier = Modifier.basicMarquee(),
         )
 
-        Icon(
+        InstallerIcon(
             imageVector = AppIcons.ArrowDropDownFilled,
             contentDescription = "to",
             tint = statusColor,
@@ -652,7 +652,7 @@ private fun ModuleVersionCompareSingleLine(installedModuleInfo: InstalledModuleI
         modifier = Modifier.basicMarquee(iterations = Int.MAX_VALUE),
     ) {
         Text(text = oldVersionText, textAlign = TextAlign.Center)
-        Icon(
+        InstallerIcon(
             imageVector = AppIcons.ArrowRight,
             contentDescription = "to",
             tint = color,
@@ -726,7 +726,7 @@ private fun VersionCompareMultiLine(preInstallAppInfo: InstalledAppInfo, entityT
             modifier = Modifier.basicMarquee(),
         )
 
-        Icon(
+        InstallerIcon(
             imageVector = AppIcons.ArrowDropDownFilled,
             contentDescription = "to",
             tint = statusColor,
@@ -776,7 +776,7 @@ private fun VersionCompareSingleLine(preInstallAppInfo: InstalledAppInfo, entity
         modifier = Modifier.basicMarquee(iterations = Int.MAX_VALUE),
     ) {
         Text(text = oldVersionText, textAlign = TextAlign.Center)
-        Icon(
+        InstallerIcon(
             imageVector = AppIcons.ArrowRight,
             contentDescription = "to",
             tint = color,
@@ -820,7 +820,7 @@ private fun SdkInfoCompact(
             val oldText = stringResource(shortLabelResId, oldValueContent)
             Text(text = oldText, style = MaterialTheme.typography.bodyMedium)
 
-            Icon(
+            InstallerIcon(
                 imageVector = AppIcons.ArrowRight,
                 contentDescription = "to",
                 tint = color,
@@ -900,7 +900,7 @@ private fun SdkInfoExpanded(
                 else -> SdkValueWithIcon(sdk = oldSdk, color = MaterialTheme.colorScheme.onSurface)
             }
 
-            Icon(
+            InstallerIcon(
                 imageVector = AppIcons.ArrowRight,
                 contentDescription = "to",
                 tint = color,
@@ -943,7 +943,7 @@ private fun SdkValueWithIcon(sdk: String, color: Color) {
                 .background(color.copy(alpha = 0.1f))
                 .padding(horizontal = 6.dp, vertical = 2.dp),
         ) {
-            Icon(
+            InstallerIcon(
                 imageVector = AppIcons.Android,
                 contentDescription = "Android",
                 tint = color,
@@ -1033,7 +1033,7 @@ private fun SizeInfoDisplay(oldSize: Long, newSize: Long, hideIdenticalCompariso
                             modifier = Modifier.padding(start = 4.dp),
                         )
 
-                        Icon(
+                        InstallerIcon(
                             imageVector = AppIcons.ArrowRight,
                             contentDescription = "to",
                             tint = MaterialTheme.colorScheme.primary,
