@@ -218,8 +218,8 @@ jobs:
 
   publish:
     needs: [build, render_tests]
-    # Pushes validate only. Publish explicitly from the tested release branch, without merging the PR.
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/arena/aefaa449-installerx-plus'
+    # Only this release branch may publish, and both verification jobs must succeed first.
+    if: github.ref == 'refs/heads/arena/aefaa449-installerx-plus'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:

@@ -4,7 +4,6 @@ package com.rosan.installer.ui.theme.aero
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -87,21 +86,25 @@ class AeroIconRenderingTest {
 
     @Test
     fun otherStylesDelegateToTheUnchangedMaterialIcon() {
+        val useWrapper = mutableStateOf(true)
         compose.setContent {
             MaterialTheme(colorScheme = AeroColors) {
                 CompositionLocalProvider(LocalFrutigerAero provides false) {
-                    Column(Modifier.background(backdrop)) {
-                        InstallerIcon(Icons.Filled.Settings, null, Modifier.size(48.dp).testTag("wrapper"), Color.Red)
-                        MaterialIcon(Icons.Filled.Settings, null, Modifier.size(48.dp).testTag("material"), Color.Red)
+                    Box(Modifier.background(backdrop)) {
+                        if (useWrapper.value) {
+                            InstallerIcon(Icons.Filled.Settings, null, Modifier.size(48.dp).testTag("icon"), Color.Red)
+                        } else {
+                            MaterialIcon(Icons.Filled.Settings, null, Modifier.size(48.dp).testTag("icon"), Color.Red)
+                        }
                     }
                 }
             }
         }
-        val wrapper = capture("wrapper")
-        val material = capture("material")
-        // GPU edge anti-aliasing can round differently at two screen positions, even for the same vector.
-        val meanError = difference(wrapper, material) / (wrapper.width * wrapper.height)
-        assertTrue("Non-Aero output must match Material apart from edge rounding: $meanError", meanError < 0.0001f)
+        // Compare at the same screen position so subpixel placement cannot change GPU anti-aliasing.
+        val wrapper = capture("icon")
+        compose.runOnIdle { useWrapper.value = false }
+        val material = capture("icon")
+        assertEquals(0f, difference(wrapper, material), 0.001f)
     }
 
     @Test
