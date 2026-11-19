@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.drawscope.ContentDrawScope
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.isSpecified
@@ -150,32 +150,33 @@ private fun Modifier.aeroIconRelief(pigment: Color): Modifier = drawWithCache {
     val shadow = Brush.verticalGradient(listOf(Color(0x14001C37), Color(0x4D001C37)))
 
     onDrawWithContent {
+        val source = this
         // Leave room for the extruded side inside the original measured icon/touch target.
         scale(0.88f, pivot = center) {
             translate(left = depth * 0.5f, top = depth * 1.8f) {
                 iconLayer(bounds, layerPaint) {
-                    drawContent()
+                    source.drawContent()
                     drawRect(shadow, blendMode = BlendMode.SrcIn)
                 }
             }
             for (step in 3 downTo 1) {
                 translate(left = depth * step / 6f, top = depth * step / 3f) {
                     iconLayer(bounds, layerPaint) {
-                        drawContent()
+                        source.drawContent()
                         drawRect(side, blendMode = BlendMode.SrcIn)
                     }
                 }
             }
             iconLayer(bounds, layerPaint) {
-                drawContent()
+                source.drawContent()
                 if (pigment.isSpecified) drawRect(body, blendMode = BlendMode.SrcIn)
                 drawRect(specular, blendMode = BlendMode.SrcAtop)
             }
             // Difference between the silhouette and its offset makes a true, glyph-shaped bevel.
             iconLayer(bounds, layerPaint) {
-                drawContent()
+                source.drawContent()
                 iconLayer(bounds, erasePaint) {
-                    translate(left = edge, top = edge) { drawContent() }
+                    translate(left = edge, top = edge) { source.drawContent() }
                 }
                 drawRect(rim, blendMode = BlendMode.SrcIn)
             }
@@ -183,7 +184,7 @@ private fun Modifier.aeroIconRelief(pigment: Color): Modifier = drawWithCache {
     }
 }
 
-private inline fun ContentDrawScope.iconLayer(bounds: Rect, paint: Paint, content: ContentDrawScope.() -> Unit) {
+private inline fun DrawScope.iconLayer(bounds: Rect, paint: Paint, content: DrawScope.() -> Unit) {
     val canvas = drawContext.canvas
     canvas.saveLayer(bounds, paint)
     try {
