@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
@@ -70,6 +69,7 @@ import com.rosan.installer.ui.page.main.widget.setting.DropDownMenuWidget
 import com.rosan.installer.ui.page.main.widget.setting.ExpressiveBackButton
 import com.rosan.installer.ui.page.main.widget.setting.SegmentedColumn
 import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerIcon as Icon
 import com.rosan.installer.ui.theme.aero.InstallerScaffold
 import com.rosan.installer.ui.theme.aero.InstallerTextButton
 import com.rosan.installer.ui.theme.aero.aeroToolbar

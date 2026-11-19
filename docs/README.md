@@ -182,4 +182,4 @@ This project uses code from, or is based on the implementation of, the following
 
 In Theme settings, choose Current to keep your existing appearance, Liquid glass for Miuix controls with a floating bar and blur, Material 3 Expressive for Material controls, or Mix of both for Material controls with a floating bar and blur. Blur falls back to solid surfaces on unsupported devices. Selecting Current restores your previous individual appearance settings.
 
-Choose **Frutiger Aero** for a bright aquarium backdrop, glossy aqua controls, and gently drifting bubbles. It uses its own light palette; choose **Current** to return to your existing appearance settings.
+Choose **Frutiger Aero** for an aquarium backdrop, glossy aqua controls, and gently drifting bubbles. Action icons have raised, beveled shapes and glassy highlights; app logos keep their original artwork beneath a glossy finish. The animated fish stay below the wallpaper’s waterline, including after rotating or resizing the screen. QR codes remain unaltered for reliable scanning. Choose **Current** to return to your existing appearance settings.

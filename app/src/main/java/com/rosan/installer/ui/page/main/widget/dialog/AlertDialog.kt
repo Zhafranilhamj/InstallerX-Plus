@@ -12,7 +12,6 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -41,6 +40,7 @@ import com.rosan.installer.domain.settings.model.preferences.GithubUpdateChannel
 import com.rosan.installer.domain.settings.model.preferences.RootMode
 import com.rosan.installer.ui.icons.AppIcons
 import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerIcon as Icon
 import com.rosan.installer.ui.theme.aero.InstallerTextButton
 import com.rosan.installer.util.help
 

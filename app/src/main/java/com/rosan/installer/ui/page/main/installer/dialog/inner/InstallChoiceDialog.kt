@@ -21,7 +21,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -62,6 +61,7 @@ import com.rosan.installer.ui.page.main.installer.dialog.dialogButtons
 import com.rosan.installer.ui.page.main.widget.card.InfoTipCard
 import com.rosan.installer.ui.page.main.widget.setting.NavigationItemWidget
 import com.rosan.installer.ui.page.main.widget.setting.SegmentedColumn
+import com.rosan.installer.ui.theme.aero.InstallerIcon as Icon
 import com.rosan.installer.ui.theme.bottomShape
 import com.rosan.installer.ui.theme.middleShape
 import com.rosan.installer.ui.theme.singleShape

@@ -2,7 +2,6 @@
 // Copyright (C) 2025-2026 InstallerX Revived contributors
 package com.rosan.installer.ui.page.main.installer.dialog.inner
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -27,6 +26,7 @@ import com.rosan.installer.ui.page.main.installer.dialog.DialogInnerParams
 import com.rosan.installer.ui.page.main.installer.dialog.DialogParams
 import com.rosan.installer.ui.page.main.installer.dialog.DialogParamsType
 import com.rosan.installer.ui.page.main.installer.dialog.dialogButtons
+import com.rosan.installer.ui.theme.aero.InstallerIconImage as Image
 
 @Composable
 fun installConfirmDialog(viewModel: InstallerViewModel): DialogParams {

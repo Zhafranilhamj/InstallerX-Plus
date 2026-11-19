@@ -21,7 +21,6 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -34,6 +33,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
@@ -53,7 +53,9 @@ import com.rosan.installer.ui.page.main.widget.setting.DropDownMenuWidget
 import com.rosan.installer.ui.page.main.widget.setting.SegmentedColumnScope
 import com.rosan.installer.ui.page.main.widget.setting.SwitchWidget
 import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerIcon as Icon
 import com.rosan.installer.ui.theme.aero.InstallerTextButton
+import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
 import com.rosan.installer.ui.util.isSystemPackageInstallerActive
 import org.koin.compose.koinInject
 
@@ -569,7 +571,15 @@ fun DataInstallerWidget(state: EditViewState, dispatch: (EditViewAction) -> Unit
                     Icon(imageVector = AppIcons.InstallSourceInput, contentDescription = null)
                 },
                 trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    if (LocalFrutigerAero.current) {
+                        Icon(
+                            imageVector = AppIcons.ArrowDropDown,
+                            contentDescription = null,
+                            modifier = Modifier.rotate(if (expanded) 180f else 0f),
+                        )
+                    } else {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    }
                 },
                 supportingText = {
                     matchingPackage?.let {

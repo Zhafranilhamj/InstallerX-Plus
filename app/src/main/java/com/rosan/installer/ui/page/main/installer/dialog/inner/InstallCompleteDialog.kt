@@ -17,7 +17,6 @@ import androidx.compose.material.icons.twotone.DoneAll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +37,7 @@ import com.rosan.installer.ui.page.main.installer.dialog.DialogInnerParams
 import com.rosan.installer.ui.page.main.installer.dialog.DialogParams
 import com.rosan.installer.ui.page.main.installer.dialog.DialogParamsType
 import com.rosan.installer.ui.page.main.installer.dialog.dialogButtons
+import com.rosan.installer.ui.theme.aero.InstallerIcon as Icon
 
 @Composable
 fun installCompletedDialog(viewModel: InstallerViewModel, results: List<InstallResult>): DialogParams {

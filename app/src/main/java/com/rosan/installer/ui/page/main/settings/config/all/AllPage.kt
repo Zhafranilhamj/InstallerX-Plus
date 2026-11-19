@@ -29,7 +29,6 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
@@ -62,6 +61,7 @@ import com.rosan.installer.ui.page.main.widget.card.ScopeTipCard
 import com.rosan.installer.ui.page.main.widget.chip.CapsuleTag
 import com.rosan.installer.ui.page.main.widget.snackbar.SwipeableSnackbarHost
 import com.rosan.installer.ui.page.main.widget.util.AllViewEventCollector
+import com.rosan.installer.ui.theme.aero.InstallerIcon as Icon
 import com.rosan.installer.ui.theme.aero.InstallerScaffold
 import com.rosan.installer.ui.theme.aero.aeroToolbar
 import com.rosan.installer.ui.theme.getMaterial3AppBarColor

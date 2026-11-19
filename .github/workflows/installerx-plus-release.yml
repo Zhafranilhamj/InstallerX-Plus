@@ -3,7 +3,7 @@ name: InstallerX-Plus signed APK
 on:
   push:
     branches:
-      - 'arena/8bb5133c-installerx-plus'
+      - 'arena/aefaa449-installerx-plus'
   workflow_dispatch:
 
 permissions:
@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  RELEASE_VERSION: '26.11.3'
+  RELEASE_VERSION: '26.11.4'
 
 jobs:
   build:
@@ -72,8 +72,10 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew assembleStableRelease --no-configuration-cache
+        run: ./gradlew assembleStableRelease --no-configuration-cache -PVERSION_NAME="$RELEASE_VERSION"
       - name: Verify APK identity and signature
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
           set -euo pipefail
@@ -113,6 +115,29 @@ jobs:
           if grep -q '^application-debuggable' "$manifest"; then
             fail 'Stable release APK is debuggable'
           fi
+          # Prove that this APK can update the previous stable release in place.
+          previous_dir="$RUNNER_TEMP/previous-release"
+          gh release download 26.11.3 --pattern 'InstallerX-Plus-26.11.3.apk' --dir "$previous_dir"
+          previous="$previous_dir/InstallerX-Plus-26.11.3.apk"
+          "$apksigner" verify --print-certs-pem "$previous" > "$RUNNER_TEMP/previous-signatures.txt"
+          "$aapt2" dump badging "$previous" > "$RUNNER_TEMP/previous-manifest.txt"
+          python3 - "$manifest" "$RUNNER_TEMP/previous-manifest.txt" "$RUNNER_TEMP/apk-signatures.txt" "$RUNNER_TEMP/previous-signatures.txt" <<'PYTHON'
+          from pathlib import Path
+          from ssl import PEM_cert_to_DER_cert
+          import re
+          import sys
+
+          current, previous, current_signers, previous_signers = map(Path, sys.argv[1:])
+          def version_code(path):
+              return int(re.search(r"^package:.*?versionCode='(\d+)'", path.read_text(), re.MULTILINE)[1])
+          if version_code(current) <= version_code(previous):
+              sys.exit("::error::The APK version code must be higher than the previous release")
+          def certificates(path):
+              return {PEM_cert_to_DER_cert(pem) for pem in re.findall(r"-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----", path.read_text(), re.DOTALL)}
+          if certificates(current_signers) != certificates(previous_signers):
+              sys.exit("::error::The APK signing certificate differs from the previous release")
+          print(f"Upgrade verified: versionCode {version_code(previous)} -> {version_code(current)}; same signing certificate")
+          PYTHON
           mkdir -p release-apk
           cp "$apk" "release-apk/InstallerX-Plus-$RELEASE_VERSION.apk"
       - name: Remove temporary signing key
@@ -125,10 +150,76 @@ jobs:
           retention-days: 90
           archive: false
 
+  render_tests:
+    name: Icon rendering on Android
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@v6
+        with:
+          distribution: zulu
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: true
+      - name: Enable emulator acceleration
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Run icon pixel and accessibility tests
+        uses: reactivecircus/android-emulator-runner@v2
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: ./gradlew connectedStableDebugAndroidTest --no-configuration-cache --console=plain > "$RUNNER_TEMP/render-tests.log" 2>&1
+      - name: Report rendering test diagnostics
+        if: failure()
+        shell: bash
+        run: |
+          if [[ -f "$RUNNER_TEMP/render-tests.log" ]]; then
+            cat "$RUNNER_TEMP/render-tests.log"
+            details=$(tail -n 75 "$RUNNER_TEMP/render-tests.log")
+            details=${details//'%'/'%25'}
+            details=${details//$'\r'/'%0D'}
+            details=${details//$'\n'/'%0A'}
+            echo "::error title=Android rendering tests failed::$details"
+          fi
+          python3 - <<'PYTHON'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          for path in Path("app/build/outputs/androidTest-results").rglob("*.xml"):
+              for test in ET.parse(path).iter("testcase"):
+                  for failure in test.findall("failure") + test.findall("error"):
+                      message = (failure.text or failure.get("message", ""))[:6000]
+                      message = message.replace("%", "%25").replace("\n", "%0A").replace("\r", "%0D")
+                      print(f"::error title={test.get('name', 'Rendering test')}::{message}")
+          PYTHON
+      - name: Upload rendering test reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: aero-rendering-test-reports
+          path: |
+            app/build/reports/androidTests/
+            app/build/outputs/androidTest-results/
+          if-no-files-found: warn
+          retention-days: 14
+
   publish:
-    needs: build
-    # Only the branch reviewed for this specific release may publish it.
-    if: github.ref == 'refs/heads/arena/8bb5133c-installerx-plus'
+    needs: [build, render_tests]
+    # Only this release branch may publish, and both verification jobs must succeed first.
+    if: github.ref == 'refs/heads/arena/aefaa449-installerx-plus'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -137,7 +228,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-          sparse-checkout: CHANGELOG_26.11.3.md
+          sparse-checkout: CHANGELOG_26.11.4.md
           sparse-checkout-cone-mode: false
       - uses: actions/download-artifact@v8
         with:

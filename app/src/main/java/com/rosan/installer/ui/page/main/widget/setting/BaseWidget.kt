@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -42,8 +41,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.rosan.installer.ui.theme.CornerRadius
-import com.rosan.installer.ui.theme.aero.AeroIcon
 import com.rosan.installer.ui.theme.aero.AeroShapes
+import com.rosan.installer.ui.theme.aero.InstallerIcon as Icon
 import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
 import com.rosan.installer.ui.theme.aero.aeroChrome
 
@@ -203,14 +202,11 @@ fun BaseWidget(
                     contentAlignment = Alignment.Center,
                 ) {
                     if (icon != null) {
-                        AeroIcon {
-                            Icon(
-                                imageVector = icon,
-                                contentDescription = null,
-                                modifier = if (aero) Modifier.padding(3.dp) else Modifier,
-                                tint = resolvedIconColor,
-                            )
-                        }
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = null,
+                            tint = resolvedIconColor,
+                        )
                     } else {
                         Spacer(modifier = Modifier.size(24.dp))
                     }

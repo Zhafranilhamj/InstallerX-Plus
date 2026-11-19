@@ -5,7 +5,6 @@ package com.rosan.installer.ui.page.main.settings.config.apply
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -21,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -39,6 +37,8 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.rosan.installer.ui.icons.AppIcons
+import com.rosan.installer.ui.theme.aero.InstallerIcon as Icon
+import com.rosan.installer.ui.theme.aero.InstallerIconImage as Image
 
 /**
  * A reusable item widget for displaying app information with a toggle switch.

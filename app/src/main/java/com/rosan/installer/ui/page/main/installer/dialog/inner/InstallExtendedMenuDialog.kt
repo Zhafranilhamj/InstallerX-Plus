@@ -27,7 +27,6 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.ExposedDropdownMenu
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
@@ -67,6 +66,7 @@ import com.rosan.installer.ui.page.main.installer.dialog.DialogParamsType
 import com.rosan.installer.ui.page.main.installer.dialog.ExtendedMenuEntity
 import com.rosan.installer.ui.page.main.installer.dialog.ExtendedMenuItemEntity
 import com.rosan.installer.ui.page.main.installer.dialog.dialogButtons
+import com.rosan.installer.ui.theme.aero.InstallerIcon as Icon
 import com.rosan.installer.util.pm.getBestPermissionLabel
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
