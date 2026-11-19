@@ -3,7 +3,7 @@ name: InstallerX-Plus signed APK
 on:
   push:
     branches:
-      - 'arena/1767355b-installerx-plus'
+      - 'arena/8bb5133c-installerx-plus'
   workflow_dispatch:
 
 permissions:
@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  RELEASE_VERSION: '26.11.2'
+  RELEASE_VERSION: '26.11.3'
 
 jobs:
   build:
@@ -128,7 +128,7 @@ jobs:
   publish:
     needs: build
     # Only the branch reviewed for this specific release may publish it.
-    if: github.ref == 'refs/heads/arena/1767355b-installerx-plus'
+    if: github.ref == 'refs/heads/arena/8bb5133c-installerx-plus'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -137,7 +137,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-          sparse-checkout: CHANGELOG_26.11.2.md
+          sparse-checkout: CHANGELOG_26.11.3.md
           sparse-checkout-cone-mode: false
       - uses: actions/download-artifact@v8
         with:

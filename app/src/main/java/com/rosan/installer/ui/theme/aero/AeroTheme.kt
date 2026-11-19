@@ -5,6 +5,7 @@ package com.rosan.installer.ui.theme.aero
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.geometry.Offset
@@ -52,6 +53,30 @@ internal val AeroColors = lightColorScheme(
     inverseSurface = Color(0xFF153F55),
     inverseOnSurface = Color(0xFFECFAFF),
     inversePrimary = Color(0xFF9AE2FF),
+)
+
+internal val AeroDarkColors = darkColorScheme(
+    primary = Color(0xFF88DFFF),
+    onPrimary = OceanInk,
+    primaryContainer = Color(0xFF155371),
+    onPrimaryContainer = Color(0xFFC7EEFF),
+    secondary = Color(0xFF87DFC9),
+    onSecondary = Color(0xFF00382F),
+    secondaryContainer = Color(0xFF105247),
+    onSecondaryContainer = Color(0xFFADF4DF),
+    tertiary = Color(0xFFC2E699),
+    onTertiary = Color(0xFF24390E),
+    background = Color(0xFF061722),
+    onBackground = Color(0xFFE0F6FF),
+    surface = Color(0xFF0B212F),
+    onSurface = Color(0xFFE0F6FF),
+    surfaceVariant = Color(0xFF213E4D),
+    onSurfaceVariant = Color(0xFFBCD7E2),
+    surfaceContainerLowest = Color(0xFF031018),
+    surfaceContainerLow = Color(0xFF0B202D),
+    surfaceContainer = Color(0xFF102A3A),
+    surfaceContainerHigh = Color(0xFF193747),
+    surfaceContainerHighest = Color(0xFF234554),
 )
 
 internal val AeroShapes = Shapes(

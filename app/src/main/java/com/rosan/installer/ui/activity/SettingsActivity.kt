@@ -28,7 +28,6 @@ import com.rosan.installer.ui.navigation.InstallerNavContainer
 import com.rosan.installer.ui.navigation.Route
 import com.rosan.installer.ui.theme.InstallerTheme
 import com.rosan.installer.ui.theme.LocalWindowLayoutInfo
-import com.rosan.installer.ui.theme.aero.AeroAquarium
 import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
 import com.rosan.installer.ui.theme.rememberWindowLayoutInfo
 import com.rosan.installer.util.toast
@@ -97,10 +96,11 @@ class SettingsActivity :
                 ) {
                     val aero = LocalFrutigerAero.current
                     if (aero) {
-                        DisposableEffect(window) {
+                        val dark = InstallerTheme.isDark
+                        DisposableEffect(window, dark) {
                             val controller = WindowCompat.getInsetsController(window, window.decorView)
                             val previousAppearance = controller.isAppearanceLightNavigationBars
-                            controller.isAppearanceLightNavigationBars = true
+                            controller.isAppearanceLightNavigationBars = !dark
                             onDispose { controller.isAppearanceLightNavigationBars = previousAppearance }
                         }
                     }
@@ -115,7 +115,6 @@ class SettingsActivity :
                             .fillMaxSize()
                             .background(backgroundColor),
                     ) {
-                        if (aero) AeroAquarium()
                         InstallerNavContainer(uiState, initialRoute = initialRoute(intent))
                     }
                 }

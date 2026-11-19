@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
+import com.rosan.installer.ui.theme.InstallerTheme
 
 private val GlassReflection = Brush.verticalGradient(
     0f to Color(0xD9FFFFFF),
@@ -80,7 +81,7 @@ internal fun Modifier.aeroRise(): Modifier {
 @Composable
 internal fun AeroIcon(content: @Composable () -> Unit) {
     val chrome = if (LocalFrutigerAero.current) {
-        Modifier.background(GelOrb, CircleShape).border(1.dp, Color(0xFFB4E2ED), CircleShape)
+        Modifier.background(if (InstallerTheme.isDark) NightGlass else GelOrb, CircleShape).border(1.dp, Color(0xFFB4E2ED), CircleShape)
     } else {
         Modifier
     }
@@ -88,6 +89,8 @@ internal fun AeroIcon(content: @Composable () -> Unit) {
         content()
     }
 }
+
+private val NightGlass = Brush.verticalGradient(listOf(Color(0xFF395D70), Color(0xFF152D40), Color(0xFF153F50)))
 
 private val ToolbarSheen = Brush.verticalGradient(
     0f to Color(0xECF4FDFF),
@@ -97,4 +100,4 @@ private val ToolbarSheen = Brush.verticalGradient(
 )
 
 @Composable
-internal fun Modifier.aeroToolbar(): Modifier = if (LocalFrutigerAero.current) background(ToolbarSheen) else this
+internal fun Modifier.aeroToolbar(): Modifier = if (LocalFrutigerAero.current) background(if (InstallerTheme.isDark) NightGlass else ToolbarSheen) else this

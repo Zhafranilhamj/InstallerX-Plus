@@ -1,0 +1,2 @@
+- Frutiger Aero can now follow your phone’s appearance or stay in Light or Dark mode. Dark mode gives the aquarium a deep-blue nighttime look.
+- Fixed the previous page showing through when switching screens in Frutiger Aero.

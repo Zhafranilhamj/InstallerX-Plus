@@ -28,6 +28,7 @@ import com.rosan.installer.domain.settings.model.preferences.theme.ThemeColorSpe
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeMode
 import com.rosan.installer.domain.settings.model.preferences.theme.UiStyle
 import com.rosan.installer.ui.theme.aero.AeroColors
+import com.rosan.installer.ui.theme.aero.AeroDarkColors
 import com.rosan.installer.ui.theme.aero.AeroShapes
 import com.rosan.installer.ui.theme.aero.AeroTypography
 import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
@@ -108,7 +109,7 @@ fun InstallerTheme(
     }
 
     val isAero = uiStyle == UiStyle.FRUTIGER_AERO
-    val isDark = !isAero && when (themeMode) {
+    val isDark = when (themeMode) {
         ThemeMode.LIGHT -> false
         ThemeMode.DARK -> true
         ThemeMode.SYSTEM -> isSystemInDarkTheme()
@@ -123,7 +124,7 @@ fun InstallerTheme(
     // 1. Generate the base scheme with spec support
     val baseColorScheme = remember(isAero, keyColor, isDark, paletteStyle, colorSpec) {
         if (isAero) {
-            AeroColors
+            if (isDark) AeroDarkColors else AeroColors
         } else {
             dynamicColorScheme(
                 keyColor = keyColor,
@@ -136,7 +137,7 @@ fun InstallerTheme(
 
     // 2. Wrap it with smooth transitions
     val transitioningColorScheme = baseColorScheme.animateAsState()
-    val animatedColorScheme = if (isAero) AeroColors else transitioningColorScheme
+    val animatedColorScheme = if (isAero) baseColorScheme else transitioningColorScheme
 
     CompositionLocalProvider(
         LocalFrutigerAero provides isAero,
