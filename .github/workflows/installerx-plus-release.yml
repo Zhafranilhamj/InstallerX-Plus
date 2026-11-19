@@ -83,13 +83,23 @@ jobs:
           apk="${apks[0]}"
           apksigner=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -1)
           [[ -x "$apksigner" ]] || fail 'Android Build Tools apksigner was not found'
-          certificate=$(keytool -exportcert -keystore "$KEYSTORE_FILE" -storepass:env KEYSTORE_PASSWORD -alias "$KEY_ALIAS" | sha256sum | cut -d' ' -f1) \
-            || fail 'Could not read the expected certificate from the configured keystore'
-          "$apksigner" verify --verbose --print-certs "$apk" > "$RUNNER_TEMP/apk-signatures.txt" \
+          keytool -exportcert -keystore "$KEYSTORE_FILE" -storepass:env KEYSTORE_PASSWORD -alias "$KEY_ALIAS" \
+            -file "$RUNNER_TEMP/expected-signer.der" || fail 'Could not read the configured keystore certificate'
+          "$apksigner" verify --verbose --print-certs-pem "$apk" > "$RUNNER_TEMP/apk-signatures.txt" \
             || fail 'apksigner rejected the APK signature'
-          signer=$(awk -F ': *' '$1 ~ /Signer #1 certificate SHA-256 digest$/ { print $2; exit }' "$RUNNER_TEMP/apk-signatures.txt")
-          signer=${signer//[![:xdigit:]]/}
-          [[ "${signer,,}" == "$certificate" ]] || fail 'APK signer did not match the configured keystore certificate'
+          # Compare certificate bytes; the signer labels/digest fields change between Android SDKs.
+          python3 - "$RUNNER_TEMP/expected-signer.der" "$RUNNER_TEMP/apk-signatures.txt" <<'PYTHON'
+          from pathlib import Path
+          from ssl import PEM_cert_to_DER_cert
+          import re
+          import sys
+
+          expected = Path(sys.argv[1]).read_bytes()
+          output = Path(sys.argv[2]).read_text()
+          pems = re.findall(r"-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----", output, re.DOTALL)
+          if {PEM_cert_to_DER_cert(pem) for pem in pems} != {expected}:
+              sys.exit(f"::error title=APK verification failed::Expected the keystore certificate; found {len(pems)} signer certificate blocks")
+          PYTHON
           aapt2="$(dirname "$apksigner")/aapt2"
           "$aapt2" dump badging "$apk" > "$RUNNER_TEMP/apk-manifest.txt" || fail 'aapt2 could not read the APK manifest'
           manifest="$RUNNER_TEMP/apk-manifest.txt"
