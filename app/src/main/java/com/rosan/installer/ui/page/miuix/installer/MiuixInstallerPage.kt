@@ -640,6 +640,7 @@ fun MiuixInstallerPage(
 
                         is InstallerStage.Installing -> {
                             InstallingContent(
+                                useBlur = settings.useBlur,
                                 stage = stage,
                                 appInfo = appInfoState,
                                 onButtonClick = {

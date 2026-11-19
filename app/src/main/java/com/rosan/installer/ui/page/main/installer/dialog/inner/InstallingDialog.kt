@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -14,6 +15,7 @@ import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -21,14 +23,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rosan.installer.R
 import com.rosan.installer.domain.engine.model.install.InstallPhase
+import com.rosan.installer.domain.settings.model.preferences.theme.UiStyle
 import com.rosan.installer.ui.page.main.installer.InstallerStage
 import com.rosan.installer.ui.page.main.installer.InstallerViewAction
 import com.rosan.installer.ui.page.main.installer.InstallerViewModel
+import com.rosan.installer.ui.page.main.installer.components.LiquidInstallGauge
+import com.rosan.installer.ui.page.main.installer.components.measuredProgress
 import com.rosan.installer.ui.page.main.installer.dialog.DialogButton
 import com.rosan.installer.ui.page.main.installer.dialog.DialogInnerParams
 import com.rosan.installer.ui.page.main.installer.dialog.DialogParams
 import com.rosan.installer.ui.page.main.installer.dialog.DialogParamsType
 import com.rosan.installer.ui.page.main.installer.dialog.dialogButtons
+import com.rosan.installer.ui.theme.LocalUiStyle
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -76,14 +82,19 @@ fun installingDialog(viewModel: InstallerViewModel): DialogParams {
                             .padding(bottom = 8.dp),
                     )
                 }
-                // --- M3E ---
-                val determinateProgress = installingStage?.let { installing ->
-                    installing.progress.takeIf { progress ->
-                        progress > 0f &&
-                            (installing.total > 1 || installing.phase == InstallPhase.WRITING)
+                val style = LocalUiStyle.current
+                val determinateProgress = installingStage?.measuredProgress()
+                if (style == UiStyle.FRUTIGER_AERO || style == UiStyle.MIXED) {
+                    LiquidInstallGauge(style, determinateProgress, MaterialTheme.colorScheme.primary, uiState.viewSettings.useBlur)
+                } else if (style == UiStyle.MATERIAL_EXPRESSIVE) {
+                    val ring = Modifier.align(Alignment.CenterHorizontally)
+                    if (determinateProgress == null) {
+                        CircularWavyProgressIndicator(modifier = ring)
+                    } else {
+                        val level by animateFloatAsState(determinateProgress, label = "Ring progress")
+                        CircularWavyProgressIndicator(progress = { level }, modifier = ring)
                     }
-                }
-                if (determinateProgress != null) {
+                } else if (determinateProgress != null) {
                     val animatedProgress by animateFloatAsState(
                         targetValue = determinateProgress,
                         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec,

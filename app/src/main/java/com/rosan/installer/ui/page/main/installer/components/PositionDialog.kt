@@ -70,6 +70,7 @@ fun PositionDialog(
     leftButton: @Composable (() -> Unit)? = null,
     centerButton: @Composable (() -> Unit)? = null,
     rightButton: @Composable (() -> Unit)? = null,
+    bodyModifier: Modifier = Modifier,
 ) {
     val windowShape = if (LocalFrutigerAero.current) AeroShapes.extraLarge else shape
     Dialog(onDismissRequest = onDismissRequest, properties = properties) {
@@ -97,7 +98,7 @@ fun PositionDialog(
                     tonalElevation = tonalElevation,
                 ) {
                     Box(
-                        modifier = Modifier
+                        modifier = bodyModifier
                             .sizeIn(minWidth = MinWidth, maxHeight = MaxHeight)
                             .padding(DialogPadding),
                     ) {

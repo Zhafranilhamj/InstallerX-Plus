@@ -22,14 +22,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.rosan.installer.R
 import com.rosan.installer.domain.engine.model.install.InstallPhase
+import com.rosan.installer.domain.settings.model.preferences.theme.UiStyle
 import com.rosan.installer.ui.page.main.installer.InstallerStage
+import com.rosan.installer.ui.page.main.installer.components.LiquidInstallGauge
+import com.rosan.installer.ui.page.main.installer.components.measuredProgress
 import com.rosan.installer.ui.page.miuix.installer.components.AppInfoSlot
 import com.rosan.installer.ui.page.miuix.installer.components.AppInfoState
 import com.rosan.installer.ui.page.miuix.widgets.ProgressButton
 import com.rosan.installer.ui.page.miuix.widgets.ProgressButtonDefaults
+import com.rosan.installer.ui.theme.LocalUiStyle
 import com.rosan.installer.ui.util.isGestureNavigation
 import top.yukonga.miuix.kmp.basic.InfiniteProgressIndicator
 import top.yukonga.miuix.kmp.basic.Text
+import top.yukonga.miuix.kmp.basic.TextButton
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import top.yukonga.miuix.kmp.theme.MiuixTheme.isDynamicColor
 
@@ -37,6 +42,7 @@ import top.yukonga.miuix.kmp.theme.MiuixTheme.isDynamicColor
 fun InstallingContent(
     stage: InstallerStage.Installing,
     appInfo: AppInfoState,
+    useBlur: Boolean,
     onButtonClick: () -> Unit,
 ) {
     Column(
@@ -72,6 +78,23 @@ fun InstallingContent(
                     .fillMaxWidth()
                     .padding(bottom = 8.dp),
             )
+        }
+
+        if (LocalUiStyle.current == UiStyle.LIQUID_GLASS) {
+            if (progressText == null) {
+                Text(
+                    text = stringResource(if (stage.phase == InstallPhase.WRITING) R.string.installer_writing else R.string.installer_installing),
+                    color = MiuixTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
+            }
+            LiquidInstallGauge(UiStyle.LIQUID_GLASS, stage.measuredProgress(), MiuixTheme.colorScheme.primary, useBlur)
+            TextButton(
+                text = stringResource(R.string.installer_move_to_background),
+                onClick = onButtonClick,
+                modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(vertical = 16.dp),
+            )
+            return@Column
         }
 
         // Animate the progress value just like in InstallPreparingContent
