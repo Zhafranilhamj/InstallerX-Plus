@@ -4,12 +4,14 @@ import android.os.Build
 import com.rosan.installer.domain.settings.model.preferences.theme.PaletteStyle
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeColorSpec
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeMode
+import com.rosan.installer.domain.settings.model.preferences.theme.UiStyle
 
 /**
  * A shared data class to hold the theme-related UI state.
  */
 data class ThemeState(
     val isLoaded: Boolean = false,
+    val uiStyle: UiStyle = UiStyle.CURRENT,
     val useMiuix: Boolean = false,
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
     val paletteStyle: PaletteStyle = PaletteStyle.TonalSpot,

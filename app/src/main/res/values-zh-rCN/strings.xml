@@ -106,6 +106,8 @@
     <string name="enable_notification_hint">请启用通知以进行安装！</string>
     <string name="enable_storage_permission_hint">请授予“所有文件访问”权限！</string>
     <string name="theme_settings">主题设置</string>
+    <string name="ui_style_aero">Frutiger Aero</string>
+    <string name="ui_style_aero_desc">明亮的水族馆风格，搭配亮泽的水蓝色控件与缓缓漂浮的气泡。</string>
     <string name="theme_settings_ui_style">主题风格</string>
     <string name="theme_settings_desc">更改应用主题</string>
     <string name="theme_settings_miuix_ui">Miuix</string>

@@ -9,7 +9,7 @@ object BuildConfig {
     const val MIN_SDK = 26
     const val JDK_VERSION = 25
 
-    const val VERSION_CODE = 521
+    const val VERSION_CODE = 1641
 }
 
 // Get git commit count safely, compatible with configuration cache
@@ -45,5 +45,5 @@ fun Project.getGitDate(): String = try {
 // Use a fixed release version unless explicitly overridden.
 fun Project.getBaseVersionName(): String {
     val manualVersionName = findProperty("VERSION_NAME") as String?
-    return manualVersionName ?: "26.11.1"
+    return manualVersionName ?: "26.11.2"
 }

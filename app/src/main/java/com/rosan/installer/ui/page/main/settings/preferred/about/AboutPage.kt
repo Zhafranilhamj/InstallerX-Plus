@@ -14,14 +14,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -56,6 +54,8 @@ import com.rosan.installer.ui.page.main.widget.setting.SegmentedColumn
 import com.rosan.installer.ui.page.main.widget.setting.SwitchWidget
 import com.rosan.installer.ui.page.main.widget.setting.UpdateLoadingIndicator
 import com.rosan.installer.ui.page.main.widget.util.LogEventCollector
+import com.rosan.installer.ui.theme.aero.InstallerButton
+import com.rosan.installer.ui.theme.aero.InstallerScaffold
 import com.rosan.installer.ui.theme.getMaterial3AppBarColor
 import com.rosan.installer.ui.theme.installerMaterial3BlurEffect
 import com.rosan.installer.ui.theme.rememberMaterial3BlurBackdrop
@@ -79,7 +79,7 @@ fun AboutPage(useBlur: Boolean, viewModel: AboutViewModel = koinViewModel()) {
     val topBarBackdrop = rememberMaterial3BlurBackdrop(useBlur)
     val upgradeIndicatorBackdrop = rememberMaterial3BlurBackdrop(useBlur)
 
-    Scaffold(
+    InstallerScaffold(
         modifier = Modifier
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection)
@@ -87,7 +87,7 @@ fun AboutPage(useBlur: Boolean, viewModel: AboutViewModel = koinViewModel()) {
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         topBar = {
             LargeFlexibleTopAppBar(
-                modifier = Modifier.installerMaterial3BlurEffect(topBarBackdrop),
+                modifier = Modifier.installerMaterial3BlurEffect(topBarBackdrop).aeroToolbar(),
                 windowInsets = TopAppBarDefaults.windowInsets.add(WindowInsets(left = 12.dp)),
                 title = { Text(text = stringResource(id = R.string.about)) },
                 scrollBehavior = scrollBehavior,
@@ -232,7 +232,7 @@ private fun BottomSheetContent(
         )
 
         if (hasUpdate && canDirectUpdate) {
-            Button(
+            InstallerButton(
                 onClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
                     onDirectUpdateClick()
@@ -251,7 +251,7 @@ private fun BottomSheetContent(
                 )
             }
         }
-        Button(
+        InstallerButton(
             onClick = {
                 haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
                 uriHandler.openUri("https://github.com/wxxsfxyzm/InstallerX-Revived/releases")
@@ -266,7 +266,7 @@ private fun BottomSheetContent(
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = "GitHub")
         }
-        Button(
+        InstallerButton(
             onClick = {
                 haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
                 uriHandler.openUri("https://t.me/installerx_revived")

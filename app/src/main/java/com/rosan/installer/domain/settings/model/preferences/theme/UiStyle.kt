@@ -8,6 +8,7 @@ enum class UiStyle {
     LIQUID_GLASS,
     MATERIAL_EXPRESSIVE,
     MIXED,
+    FRUTIGER_AERO,
     ;
 
     companion object {
@@ -17,18 +18,18 @@ enum class UiStyle {
     fun useMiuix(current: Boolean): Boolean = when (this) {
         CURRENT -> current
         LIQUID_GLASS -> true
-        MATERIAL_EXPRESSIVE, MIXED -> false
+        MATERIAL_EXPRESSIVE, MIXED, FRUTIGER_AERO -> false
     }
 
     fun useBlur(current: Boolean, supported: Boolean): Boolean = supported && when (this) {
         CURRENT -> current
         LIQUID_GLASS, MIXED -> true
-        MATERIAL_EXPRESSIVE -> false
+        MATERIAL_EXPRESSIVE, FRUTIGER_AERO -> false
     }
 
     fun useFloatingBar(current: Boolean): Boolean = when (this) {
         CURRENT -> current
-        LIQUID_GLASS, MIXED -> true
+        LIQUID_GLASS, MIXED, FRUTIGER_AERO -> true
         MATERIAL_EXPRESSIVE -> false
     }
 }

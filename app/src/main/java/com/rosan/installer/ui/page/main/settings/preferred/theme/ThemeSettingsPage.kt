@@ -33,15 +33,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.twotone.Colorize
 import androidx.compose.material.icons.twotone.InvertColors
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -71,6 +68,10 @@ import com.rosan.installer.ui.page.main.widget.setting.ExpressiveBackButton
 import com.rosan.installer.ui.page.main.widget.setting.RadioButtonWidget
 import com.rosan.installer.ui.page.main.widget.setting.SegmentedColumn
 import com.rosan.installer.ui.page.main.widget.setting.SwitchWidget
+import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerScaffold
+import com.rosan.installer.ui.theme.aero.InstallerTextButton
+import com.rosan.installer.ui.theme.aero.aeroToolbar
 import com.rosan.installer.ui.theme.getMaterial3AppBarColor
 import com.rosan.installer.ui.theme.installerMaterial3BlurEffect
 import com.rosan.installer.ui.theme.material.PresetColors
@@ -138,14 +139,14 @@ fun ThemeSettingsPage(viewModel: ThemeSettingsViewModel = koinViewModel()) {
 
     val backdrop = rememberMaterial3BlurBackdrop(uiState.useBlur)
 
-    Scaffold(
+    InstallerScaffold(
         modifier = Modifier
             .nestedScroll(scrollBehavior.nestedScrollConnection)
             .fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         topBar = {
             LargeFlexibleTopAppBar(
-                modifier = Modifier.installerMaterial3BlurEffect(backdrop),
+                modifier = Modifier.installerMaterial3BlurEffect(backdrop).aeroToolbar(),
                 windowInsets = TopAppBarDefaults.windowInsets.add(WindowInsets(left = 12.dp)),
                 title = {
                     Text(stringResource(R.string.theme_settings))
@@ -224,7 +225,7 @@ fun ThemeSettingsPage(viewModel: ThemeSettingsViewModel = koinViewModel()) {
             }
 
             // --- Group 2: Google UI Options ---
-            item {
+            item(animatedVisibility = uiState.uiStyle != UiStyle.FRUTIGER_AERO || uiState.showLiveActivity) {
                 SegmentedColumn(
                     title = stringResource(R.string.theme_settings_google_ui),
                 ) {
@@ -239,44 +240,46 @@ fun ThemeSettingsPage(viewModel: ThemeSettingsViewModel = koinViewModel()) {
                             )
                         }
                     }
-                    item {
-                        BaseWidget(
-                            icon = Icons.Default.DarkMode,
-                            title = stringResource(R.string.theme_settings_theme_mode),
-                            description = when (uiState.themeMode) {
-                                ThemeMode.LIGHT -> stringResource(R.string.theme_settings_theme_mode_light)
-                                ThemeMode.DARK -> stringResource(R.string.theme_settings_theme_mode_dark)
-                                ThemeMode.SYSTEM -> stringResource(R.string.theme_settings_theme_mode_system)
-                            },
-                            onClick = { showThemeModeDialog = true },
-                        )
-                    }
-                    item {
-                        BaseWidget(
-                            icon = AppIcons.Palette,
-                            title = stringResource(R.string.theme_settings_palette_style),
-                            description = uiState.paletteStyle.displayName,
-                            onClick = { showPaletteDialog = true },
-                        )
-                    }
-                    item { ColorSpecSelector(viewModel) }
-                    item {
-                        SwitchWidget(
-                            icon = Icons.TwoTone.InvertColors,
-                            title = stringResource(R.string.theme_settings_dynamic_color),
-                            description = stringResource(R.string.theme_settings_dynamic_color_desc),
-                            checked = uiState.useDynamicColor,
-                            onCheckedChange = { viewModel.dispatch(ThemeSettingsAction.SetUseDynamicColor(it)) },
-                        )
-                    }
-                    item {
-                        SwitchWidget(
-                            icon = Icons.TwoTone.Colorize,
-                            title = stringResource(R.string.theme_settings_dynamic_color_follow_icon),
-                            description = stringResource(R.string.theme_settings_dynamic_color_follow_icon_desc),
-                            checked = uiState.useDynColorFollowPkgIcon,
-                            onCheckedChange = { viewModel.dispatch(ThemeSettingsAction.SetDynColorFollowPkgIcon(it)) },
-                        )
+                    if (uiState.uiStyle != UiStyle.FRUTIGER_AERO) {
+                        item {
+                            BaseWidget(
+                                icon = Icons.Default.DarkMode,
+                                title = stringResource(R.string.theme_settings_theme_mode),
+                                description = when (uiState.themeMode) {
+                                    ThemeMode.LIGHT -> stringResource(R.string.theme_settings_theme_mode_light)
+                                    ThemeMode.DARK -> stringResource(R.string.theme_settings_theme_mode_dark)
+                                    ThemeMode.SYSTEM -> stringResource(R.string.theme_settings_theme_mode_system)
+                                },
+                                onClick = { showThemeModeDialog = true },
+                            )
+                        }
+                        item {
+                            BaseWidget(
+                                icon = AppIcons.Palette,
+                                title = stringResource(R.string.theme_settings_palette_style),
+                                description = uiState.paletteStyle.displayName,
+                                onClick = { showPaletteDialog = true },
+                            )
+                        }
+                        item { ColorSpecSelector(viewModel) }
+                        item {
+                            SwitchWidget(
+                                icon = Icons.TwoTone.InvertColors,
+                                title = stringResource(R.string.theme_settings_dynamic_color),
+                                description = stringResource(R.string.theme_settings_dynamic_color_desc),
+                                checked = uiState.useDynamicColor,
+                                onCheckedChange = { viewModel.dispatch(ThemeSettingsAction.SetUseDynamicColor(it)) },
+                            )
+                        }
+                        item {
+                            SwitchWidget(
+                                icon = Icons.TwoTone.Colorize,
+                                title = stringResource(R.string.theme_settings_dynamic_color_follow_icon),
+                                description = stringResource(R.string.theme_settings_dynamic_color_follow_icon_desc),
+                                checked = uiState.useDynColorFollowPkgIcon,
+                                onCheckedChange = { viewModel.dispatch(ThemeSettingsAction.SetDynColorFollowPkgIcon(it)) },
+                            )
+                        }
                     }
                     // Conditional item for Live Activity
                     item(animatedVisibility = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && uiState.showLiveActivity) {
@@ -300,7 +303,7 @@ fun ThemeSettingsPage(viewModel: ThemeSettingsViewModel = koinViewModel()) {
             // --- Group 3: Theme Color (Manual Selection) ---
             item {
                 AnimatedVisibility(
-                    visible = !uiState.useDynamicColor || Build.VERSION.SDK_INT < Build.VERSION_CODES.S,
+                    visible = uiState.uiStyle != UiStyle.FRUTIGER_AERO && (!uiState.useDynamicColor || Build.VERSION.SDK_INT < Build.VERSION_CODES.S),
                     enter = fadeIn(animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)) +
                         expandVertically(animationSpec = tween(durationMillis = 400, easing = FastOutSlowInEasing)),
                     exit = fadeOut(animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing)) +
@@ -413,7 +416,7 @@ fun ThemeSettingsPage(viewModel: ThemeSettingsViewModel = koinViewModel()) {
 
 @Composable
 fun PaletteStyleDialog(currentStyle: PaletteStyle, onDismiss: () -> Unit, onSelect: (PaletteStyle) -> Unit) {
-    AlertDialog(
+    InstallerAlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.theme_settings_palette_style_desc)) },
         text = {
@@ -437,7 +440,7 @@ fun PaletteStyleDialog(currentStyle: PaletteStyle, onDismiss: () -> Unit, onSele
             }
         },
         confirmButton = {
-            TextButton(onClick = onDismiss) {
+            InstallerTextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.close))
             }
         },
@@ -450,7 +453,7 @@ fun PredictiveBackAnimationDialog(
     onDismiss: () -> Unit,
     onSelect: (PredictiveBackAnimation) -> Unit,
 ) {
-    AlertDialog(
+    InstallerAlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.theme_settings_predictive_back_animation_desc)) },
         text = {
@@ -487,7 +490,7 @@ fun PredictiveBackAnimationDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = onDismiss) {
+            InstallerTextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.close))
             }
         },
@@ -500,7 +503,7 @@ fun PredictiveBackExitDirectionDialog(
     onDismiss: () -> Unit,
     onSelect: (PredictiveBackExitDirection) -> Unit,
 ) {
-    AlertDialog(
+    InstallerAlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.theme_settings_predictive_back_exit_direction_desc)) },
         text = {
@@ -537,7 +540,7 @@ fun PredictiveBackExitDirectionDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = onDismiss) {
+            InstallerTextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.close))
             }
         },
@@ -546,7 +549,7 @@ fun PredictiveBackExitDirectionDialog(
 
 @Composable
 fun ThemeModeDialog(currentMode: ThemeMode, onDismiss: () -> Unit, onSelect: (ThemeMode) -> Unit) {
-    AlertDialog(
+    InstallerAlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.theme_settings_theme_mode_desc)) },
         text = {
@@ -575,7 +578,7 @@ fun ThemeModeDialog(currentMode: ThemeMode, onDismiss: () -> Unit, onSelect: (Th
             }
         },
         confirmButton = {
-            TextButton(onClick = onDismiss) {
+            InstallerTextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.close))
             }
         },

@@ -40,6 +40,7 @@ fun InstallerActivityContent(session: InstallerSessionRepository, themeStateProv
         useDynamicColor = uiState.useDynamicColor,
         useMiuixMonet = uiState.useMiuixMonet,
         seedColor = androidx.compose.ui.graphics.Color(uiState.seedColor),
+        uiStyle = uiState.uiStyle,
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             if (uiState.useMiuix) {

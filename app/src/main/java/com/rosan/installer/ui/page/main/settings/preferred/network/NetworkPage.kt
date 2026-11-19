@@ -24,7 +24,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -33,11 +32,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -72,6 +69,10 @@ import com.rosan.installer.ui.page.main.widget.setting.BaseWidget
 import com.rosan.installer.ui.page.main.widget.setting.DropDownMenuWidget
 import com.rosan.installer.ui.page.main.widget.setting.ExpressiveBackButton
 import com.rosan.installer.ui.page.main.widget.setting.SegmentedColumn
+import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerScaffold
+import com.rosan.installer.ui.theme.aero.InstallerTextButton
+import com.rosan.installer.ui.theme.aero.aeroToolbar
 import com.rosan.installer.ui.theme.getMaterial3AppBarColor
 import com.rosan.installer.ui.theme.installerMaterial3BlurEffect
 import com.rosan.installer.ui.theme.rememberMaterial3BlurBackdrop
@@ -104,12 +105,12 @@ fun NetworkPage(useBlur: Boolean, viewModel: NetworkSettingsViewModel = koinView
     }
 
     pendingNetworkSourceMode?.let { mode ->
-        AlertDialog(
+        InstallerAlertDialog(
             onDismissRequest = { pendingNetworkSourceMode = null },
             title = { Text(stringResource(R.string.network_source_mode_warning_title)) },
             text = { Text(stringResource(R.string.network_source_mode_warning_desc)) },
             confirmButton = {
-                TextButton(
+                InstallerTextButton(
                     onClick = {
                         pendingNetworkSourceMode = null
                         viewModel.dispatch(NetworkSettingsAction.ConfirmNetworkSourceMode(mode))
@@ -119,7 +120,7 @@ fun NetworkPage(useBlur: Boolean, viewModel: NetworkSettingsViewModel = koinView
                 }
             },
             dismissButton = {
-                TextButton(onClick = { pendingNetworkSourceMode = null }) {
+                InstallerTextButton(onClick = { pendingNetworkSourceMode = null }) {
                     Text(stringResource(R.string.cancel))
                 }
             },
@@ -167,14 +168,14 @@ fun NetworkPage(useBlur: Boolean, viewModel: NetworkSettingsViewModel = koinView
         )
     }
 
-    Scaffold(
+    InstallerScaffold(
         modifier = Modifier
             .nestedScroll(scrollBehavior.nestedScrollConnection)
             .fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         topBar = {
             LargeFlexibleTopAppBar(
-                modifier = Modifier.installerMaterial3BlurEffect(backdrop),
+                modifier = Modifier.installerMaterial3BlurEffect(backdrop).aeroToolbar(),
                 windowInsets = TopAppBarDefaults.windowInsets.add(WindowInsets(left = 12.dp)),
                 title = {
                     Text(stringResource(R.string.network_settings))
@@ -435,7 +436,7 @@ private fun VirusTotalApiKeyWidget(
                     modifier = Modifier.weight(1f),
                 )
                 if (apiKey.isNotBlank() && status != VirusTotalKeyValidationStatus.VALIDATING) {
-                    TextButton(onClick = onValidate) {
+                    InstallerTextButton(onClick = onValidate) {
                         Text(text = stringResource(R.string.virustotal_check_key))
                     }
                 }

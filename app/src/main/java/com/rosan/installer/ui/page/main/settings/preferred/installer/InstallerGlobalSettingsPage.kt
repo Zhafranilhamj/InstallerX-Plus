@@ -29,7 +29,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -37,9 +36,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -73,6 +70,10 @@ import com.rosan.installer.ui.page.main.widget.setting.ExpressiveBackButton
 import com.rosan.installer.ui.page.main.widget.setting.NavigationItemWidget
 import com.rosan.installer.ui.page.main.widget.setting.SegmentedColumn
 import com.rosan.installer.ui.page.main.widget.setting.SwitchWidget
+import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerScaffold
+import com.rosan.installer.ui.theme.aero.InstallerTextButton
+import com.rosan.installer.ui.theme.aero.aeroToolbar
 import com.rosan.installer.ui.theme.getMaterial3AppBarColor
 import com.rosan.installer.ui.theme.installerMaterial3BlurEffect
 import com.rosan.installer.ui.theme.rememberMaterial3BlurBackdrop
@@ -95,14 +96,14 @@ fun InstallerGlobalSettingsPage(useBlur: Boolean, viewModel: InstallerSettingsVi
 
     val backdrop = rememberMaterial3BlurBackdrop(useBlur)
 
-    Scaffold(
+    InstallerScaffold(
         modifier = Modifier
             .nestedScroll(scrollBehavior.nestedScrollConnection)
             .fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         topBar = {
             LargeFlexibleTopAppBar(
-                modifier = Modifier.installerMaterial3BlurEffect(backdrop),
+                modifier = Modifier.installerMaterial3BlurEffect(backdrop).aeroToolbar(),
                 windowInsets = TopAppBarDefaults.windowInsets.add(WindowInsets(left = 12.dp)),
                 title = {
                     Text(stringResource(R.string.installer_settings))
@@ -575,7 +576,7 @@ private fun ManagedPackagesWidget(
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                TextButton(onClick = { showAddDialog = true }) {
+                InstallerTextButton(onClick = { showAddDialog = true }) {
                     Icon(Icons.Default.Add, null, modifier = Modifier.size(18.dp))
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(stringResource(R.string.add))
@@ -645,7 +646,7 @@ private fun ManagedUidsWidget(
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 horizontalArrangement = Arrangement.End,
             ) {
-                TextButton(onClick = { showAddDialog = true }) {
+                InstallerTextButton(onClick = { showAddDialog = true }) {
                     Icon(Icons.Default.Add, null, modifier = Modifier.size(18.dp))
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(stringResource(R.string.add))
@@ -685,7 +686,7 @@ private fun AddPackageDialog(onDismiss: () -> Unit, onConfirm: (NamedPackage) ->
     var packageName by remember { mutableStateOf("") }
     val isConfirmEnabled = name.isNotBlank() && packageName.isNotBlank()
 
-    AlertDialog(
+    InstallerAlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.config_add_new_package)) },
         text = {
@@ -705,7 +706,7 @@ private fun AddPackageDialog(onDismiss: () -> Unit, onConfirm: (NamedPackage) ->
             }
         },
         confirmButton = {
-            TextButton(
+            InstallerTextButton(
                 onClick = { onConfirm(NamedPackage(name, packageName)) },
                 enabled = isConfirmEnabled,
             ) {
@@ -713,7 +714,7 @@ private fun AddPackageDialog(onDismiss: () -> Unit, onConfirm: (NamedPackage) ->
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            InstallerTextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
         },
@@ -731,7 +732,7 @@ private fun AddUidDialog(onDismiss: () -> Unit, onConfirm: (SharedUid) -> Unit) 
     // Confirm button is enabled if both name and value are not blank
     val isConfirmEnabled = uidName.isNotBlank() && uidValueString.toIntOrNull() != null
 
-    AlertDialog(
+    InstallerAlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.config_add_new_shared_uid)) },
         text = {
@@ -753,7 +754,7 @@ private fun AddUidDialog(onDismiss: () -> Unit, onConfirm: (SharedUid) -> Unit) 
             }
         },
         confirmButton = {
-            TextButton(
+            InstallerTextButton(
                 onClick = {
                     // Convert uidValueString to Int before creating SharedUid
                     val uidValue = uidValueString.toInt()
@@ -765,7 +766,7 @@ private fun AddUidDialog(onDismiss: () -> Unit, onConfirm: (SharedUid) -> Unit) 
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            InstallerTextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
         },
@@ -777,17 +778,17 @@ private fun AddUidDialog(onDismiss: () -> Unit, onConfirm: (SharedUid) -> Unit) 
  */
 @Composable
 private fun DeleteNamedPackageConfirmationDialog(item: NamedPackage, onDismiss: () -> Unit, onConfirm: () -> Unit) {
-    AlertDialog(
+    InstallerAlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.config_confirm_deletion)) },
         text = { Text(stringResource(R.string.config_confirm_deletion_desc, item.name)) },
         confirmButton = {
-            TextButton(onClick = onConfirm) {
+            InstallerTextButton(onClick = onConfirm) {
                 Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            InstallerTextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
         },
@@ -799,17 +800,17 @@ private fun DeleteNamedPackageConfirmationDialog(item: NamedPackage, onDismiss: 
  */
 @Composable
 private fun DeleteSharedUidConfirmationDialog(item: SharedUid, onDismiss: () -> Unit, onConfirm: () -> Unit) {
-    AlertDialog(
+    InstallerAlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.config_confirm_deletion)) },
         text = { Text(stringResource(R.string.config_confirm_deletion_desc, item.uidName)) },
         confirmButton = {
-            TextButton(onClick = onConfirm) {
+            InstallerTextButton(onClick = onConfirm) {
                 Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            InstallerTextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
         },

@@ -17,7 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,13 +29,15 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.unit.dp
+import com.rosan.installer.ui.theme.aero.InstallerTextButton
+import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
 import kotlinx.coroutines.delay
 
 @Composable
 fun dialogButtons(id: String, content: (@Composable () -> List<DialogButton>)) = DialogInnerParams(id) {
     val buttons = content.invoke()
     Column(
-        modifier = Modifier.clip(RoundedCornerShape(12.dp)),
+        modifier = if (LocalFrutigerAero.current) Modifier else Modifier.clip(RoundedCornerShape(12.dp)),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         val single = if (buttons.size > 2) buttons.size % 2 else buttons.size
@@ -101,7 +102,7 @@ private fun InnerButton(button: DialogButton, modifier: Modifier = Modifier) {
         }
     }
 
-    TextButton(
+    InstallerTextButton(
         enabled = button.enabled,
         onClick = {
             // Only trigger normal click if long press didn't happen

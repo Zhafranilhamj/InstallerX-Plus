@@ -3,12 +3,19 @@ name: InstallerX-Plus signed APK
 on:
   push:
     branches:
-      - 'arena/268148ca-installerx-plus'
+      - 'arena/1767355b-installerx-plus'
   workflow_dispatch:
 
 permissions:
   contents: read
   packages: read
+
+concurrency:
+  group: installerx-plus-signed-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  RELEASE_VERSION: '26.11.2'
 
 jobs:
   build:
@@ -26,6 +33,23 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
         with:
           cache-read-only: true
+      - name: Check formatting and run unit tests
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          if ! ./gradlew spotlessCheck testStableDebugUnitTest --no-configuration-cache > "$RUNNER_TEMP/verification.log" 2>&1; then
+            cat "$RUNNER_TEMP/verification.log"
+            # Surface formatter and compiler diagnostics in the check, not just the exit code.
+            details=$(tail -n 75 "$RUNNER_TEMP/verification.log")
+            details=${details//'%'/'%25'}
+            details=${details//$'\r'/'%0D'}
+            details=${details//$'\n'/'%0A'}
+            echo "::error title=Android verification failed::$details"
+            exit 1
+          fi
+          cat "$RUNNER_TEMP/verification.log"
       - name: Prepare signing key
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
@@ -40,35 +64,67 @@ jobs:
           : "${KEY_PASSWORD:?Missing KEY_PASSWORD}"
           STORE_PASSWORD="${STORE_PASSWORD:-${KEYSTORE_PASSWORD:-}}"
           : "${STORE_PASSWORD:?Missing STORE_PASSWORD or KEYSTORE_PASSWORD}"
-          mkdir -p keystore
-          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > keystore/release.jks
-          echo "KEYSTORE_FILE=$GITHUB_WORKSPACE/keystore/release.jks" >> "$GITHUB_ENV"
-          echo "KEYSTORE_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
-          echo "KEY_ALIAS=$KEY_ALIAS" >> "$GITHUB_ENV"
-          echo "KEY_PASSWORD=$KEY_PASSWORD" >> "$GITHUB_ENV"
-      - name: Run unit tests
-        env:
-          GITHUB_ACTOR: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew testStableDebugUnitTest --no-configuration-cache
+          umask 077
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/installerx-release.jks"
+          printf 'KEYSTORE_FILE=%s\nKEYSTORE_PASSWORD=%s\nKEY_ALIAS=%s\nKEY_PASSWORD=%s\n' \
+            "$RUNNER_TEMP/installerx-release.jks" "$STORE_PASSWORD" "$KEY_ALIAS" "$KEY_PASSWORD" >> "$GITHUB_ENV"
       - name: Build signed release APK
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew assembleStableRelease --no-configuration-cache
-      - name: Verify and collect APK
+      - name: Verify APK identity and signature
+        shell: bash
         run: |
-          set -eu
-          APK=$(find app/build/outputs/apk -type f -ipath '*/stable/release/*.apk' -print -quit)
-          test -n "$APK"
-          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -name apksigner | sort -V | tail -1)
-          "$APKSIGNER" verify --verbose "$APK"
+          set -euo pipefail
+          mapfile -t apks < <(find app/build/outputs/apk -type f -ipath '*/stable/release/*.apk')
+          test "${#apks[@]}" -eq 1
+          apk="${apks[0]}"
+          apksigner=$(find "$ANDROID_HOME/build-tools" -name apksigner | sort -V | tail -1)
+          certificate=$(keytool -exportcert -keystore "$KEYSTORE_FILE" -storepass:env KEYSTORE_PASSWORD -alias "$KEY_ALIAS" | sha256sum | cut -d' ' -f1)
+          "$apksigner" verify --verbose --print-certs "$apk" > "$RUNNER_TEMP/apk-signatures.txt"
+          grep -Fx "Signer #1 certificate SHA-256 digest: $certificate" "$RUNNER_TEMP/apk-signatures.txt"
+          "$(dirname "$apksigner")/aapt2" dump badging "$apk" > "$RUNNER_TEMP/apk-manifest.txt"
+          grep '^package: ' "$RUNNER_TEMP/apk-manifest.txt" | grep -F "name='com.installerx.plus'" | grep -F "versionName='$RELEASE_VERSION'"
+          grep -Fx "application-label:'InstallerX-Plus'" "$RUNNER_TEMP/apk-manifest.txt"
+          if grep -q '^application-debuggable' "$RUNNER_TEMP/apk-manifest.txt"; then
+            echo '::error::Stable release APK is debuggable'
+            exit 1
+          fi
           mkdir -p release-apk
-          cp "$APK" release-apk/InstallerX-Plus-26.11.1.apk
+          cp "$apk" "release-apk/InstallerX-Plus-$RELEASE_VERSION.apk"
+      - name: Remove temporary signing key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/installerx-release.jks"
       - uses: actions/upload-artifact@v7
         with:
-          name: InstallerX-Plus-26.11.1
-          path: release-apk/InstallerX-Plus-26.11.1.apk
+          path: release-apk/InstallerX-Plus-${{ env.RELEASE_VERSION }}.apk
           if-no-files-found: error
           retention-days: 90
           archive: false
+
+  publish:
+    needs: build
+    # Only the branch reviewed for this specific release may publish it.
+    if: github.ref == 'refs/heads/arena/1767355b-installerx-plus'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          sparse-checkout: CHANGELOG_26.11.2.md
+          sparse-checkout-cone-mode: false
+      - uses: actions/download-artifact@v8
+        with:
+          name: InstallerX-Plus-${{ env.RELEASE_VERSION }}.apk
+          path: release-apk
+      - name: Publish the signed APK and changelog
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$RELEASE_VERSION" "release-apk/InstallerX-Plus-$RELEASE_VERSION.apk" \
+            --target "$GITHUB_SHA" --title "InstallerX-Plus $RELEASE_VERSION" \
+            --notes-file "CHANGELOG_$RELEASE_VERSION.md"

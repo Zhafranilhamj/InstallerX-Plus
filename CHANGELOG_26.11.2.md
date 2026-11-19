@@ -1,0 +1,1 @@
+- Added **Frutiger Aero** in **Theme → UI Style**. Give the app a sunny aquarium look with glossy aqua buttons, rounded glass panels, and gently drifting bubbles and fish.

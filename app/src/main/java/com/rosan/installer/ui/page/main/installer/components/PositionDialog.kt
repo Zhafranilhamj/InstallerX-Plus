@@ -34,6 +34,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.rosan.installer.ui.theme.aero.AeroShapes
+import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
+import com.rosan.installer.ui.theme.aero.aeroChrome
+import com.rosan.installer.ui.theme.aero.aeroRise
 import com.rosan.installer.ui.util.WindowBlurEffect
 
 @Composable
@@ -67,6 +71,7 @@ fun PositionDialog(
     centerButton: @Composable (() -> Unit)? = null,
     rightButton: @Composable (() -> Unit)? = null,
 ) {
+    val windowShape = if (LocalFrutigerAero.current) AeroShapes.extraLarge else shape
     Dialog(onDismissRequest = onDismissRequest, properties = properties) {
         WindowBlurEffect(useBlur = useBlur)
         Box(
@@ -86,8 +91,8 @@ fun PositionDialog(
                     },
             ) {
                 Surface(
-                    modifier = modifier,
-                    shape = shape,
+                    modifier = modifier.aeroRise().aeroChrome(windowShape),
+                    shape = windowShape,
                     color = containerColor,
                     tonalElevation = tonalElevation,
                 ) {

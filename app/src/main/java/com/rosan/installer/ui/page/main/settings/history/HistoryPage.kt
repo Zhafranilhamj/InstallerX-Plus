@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CheckableDropdownMenuItem
@@ -35,10 +34,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.material3.rememberTopAppBarState
@@ -70,6 +67,10 @@ import com.rosan.installer.domain.settings.model.config.Authorizer
 import com.rosan.installer.ui.icons.AppIcons
 import com.rosan.installer.ui.page.main.widget.chip.CapsuleTag
 import com.rosan.installer.ui.page.main.widget.menu.GroupedDropdownMenuPopup
+import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerScaffold
+import com.rosan.installer.ui.theme.aero.InstallerTextButton
+import com.rosan.installer.ui.theme.aero.aeroToolbar
 import com.rosan.installer.ui.theme.bottomShape
 import com.rosan.installer.ui.theme.getMaterial3AppBarColor
 import com.rosan.installer.ui.theme.installerMaterial3BlurEffect
@@ -124,14 +125,14 @@ private fun HistoryPageContent(
         initialValue = SheetValue.Hidden,
         enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded),
     )
-    Scaffold(
+    InstallerScaffold(
         modifier = Modifier
             .nestedScroll(scrollBehavior.nestedScrollConnection)
             .fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         topBar = {
             LargeFlexibleTopAppBar(
-                modifier = Modifier.installerMaterial3BlurEffect(backdrop),
+                modifier = Modifier.installerMaterial3BlurEffect(backdrop).aeroToolbar(),
                 title = {
                     Text(
                         text = title,
@@ -290,12 +291,12 @@ private fun HistoryPageContent(
     }
 
     if (showClearConfirmDialog) {
-        AlertDialog(
+        InstallerAlertDialog(
             onDismissRequest = { showClearConfirmDialog = false },
             title = { Text(stringResource(R.string.history_clear_confirm_title)) },
             text = { Text(stringResource(R.string.history_clear_confirm_desc)) },
             confirmButton = {
-                TextButton(
+                InstallerTextButton(
                     onClick = {
                         showClearConfirmDialog = false
                         onAction(HistoryViewAction.ClearHistory)
@@ -305,7 +306,7 @@ private fun HistoryPageContent(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showClearConfirmDialog = false }) {
+                InstallerTextButton(onClick = { showClearConfirmDialog = false }) {
                     Text(stringResource(R.string.cancel))
                 }
             },
@@ -313,12 +314,12 @@ private fun HistoryPageContent(
     }
 
     if (showDisableConfirmDialog) {
-        AlertDialog(
+        InstallerAlertDialog(
             onDismissRequest = { showDisableConfirmDialog = false },
             title = { Text(stringResource(R.string.history_disable_confirm_title)) },
             text = { Text(stringResource(R.string.history_disable_confirm_desc)) },
             confirmButton = {
-                TextButton(
+                InstallerTextButton(
                     onClick = {
                         showDisableConfirmDialog = false
                         onAction(
@@ -333,7 +334,7 @@ private fun HistoryPageContent(
                 }
             },
             dismissButton = {
-                TextButton(
+                InstallerTextButton(
                     onClick = {
                         showDisableConfirmDialog = false
                         onAction(HistoryViewAction.SetHistoryEnabled(enabled = false))

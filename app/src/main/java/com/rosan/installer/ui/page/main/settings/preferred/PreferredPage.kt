@@ -13,17 +13,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.plus
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -57,6 +54,10 @@ import com.rosan.installer.ui.page.main.widget.setting.SegmentedColumn
 import com.rosan.installer.ui.page.main.widget.setting.SwitchWidget
 import com.rosan.installer.ui.page.main.widget.snackbar.SwipeableSnackbarHost
 import com.rosan.installer.ui.page.main.widget.util.OnLifecycleEvent
+import com.rosan.installer.ui.theme.aero.InstallerAlertDialog
+import com.rosan.installer.ui.theme.aero.InstallerScaffold
+import com.rosan.installer.ui.theme.aero.InstallerTextButton
+import com.rosan.installer.ui.theme.aero.aeroToolbar
 import com.rosan.installer.ui.theme.getMaterial3AppBarColor
 import com.rosan.installer.ui.theme.installerMaterial3BlurEffect
 import com.rosan.installer.ui.theme.rememberMaterial3BlurBackdrop
@@ -185,14 +186,14 @@ fun PreferredPage(
 
     val backdrop = rememberMaterial3BlurBackdrop(useBlur)
 
-    Scaffold(
+    InstallerScaffold(
         modifier = Modifier
             .nestedScroll(scrollBehavior.nestedScrollConnection)
             .fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         topBar = {
             LargeFlexibleTopAppBar(
-                modifier = Modifier.installerMaterial3BlurEffect(backdrop),
+                modifier = Modifier.installerMaterial3BlurEffect(backdrop).aeroToolbar(),
                 title = {
                     Text(
                         text = title,
@@ -448,7 +449,7 @@ fun PreferredPage(
 
     if (showRestoreConfirmDialog) {
         val preview = pendingRestorePreview
-        AlertDialog(
+        InstallerAlertDialog(
             onDismissRequest = {
                 showRestoreConfirmDialog = false
                 pendingRestorePreview = null
@@ -461,7 +462,7 @@ fun PreferredPage(
                 )
             },
             confirmButton = {
-                TextButton(
+                InstallerTextButton(
                     onClick = {
                         viewModel.dispatch(PreferredViewAction.ConfirmRestoreBackup)
                         pendingRestorePreview = null
@@ -472,7 +473,7 @@ fun PreferredPage(
                 }
             },
             dismissButton = {
-                TextButton(
+                InstallerTextButton(
                     onClick = {
                         showRestoreConfirmDialog = false
                         pendingRestorePreview = null
@@ -485,12 +486,12 @@ fun PreferredPage(
     }
 
     backupValidationErrorText?.let { errorText ->
-        AlertDialog(
+        InstallerAlertDialog(
             onDismissRequest = { backupValidationErrorText = null },
             title = { Text(stringResource(R.string.backup_settings_validation_failed_title)) },
             text = { Text(errorText) },
             confirmButton = {
-                TextButton(onClick = { backupValidationErrorText = null }) {
+                InstallerTextButton(onClick = { backupValidationErrorText = null }) {
                     Text(stringResource(R.string.confirm))
                 }
             },

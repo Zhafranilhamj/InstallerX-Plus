@@ -31,10 +31,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -61,6 +59,8 @@ import com.rosan.installer.domain.virustotal.model.VirusTotalScanMethod
 import com.rosan.installer.domain.virustotal.model.VirusTotalVerdict
 import com.rosan.installer.ui.page.main.installer.VirusTotalScanState
 import com.rosan.installer.ui.page.main.installer.VirusTotalScanStatus
+import com.rosan.installer.ui.theme.aero.InstallerOutlinedButton
+import com.rosan.installer.ui.theme.aero.InstallerTextButton
 import com.rosan.installer.ui.util.formatSize
 
 /** Compact idle status plus two independent action cards. Scanning and results expand inline. */
@@ -264,7 +264,7 @@ private fun VirusTotalReportView(
                 modifier = Modifier.weight(1f),
             )
             report.permalink?.let { permalink ->
-                TextButton(onClick = { onOpenReport(permalink) }) { Text(stringResource(R.string.virustotal_view_report)) }
+                InstallerTextButton(onClick = { onOpenReport(permalink) }) { Text(stringResource(R.string.virustotal_view_report)) }
             }
         }
         report.sha256?.let {
@@ -300,7 +300,7 @@ private fun VirusTotalCommunityScoresView(state: VirusTotalScanState, onVote: (V
             if (state.isCommunityLoading || state.isVoteSubmitting) {
                 CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
             } else if (scores == null || state.communityError != null) {
-                TextButton(onClick = onRetryCommunity, enabled = state.networkEnabled && state.hasUsableApiKey) {
+                InstallerTextButton(onClick = onRetryCommunity, enabled = state.networkEnabled && state.hasUsableApiKey) {
                     Text(stringResource(R.string.virustotal_community_retry))
                 }
             }
@@ -333,7 +333,7 @@ private fun VirusTotalCommunityScoresView(state: VirusTotalScanState, onVote: (V
 private fun CommunityVoteButton(verdict: VirusTotalCommunityVerdict, state: VirusTotalScanState, onVote: (VirusTotalCommunityVerdict) -> Unit, modifier: Modifier = Modifier) {
     val harmless = verdict == VirusTotalCommunityVerdict.HARMLESS
     val selected = state.submittedVote == verdict
-    OutlinedButton(
+    InstallerOutlinedButton(
         onClick = { state.report?.sha256?.let { onVote(verdict) } },
         enabled = state.canVote,
         modifier = modifier.heightIn(min = 40.dp),

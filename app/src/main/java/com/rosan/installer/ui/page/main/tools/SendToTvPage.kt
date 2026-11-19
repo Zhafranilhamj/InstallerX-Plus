@@ -11,9 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,6 +32,8 @@ import com.rosan.installer.domain.share.model.LocalShareEndpoint
 import com.rosan.installer.domain.share.model.LocalShareProtocol
 import com.rosan.installer.ui.navigation.LocalNavigator
 import com.rosan.installer.ui.navigation.Route
+import com.rosan.installer.ui.theme.aero.InstallerButton
+import com.rosan.installer.ui.theme.aero.InstallerOutlinedButton
 import java.io.File
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -81,7 +81,7 @@ fun SendToTvPage() {
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text(stringResource(R.string.send_to_tv_intro), style = MaterialTheme.typography.bodyMedium)
-            OutlinedButton(onClick = { navigator.push(Route.QrScanner) }, modifier = Modifier.fillMaxWidth()) {
+            InstallerOutlinedButton(onClick = { navigator.push(Route.QrScanner) }, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.send_to_tv_scan_qr))
             }
             OutlinedTextField(
@@ -98,13 +98,13 @@ fun SendToTvPage() {
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
             )
-            OutlinedButton(
+            InstallerOutlinedButton(
                 onClick = { fileLauncher.launch(arrayOf("*/*")) },
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(selectedFile?.name ?: stringResource(R.string.send_to_tv_pick_file))
             }
-            Button(
+            InstallerButton(
                 onClick = {
                     val endpoint = LocalShareProtocol.normalizeBaseUrl(baseUrl)?.let { LocalShareEndpoint(it, pin) }
                     val file = selectedFile

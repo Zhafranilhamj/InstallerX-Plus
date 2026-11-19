@@ -31,7 +31,7 @@ The full user guide, installation instructions, advanced options, system integra
   - **None:** is fully limited by the system, but can silently install when InstallerX is running as the system package installer.
 - **Profiles:** define how installation and uninstallation requests are handled, including install mode, authorizer override, installer/requester metadata, target user, DexOpt, auto-delete behavior, split selection, blacklist policy, and signature gates.
 - **System integration:** InstallerX can be locked as the default installer from the Home page status card, used with LSPosed modules such as [InxLocker](https://github.com/Chimioo/InxLocker), or installed as a replacement system package manager by advanced users.
-- **Modern UI:** Material 3 Expressive and Miuix interface styles, dark mode, dynamic color, advanced palettes, system icon packs, colorful dialogs, standard notifications, Live Activity, and Xiaomi HyperOS-style island notifications on supported Xiaomi devices.
+- **Modern UI:** Material 3 Expressive, Miuix, and Frutiger Aero interface styles, dark mode, dynamic color, advanced palettes, system icon packs, colorful dialogs, standard notifications, Live Activity, and Xiaomi HyperOS-style island notifications on supported Xiaomi devices.
 - **Safety controls:** package-name and SharedUID blacklists, signature mismatch and unknown-signature policy gates, permission preview, install flags, and one-time smart suggestions for selected blocked cases.
 - **VirusTotal scanning:** automatic SHA-256 hash lookup in Normal mode (no upload, advisory only), optional manual upload, and mandatory upload-before-install in Strict mode, which refuses files that VirusTotal actually detects as malware. The API key is validated in Network settings, is required before either scanning mode can be selected, and is stored locally.
 
@@ -181,3 +181,5 @@ This project uses code from, or is based on the implementation of, the following
 ### Appearance styles
 
 In Theme settings, choose Current to keep your existing appearance, Liquid glass for Miuix controls with a floating bar and blur, Material 3 Expressive for Material controls, or Mix of both for Material controls with a floating bar and blur. Blur falls back to solid surfaces on unsupported devices. Selecting Current restores your previous individual appearance settings.
+
+Choose **Frutiger Aero** for a bright aquarium backdrop, glossy aqua controls, and gently drifting bubbles. It uses its own light palette; choose **Current** to return to your existing appearance settings.
