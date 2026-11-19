@@ -97,7 +97,11 @@ class AeroIconRenderingTest {
                 }
             }
         }
-        assertEquals(0f, difference(capture("wrapper"), capture("material")), 0.001f)
+        val wrapper = capture("wrapper")
+        val material = capture("material")
+        // GPU edge anti-aliasing can round differently at two screen positions, even for the same vector.
+        val meanError = difference(wrapper, material) / (wrapper.width * wrapper.height)
+        assertTrue("Non-Aero output must match Material apart from edge rounding: $meanError", meanError < 0.0001f)
     }
 
     @Test
@@ -115,23 +119,20 @@ class AeroIconRenderingTest {
         val left = capture("icon").toPixelMap()
         compose.runOnIdle { direction.value = LayoutDirection.Rtl }
         val right = capture("icon").toPixelMap()
-        // Compare silhouette rather than lighting: the light source deliberately stays top-left.
-        var mismatch = 0
-        var glyphPixels = 0
-        for (y in 0 until left.height) {
-            for (x in 0 until left.width) {
-                val l = colorDistance(left[x, y], backdrop) > 0.12f
-                val r = colorDistance(right[right.width - x - 1, y], backdrop) > 0.12f
-                if (l || r) glyphPixels++
-                if (l != r) mismatch++
-            }
-        }
-        assertTrue("RTL should mirror the source vector", mismatch.toFloat() / glyphPixels < 0.15f)
+        // The arrowhead must change sides. Do not mirror-compare the extruded side/shadow:
+        // the light source and the projection deliberately stay top-left/bottom-right in both layouts.
+        val leftHead = arrowHeadCenter(left)
+        val rightHead = arrowHeadCenter(right)
+        assertTrue(
+            "RTL should move the arrowhead to the right: LTR=$leftHead, RTL=$rightHead",
+            leftHead < 0.5f && rightHead > 0.5f && rightHead - leftHead > 0.12f,
+        )
         compose.onNodeWithContentDescription("Back").assertExists()
     }
 
     @Test
-    fun bitmapAppIconsKeepTheirOriginalColorsUnderTheClearCoat() {
+    fun bitmapAppIconsKeepTheirOriginalColorsAndOpacityUnderTheClearCoat() {
+        val opacity = mutableStateOf(1f)
         val bitmap = android.graphics.Bitmap.createBitmap(32, 32, android.graphics.Bitmap.Config.ARGB_8888)
         for (y in 0 until 32) {
             for (x in 0 until 32) bitmap.setPixel(x, y, if (x < 16) android.graphics.Color.RED else android.graphics.Color.BLUE)
@@ -140,18 +141,41 @@ class AeroIconRenderingTest {
         compose.setContent {
             MaterialTheme(colorScheme = AeroColors) {
                 CompositionLocalProvider(LocalFrutigerAero provides true) {
-                    InstallerIconImage(artwork, "App", Modifier.size(64.dp).testTag("icon"))
+                    Box(Modifier.background(backdrop)) {
+                        InstallerIconImage(artwork, "App", Modifier.size(64.dp).testTag("icon"), alpha = opacity.value)
+                    }
                 }
             }
         }
-        val pixels = capture("icon").toPixelMap()
+        val enabled = capture("icon")
+        val pixels = enabled.toPixelMap()
         val red = pixels[pixels.width / 4, pixels.height / 2]
         val blue = pixels[pixels.width * 3 / 4, pixels.height / 2]
         assertTrue(red.red > red.blue + 0.4f)
         assertTrue(blue.blue > blue.red + 0.4f)
+        compose.runOnIdle { opacity.value = 0.38f }
+        val ratio = distanceFromBackdrop(capture("icon")) / distanceFromBackdrop(enabled)
+        assertTrue("Bitmap opacity should be applied to the whole finish: $ratio", ratio in 0.33f..0.43f)
     }
 
     private fun capture(tag: String): ImageBitmap = compose.onNodeWithTag(tag).captureToImage()
+
+    private fun arrowHeadCenter(pixels: PixelMap): Float {
+        var weight = 0f
+        var weightedX = 0f
+        // The upper diagonal distinguishes the arrowhead from its symmetric horizontal shaft.
+        for (y in pixels.height * 32 / 100 until pixels.height * 44 / 100) {
+            for (x in 0 until pixels.width) {
+                val ink = colorDistance(pixels[x, y], backdrop)
+                if (ink > 0.12f) {
+                    weight += ink
+                    weightedX += x * ink / pixels.width
+                }
+            }
+        }
+        assertTrue("The arrowhead must be visible", weight > 0f)
+        return weightedX / weight
+    }
 
     private fun difference(first: ImageBitmap, second: ImageBitmap): Float {
         assertEquals(first.width, second.width)

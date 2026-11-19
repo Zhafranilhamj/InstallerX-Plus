@@ -100,13 +100,14 @@ internal fun InstallerIconImage(
     colorFilter: ColorFilter? = null,
     filterQuality: FilterQuality = FilterQuality.Low,
 ) {
+    val aero = LocalFrutigerAero.current
     Image(
         bitmap = bitmap,
         contentDescription = contentDescription,
-        modifier = if (LocalFrutigerAero.current) modifier.aeroIconRelief(Color.Unspecified) else modifier,
+        modifier = if (aero) modifier.alpha(alpha).aeroIconRelief(Color.Unspecified) else modifier,
         alignment = alignment,
         contentScale = contentScale,
-        alpha = alpha,
+        alpha = if (aero) 1f else alpha,
         colorFilter = colorFilter,
         filterQuality = filterQuality,
     )
