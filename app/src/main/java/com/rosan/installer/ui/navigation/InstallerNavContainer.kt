@@ -285,12 +285,8 @@ private fun InstallerNavEntry(interceptPredictiveBack: Boolean, onBack: () -> Un
         isBackEnabled = interceptPredictiveBack,
         onBackCompleted = onBack,
     )
-    if (LocalFrutigerAero.current) {
-        Box {
-            AeroAquarium()
-            content()
-        }
-    } else {
+    Box {
+        if (LocalFrutigerAero.current) AeroAquarium()
         content()
     }
 }
