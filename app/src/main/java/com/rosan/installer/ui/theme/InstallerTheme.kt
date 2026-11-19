@@ -122,12 +122,16 @@ fun InstallerTheme(
 
     // 1. Generate the base scheme with spec support
     val baseColorScheme = remember(isAero, keyColor, isDark, paletteStyle, colorSpec) {
-        if (isAero) AeroColors else dynamicColorScheme(
-            keyColor = keyColor,
-            isDark = isDark,
-            style = paletteStyle,
-            colorSpec = colorSpec,
-        )
+        if (isAero) {
+            AeroColors
+        } else {
+            dynamicColorScheme(
+                keyColor = keyColor,
+                isDark = isDark,
+                style = paletteStyle,
+                colorSpec = colorSpec,
+            )
+        }
     }
 
     // 2. Wrap it with smooth transitions

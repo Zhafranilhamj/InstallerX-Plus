@@ -46,15 +46,10 @@ private fun TipCard(
     tipContent: @Composable () -> Unit,
     actionContent: @Composable ColumnScope.() -> Unit,
 ) {
+    val cardModifier = modifier.fillMaxWidth()
+    val paddedModifier = if (noPadding) cardModifier else cardModifier.padding(horizontal = 16.dp, vertical = 8.dp)
     Card(
-        modifier = (if (noPadding) {
-            modifier
-                .fillMaxWidth()
-        } else {
-            modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-        }).aeroChrome(cardShape),
+        modifier = paddedModifier.aeroChrome(cardShape),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.8f),
         ),

@@ -33,6 +33,7 @@ import com.rosan.installer.ui.page.main.settings.preferred.about.AboutViewModel
 import com.rosan.installer.ui.theme.aero.AeroShapes
 import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
 import com.rosan.installer.ui.theme.aero.aeroChrome
+import com.rosan.installer.ui.theme.aero.aeroRise
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -121,7 +122,7 @@ private fun CardWidget(
     buttons: (@Composable () -> Unit)? = null,
 ) {
     ElevatedCard(
-        modifier = Modifier.aeroChrome(AeroShapes.large),
+        modifier = Modifier.aeroRise().aeroChrome(AeroShapes.large),
         shape = if (LocalFrutigerAero.current) AeroShapes.large else CardDefaults.elevatedShape,
         colors = CardDefaults.elevatedCardColors(
             containerColor = if (useBlur) {

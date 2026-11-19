@@ -39,8 +39,7 @@ private val GelOrb = Brush.verticalGradient(
 
 /** Make full-page surfaces transparent without changing the color roles of controls or popups. */
 @Composable
-internal fun aeroPageColor(fallback: Color = MaterialTheme.colorScheme.background): Color =
-    if (LocalFrutigerAero.current) Color.Transparent else fallback
+internal fun aeroPageColor(fallback: Color = MaterialTheme.colorScheme.background): Color = if (LocalFrutigerAero.current) Color.Transparent else fallback
 
 /** Lens highlights are applied below the content on transparent surfaces. */
 internal fun Modifier.aeroGlass(shape: Shape, tint: Color): Modifier = clip(shape)
