@@ -77,19 +77,31 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          fail() { echo "::error title=APK verification failed::$1"; exit 1; }
           mapfile -t apks < <(find app/build/outputs/apk -type f -ipath '*/stable/release/*.apk')
-          test "${#apks[@]}" -eq 1
+          [[ ${#apks[@]} -eq 1 ]] || fail "Expected one Stable Release APK, found ${#apks[@]}"
           apk="${apks[0]}"
-          apksigner=$(find "$ANDROID_HOME/build-tools" -name apksigner | sort -V | tail -1)
-          certificate=$(keytool -exportcert -keystore "$KEYSTORE_FILE" -storepass:env KEYSTORE_PASSWORD -alias "$KEY_ALIAS" | sha256sum | cut -d' ' -f1)
-          "$apksigner" verify --verbose --print-certs "$apk" > "$RUNNER_TEMP/apk-signatures.txt"
-          grep -Fx "Signer #1 certificate SHA-256 digest: $certificate" "$RUNNER_TEMP/apk-signatures.txt"
-          "$(dirname "$apksigner")/aapt2" dump badging "$apk" > "$RUNNER_TEMP/apk-manifest.txt"
-          grep '^package: ' "$RUNNER_TEMP/apk-manifest.txt" | grep -F "name='com.installerx.plus'" | grep -F "versionName='$RELEASE_VERSION'"
-          grep -Fx "application-label:'InstallerX-Plus'" "$RUNNER_TEMP/apk-manifest.txt"
-          if grep -q '^application-debuggable' "$RUNNER_TEMP/apk-manifest.txt"; then
-            echo '::error::Stable release APK is debuggable'
-            exit 1
+          apksigner=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -1)
+          [[ -x "$apksigner" ]] || fail 'Android Build Tools apksigner was not found'
+          certificate=$(keytool -exportcert -keystore "$KEYSTORE_FILE" -storepass:env KEYSTORE_PASSWORD -alias "$KEY_ALIAS" | sha256sum | cut -d' ' -f1) \
+            || fail 'Could not read the expected certificate from the configured keystore'
+          "$apksigner" verify --verbose --print-certs "$apk" > "$RUNNER_TEMP/apk-signatures.txt" \
+            || fail 'apksigner rejected the APK signature'
+          signer=$(awk -F ': *' '$1 ~ /Signer #1 certificate SHA-256 digest$/ { print $2; exit }' "$RUNNER_TEMP/apk-signatures.txt")
+          signer=${signer//[![:xdigit:]]/}
+          [[ "${signer,,}" == "$certificate" ]] || fail 'APK signer did not match the configured keystore certificate'
+          aapt2="$(dirname "$apksigner")/aapt2"
+          "$aapt2" dump badging "$apk" > "$RUNNER_TEMP/apk-manifest.txt" || fail 'aapt2 could not read the APK manifest'
+          manifest="$RUNNER_TEMP/apk-manifest.txt"
+          package=$(grep -m1 '^package:' "$manifest" || true)
+          echo "$package"
+          [[ "$package" == *"name='com.installerx.plus'"* ]] || fail 'Unexpected application ID in packaged APK'
+          [[ "$package" == *"versionName='$RELEASE_VERSION'"* ]] || fail "Expected versionName $RELEASE_VERSION"
+          # aapt2 versions expose the default label as a standalone or application entry.
+          grep -Eq "^(application-label:'InstallerX-Plus'|application: label='InstallerX-Plus'( |$))" "$manifest" \
+            || fail 'Expected InstallerX-Plus launcher label'
+          if grep -q '^application-debuggable' "$manifest"; then
+            fail 'Stable release APK is debuggable'
           fi
           mkdir -p release-apk
           cp "$apk" "release-apk/InstallerX-Plus-$RELEASE_VERSION.apk"
