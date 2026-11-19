@@ -4,6 +4,7 @@ package com.rosan.installer.ui.navigation
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -51,7 +52,8 @@ import com.rosan.installer.ui.page.miuix.settings.preferred.lab.MiuixLabPage
 import com.rosan.installer.ui.page.miuix.settings.preferred.network.MiuixNetworkPage
 import com.rosan.installer.ui.page.miuix.settings.preferred.theme.MiuixThemeSettingsPage
 import com.rosan.installer.ui.page.miuix.settings.preferred.uninstaller.MiuixUninstallerGlobalSettingsPage
-import com.rosan.installer.ui.theme.aero.aeroPageColor
+import com.rosan.installer.ui.theme.aero.AeroAquarium
+import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
 import com.rosan.installer.ui.util.rememberDeviceCornerRadius
 import org.koin.androidx.compose.koinViewModel
 import top.yukonga.miuix.kmp.nav.core.NavCornerClipMode
@@ -82,7 +84,7 @@ fun InstallerNavContainer(uiState: ThemeState, initialRoute: Route = Route.Main)
         val backdropColor = if (uiState.useMiuix) {
             MiuixTheme.colorScheme.surface
         } else {
-            aeroPageColor(MaterialTheme.colorScheme.surfaceContainer)
+            MaterialTheme.colorScheme.surfaceContainer
         }
         val effects = remember(navCornerRadius, roundAllCorners, backdropColor) {
             NavDisplayEffects(
@@ -283,5 +285,12 @@ private fun InstallerNavEntry(interceptPredictiveBack: Boolean, onBack: () -> Un
         isBackEnabled = interceptPredictiveBack,
         onBackCompleted = onBack,
     )
-    content()
+    if (LocalFrutigerAero.current) {
+        Box {
+            AeroAquarium()
+            content()
+        }
+    } else {
+        content()
+    }
 }

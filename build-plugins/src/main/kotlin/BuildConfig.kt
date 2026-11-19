@@ -45,5 +45,5 @@ fun Project.getGitDate(): String = try {
 // Use a fixed release version unless explicitly overridden.
 fun Project.getBaseVersionName(): String {
     val manualVersionName = findProperty("VERSION_NAME") as String?
-    return manualVersionName ?: "26.11.2"
+    return manualVersionName ?: "26.11.3"
 }

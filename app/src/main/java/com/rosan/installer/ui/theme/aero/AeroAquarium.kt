@@ -29,6 +29,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.currentStateAsState
 import com.rosan.installer.R
+import com.rosan.installer.ui.theme.InstallerTheme
 import kotlin.math.sin
 
 private const val Turn = 6.2831855f
@@ -41,6 +42,7 @@ private val SurfaceWash = Brush.verticalGradient(
 /** Pure decoration: one draw-phase clock, no input or accessibility nodes. */
 @Composable
 internal fun AeroAquarium() {
+    val dark = InstallerTheme.isDark
     val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
     Box(Modifier.fillMaxSize()) {
         Image(
@@ -52,18 +54,18 @@ internal fun AeroAquarium() {
         if (lifecycleState.isAtLeast(Lifecycle.State.RESUMED)) {
             val clock = rememberInfiniteTransition(label = "Aquarium")
             val phase = clock.animateFloat(0f, 1f, infiniteRepeatable(tween(28000, easing = LinearEasing)), label = "Drift")
-            Canvas(Modifier.fillMaxSize()) { drawAquarium(phase.value) }
+            Canvas(Modifier.fillMaxSize()) { drawAquarium(phase.value, dark) }
         } else {
-            Canvas(Modifier.fillMaxSize()) { drawAquarium(0f) }
+            Canvas(Modifier.fillMaxSize()) { drawAquarium(0f, dark) }
         }
     }
 }
 
-private fun DrawScope.drawAquarium(phase: Float) {
-    drawRect(SurfaceWash)
+private fun DrawScope.drawAquarium(phase: Float, dark: Boolean) {
+    if (dark) drawRect(Color(0xDE031629)) else drawRect(SurfaceWash)
     val light = Offset(size.width * (0.19f + 0.07f * sin(phase * Turn)), size.height * 0.08f)
     drawCircle(
-        brush = Brush.radialGradient(listOf(Color(0xC7FFFFDF), Color.Transparent), light, size.minDimension * 0.72f),
+        brush = Brush.radialGradient(listOf(if (dark) Color(0x553CAFA9) else Color(0xC7FFFFDF), Color.Transparent), light, size.minDimension * 0.72f),
         center = light,
         radius = size.minDimension * 0.72f,
     )
