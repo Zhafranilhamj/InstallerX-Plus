@@ -38,10 +38,10 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.unit.dp
 import com.rosan.installer.domain.settings.model.preferences.theme.UiStyle
 import com.rosan.installer.ui.theme.InstallerTheme
 import com.rosan.installer.ui.theme.LocalUiStyle
-import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.collectLatest
 
 internal val AquaGelInk = Color(0xFF073D60)
@@ -80,7 +80,7 @@ private fun Modifier.aeroGel(activated: Boolean, source: MutableInteractionSourc
     val burst = remember { Animatable(1f) }
     LaunchedEffect(source) {
         source.interactions.collectLatest { interaction ->
-            if (interaction is PressInteraction.Release) {
+            if (interaction is PressInteraction.R) {
                 burst.snapTo(0f)
                 burst.animateTo(1f, tween(520))
             }
@@ -105,7 +105,15 @@ private fun Modifier.aeroGel(activated: Boolean, source: MutableInteractionSourc
         val rim = CornerRadius(size.minDimension / 2f)
         val stroke = 1.dp.toPx()
         onDrawWithContent {
-            drawRect(if (!filled) LightGel else if (style == UiStyle.FRUTIGER_AERO) DeepGel else variantGel)
+            drawRect(
+                if (!filled) {
+                    LightGel
+                } else if (style == UiStyle.FRUTIGER_AERO) {
+                    DeepGel
+                } else {
+                    variantGel
+                },
+            )
             drawRoundRect(Color(0xA1FFFFFF), cornerRadius = rim, style = Stroke(2 * stroke))
             if (shine.value < 1f) {
                 val width = size.height * 1.8f
