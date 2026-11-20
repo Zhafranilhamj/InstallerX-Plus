@@ -21,7 +21,10 @@ enum class UiStyle {
     }
 
     val isAero: Boolean
-        get() = this in setOf(FRUTIGER_AERO, FRUTIGER_METRO, FRUTIGER_AURORA, DARK_AERO, FRUTIGER_ECO, FRUTIGER_AQUA)
+        get() = when (this) {
+            FRUTIGER_AERO, FRUTIGER_METRO, FRUTIGER_AURORA, DARK_AERO, FRUTIGER_ECO, FRUTIGER_AQUA -> true
+            else -> false
+        }
 
     fun useMiuix(current: Boolean): Boolean = when (this) {
         CURRENT -> current

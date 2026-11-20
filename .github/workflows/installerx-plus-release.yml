@@ -33,13 +33,26 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
         with:
           cache-read-only: true
-      - name: Check formatting and run unit tests
+      - name: Check formatting
+        shell: bash
+        run: |
+          if ! ./gradlew spotlessCheck --no-configuration-cache > "$RUNNER_TEMP/format.log" 2>&1; then
+            cat "$RUNNER_TEMP/format.log"
+            details=$(tail -n 100 "$RUNNER_TEMP/format.log")
+            details=${details//'%'/'%25'}
+            details=${details//$'\r'/'%0D'}
+            details=${details//$'\n'/'%0A'}
+            echo "::error title=Formatting check failed::$details"
+            exit 1
+          fi
+          cat "$RUNNER_TEMP/format.log"
+      - name: Run unit tests
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
-          if ! ./gradlew spotlessCheck testStableDebugUnitTest --no-configuration-cache > "$RUNNER_TEMP/verification.log" 2>&1; then
+          if ! ./gradlew testStableDebugUnitTest --no-configuration-cache > "$RUNNER_TEMP/verification.log" 2>&1; then
             cat "$RUNNER_TEMP/verification.log"
             # Surface formatter and compiler diagnostics in the check, not just the exit code.
             details=$(tail -n 75 "$RUNNER_TEMP/verification.log")
