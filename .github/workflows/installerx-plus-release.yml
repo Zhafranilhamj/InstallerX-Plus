@@ -50,7 +50,8 @@ jobs:
           from pathlib import Path
           for name in subprocess.check_output(['git', 'diff', '--name-only'], text=True).splitlines():
               data = base64.b64encode(Path(name).read_bytes()).decode()
-              print(f'::notice title=Formatted file::{name} {data}')
+              for i in range(0, len(data), 3000):
+                  print(f'::notice title=Formatted file::{name} {i // 3000} {data[i:i + 3000]}')
           PYTHON
             exit 1
           fi
