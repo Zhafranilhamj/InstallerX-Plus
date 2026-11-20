@@ -43,17 +43,6 @@ jobs:
             details=${details//$'\r'/'%0D'}
             details=${details//$'\n'/'%0A'}
             echo "::error title=Formatting check failed::$details"
-            ./gradlew spotlessApply --no-configuration-cache
-            python3 - <<'PYTHON'
-          import base64
-          import gzip
-          import subprocess
-          from pathlib import Path
-          for name in subprocess.check_output(['git', 'diff', '--name-only'], text=True).splitlines():
-              data = base64.b64encode(gzip.compress(Path(name).read_bytes())).decode()
-              for i in range(0, len(data), 3000):
-                  print(f'::notice title=Formatted file::{name} {i // 3000} {data[i:i + 3000]}')
-          PYTHON
             exit 1
           fi
           cat "$RUNNER_TEMP/format.log"
@@ -65,7 +54,7 @@ jobs:
         run: |
           if ! ./gradlew testStableDebugUnitTest --no-configuration-cache > "$RUNNER_TEMP/verification.log" 2>&1; then
             cat "$RUNNER_TEMP/verification.log"
-            # Surface formatter and compiler diagnostics in the check, not just the exit code.
+            # Surface test and compiler diagnostics in the check, not just the exit code.
             details=$(tail -n 75 "$RUNNER_TEMP/verification.log")
             details=${details//'%'/'%25'}
             details=${details//$'\r'/'%0D'}

@@ -21,42 +21,84 @@ import com.rosan.installer.ui.theme.LocalUiStyle
 internal fun aeroVariantColors(style: UiStyle, dark: Boolean): ColorScheme {
     val base = if (dark) AeroDarkColors else AeroColors
     return when (style) {
-        UiStyle.FRUTIGER_METRO -> if (dark) base.copy(
-            primary = Color(0xFFFFB1D1), onPrimary = Color(0xFF59002E),
-            primaryContainer = Color(0xFF7D174D), onPrimaryContainer = Color(0xFFFFD9E7),
-            secondary = Color(0xFFFFD77D), onSecondary = Color(0xFF422C00),
-        ) else base.copy(
-            primary = Color(0xFF9F1759), onPrimary = Color.White,
-            primaryContainer = Color(0xFFFFD9E7), onPrimaryContainer = Color(0xFF40001E),
-            secondary = Color(0xFF765900), onSecondary = Color.White,
-        )
-        UiStyle.FRUTIGER_AURORA -> if (dark) base.copy(
-            primary = Color(0xFFD0BCFF), onPrimary = Color(0xFF35265F),
-            primaryContainer = Color(0xFF4C3C78), onPrimaryContainer = Color(0xFFEADDFF),
-        ) else base.copy(
-            primary = Color(0xFF6045A0), onPrimary = Color.White,
-            primaryContainer = Color(0xFFEADDFF), onPrimaryContainer = Color(0xFF210C53),
-        )
+        UiStyle.FRUTIGER_METRO -> if (dark) {
+            base.copy(
+                primary = Color(0xFFFFB1D1),
+                onPrimary = Color(0xFF59002E),
+                primaryContainer = Color(0xFF7D174D),
+                onPrimaryContainer = Color(0xFFFFD9E7),
+                secondary = Color(0xFFFFD77D),
+                onSecondary = Color(0xFF422C00),
+            )
+        } else {
+            base.copy(
+                primary = Color(0xFF9F1759),
+                onPrimary = Color.White,
+                primaryContainer = Color(0xFFFFD9E7),
+                onPrimaryContainer = Color(0xFF40001E),
+                secondary = Color(0xFF765900),
+                onSecondary = Color.White,
+            )
+        }
+
+        UiStyle.FRUTIGER_AURORA -> if (dark) {
+            base.copy(
+                primary = Color(0xFFD0BCFF),
+                onPrimary = Color(0xFF35265F),
+                primaryContainer = Color(0xFF4C3C78),
+                onPrimaryContainer = Color(0xFFEADDFF),
+            )
+        } else {
+            base.copy(
+                primary = Color(0xFF6045A0),
+                onPrimary = Color.White,
+                primaryContainer = Color(0xFFEADDFF),
+                onPrimaryContainer = Color(0xFF210C53),
+            )
+        }
+
         UiStyle.DARK_AERO -> AeroDarkColors.copy(
-            background = Color(0xFF090D12), surface = Color(0xFF11171E),
-            surfaceContainerLowest = Color(0xFF05080B), surfaceContainerLow = Color(0xFF11171E),
-            surfaceContainer = Color(0xFF19222A), surfaceContainerHigh = Color(0xFF243039),
+            background = Color(0xFF090D12),
+            surface = Color(0xFF11171E),
+            surfaceContainerLowest = Color(0xFF05080B),
+            surfaceContainerLow = Color(0xFF11171E),
+            surfaceContainer = Color(0xFF19222A),
+            surfaceContainerHigh = Color(0xFF243039),
             surfaceContainerHighest = Color(0xFF303D47),
         )
-        UiStyle.FRUTIGER_ECO -> if (dark) base.copy(
-            primary = Color(0xFF9CDB8D), onPrimary = Color(0xFF073A0A),
-            primaryContainer = Color(0xFF285120), onPrimaryContainer = Color(0xFFB8F7A7),
-        ) else base.copy(
-            primary = Color(0xFF326A27), onPrimary = Color.White,
-            primaryContainer = Color(0xFFB8F7A7), onPrimaryContainer = Color(0xFF0B3909),
-        )
-        UiStyle.FRUTIGER_AQUA -> if (dark) base.copy(
-            primary = Color(0xFF6EDCF0), onPrimary = Color(0xFF00363F),
-            primaryContainer = Color(0xFF004F5C), onPrimaryContainer = Color(0xFFB1ECF8),
-        ) else base.copy(
-            primary = Color(0xFF006876), onPrimary = Color.White,
-            primaryContainer = Color(0xFF9DEFFF), onPrimaryContainer = Color(0xFF002027),
-        )
+
+        UiStyle.FRUTIGER_ECO -> if (dark) {
+            base.copy(
+                primary = Color(0xFF9CDB8D),
+                onPrimary = Color(0xFF073A0A),
+                primaryContainer = Color(0xFF285120),
+                onPrimaryContainer = Color(0xFFB8F7A7),
+            )
+        } else {
+            base.copy(
+                primary = Color(0xFF326A27),
+                onPrimary = Color.White,
+                primaryContainer = Color(0xFFB8F7A7),
+                onPrimaryContainer = Color(0xFF0B3909),
+            )
+        }
+
+        UiStyle.FRUTIGER_AQUA -> if (dark) {
+            base.copy(
+                primary = Color(0xFF6EDCF0),
+                onPrimary = Color(0xFF00363F),
+                primaryContainer = Color(0xFF004F5C),
+                onPrimaryContainer = Color(0xFFB1ECF8),
+            )
+        } else {
+            base.copy(
+                primary = Color(0xFF006876),
+                onPrimary = Color.White,
+                primaryContainer = Color(0xFF9DEFFF),
+                onPrimaryContainer = Color(0xFF002027),
+            )
+        }
+
         else -> base
     }
 }
@@ -90,6 +132,7 @@ private fun DrawScope.drawVariantBackdrop(style: UiStyle, dark: Boolean) {
             drawCircle(Color(0x5595CE37), w * 0.26f, Offset(w * 0.04f, h * 0.84f))
             drawRect(Color(0x558C77E8), Offset(w * 0.75f, h * 0.65f), androidx.compose.ui.geometry.Size(w * 0.25f, h * 0.12f))
         }
+
         UiStyle.FRUTIGER_AURORA, UiStyle.DARK_AERO -> {
             val ribbon = Path().apply {
                 moveTo(0f, h * 0.27f)
@@ -101,6 +144,7 @@ private fun DrawScope.drawVariantBackdrop(style: UiStyle, dark: Boolean) {
             drawPath(ribbon, Brush.verticalGradient(listOf(Color(0x5587F8DF), Color(0x334F6DFF), Color.Transparent)))
             drawCircle(Color(0x4483F5D7), w * 0.12f, Offset(w * 0.86f, h * 0.76f))
         }
+
         UiStyle.FRUTIGER_ECO -> {
             val hill = Path().apply {
                 moveTo(0f, h * 0.86f)
@@ -113,6 +157,7 @@ private fun DrawScope.drawVariantBackdrop(style: UiStyle, dark: Boolean) {
             drawPath(hill, Color(0x5571C956))
             drawCircle(Color(0x55FFED93), w * 0.16f, Offset(w * 0.85f, h * 0.1f))
         }
+
         UiStyle.FRUTIGER_AQUA -> {
             repeat(13) { i ->
                 val x = w * (if (i % 2 == 0) 0.07f + (i % 3) * 0.06f else 0.93f - (i % 3) * 0.06f)
@@ -127,6 +172,7 @@ private fun DrawScope.drawVariantBackdrop(style: UiStyle, dark: Boolean) {
                 drawPath(wave, Color(0x66FFFFFF), style = Stroke(width = 2f))
             }
         }
+
         else -> Unit
     }
 }
