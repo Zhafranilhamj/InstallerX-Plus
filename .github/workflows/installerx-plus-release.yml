@@ -43,6 +43,15 @@ jobs:
             details=${details//$'\r'/'%0D'}
             details=${details//$'\n'/'%0A'}
             echo "::error title=Formatting check failed::$details"
+            ./gradlew spotlessApply --no-configuration-cache
+            python3 - <<'PYTHON'
+          import base64
+          import subprocess
+          from pathlib import Path
+          for name in subprocess.check_output(['git', 'diff', '--name-only'], text=True).splitlines():
+              data = base64.b64encode(Path(name).read_bytes()).decode()
+              print(f'::notice title=Formatted file::{name} {data}')
+          PYTHON
             exit 1
           fi
           cat "$RUNNER_TEMP/format.log"
