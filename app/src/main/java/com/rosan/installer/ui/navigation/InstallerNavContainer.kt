@@ -52,7 +52,7 @@ import com.rosan.installer.ui.page.miuix.settings.preferred.lab.MiuixLabPage
 import com.rosan.installer.ui.page.miuix.settings.preferred.network.MiuixNetworkPage
 import com.rosan.installer.ui.page.miuix.settings.preferred.theme.MiuixThemeSettingsPage
 import com.rosan.installer.ui.page.miuix.settings.preferred.uninstaller.MiuixUninstallerGlobalSettingsPage
-import com.rosan.installer.ui.theme.aero.AeroAquarium
+import com.rosan.installer.ui.theme.aero.AeroBackdrop
 import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
 import com.rosan.installer.ui.util.rememberDeviceCornerRadius
 import org.koin.androidx.compose.koinViewModel
@@ -286,7 +286,7 @@ private fun InstallerNavEntry(interceptPredictiveBack: Boolean, onBack: () -> Un
         onBackCompleted = onBack,
     )
     Box {
-        if (LocalFrutigerAero.current) AeroAquarium()
+        if (LocalFrutigerAero.current) AeroBackdrop()
         content()
     }
 }

@@ -50,7 +50,7 @@ internal fun InstallerStage.Installing.measuredProgress(): Float? = progress.tak
 
 @Composable
 internal fun LiquidInstallGauge(style: UiStyle, progress: Float?, tint: Color, useBlur: Boolean, modifier: Modifier = Modifier) {
-    val aero = style == UiStyle.FRUTIGER_AERO
+    val aero = style.isAero
     val mixed = style == UiStyle.MIXED
     val dark = InstallerTheme.isDark
     val water = if (aero) Color(if (dark) 0xFF1AAFA9 else 0xFF007DB8) else tint

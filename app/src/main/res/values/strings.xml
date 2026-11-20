@@ -119,6 +119,16 @@
     <string name="enable_storage_permission_hint">Please enable All Files Access to install!</string>
     <string name="combined_description_format" translatable="false">%1$s\n%2$s</string>
     <string name="theme_settings">Theme Settings</string>
+    <string name="ui_style_metro">Frutiger Metro</string>
+    <string name="ui_style_metro_desc">Bright vector shapes and colorful, playful accents.</string>
+    <string name="ui_style_aurora">Frutiger Aurora</string>
+    <string name="ui_style_aurora_desc">Glowing ribbons of light against an atmospheric sky.</string>
+    <string name="ui_style_dark_aero">Dark Aero</string>
+    <string name="ui_style_dark_aero_desc">Sleek dark glass with luminous blue accents.</string>
+    <string name="ui_style_eco">Frutiger Eco</string>
+    <string name="ui_style_eco_desc">Fresh greens and a hopeful nature-inspired landscape.</string>
+    <string name="ui_style_aqua">Frutiger Aqua / Helvetica Aqua Aero</string>
+    <string name="ui_style_aqua_desc">Ocean blues, waves and floating bubbles.</string>
     <string name="ui_style_aero">Frutiger Aero</string>
     <string name="ui_style_aero_desc">A sunny aquarium look with glossy aqua controls and gently drifting bubbles.</string>
     <string name="theme_settings_ui_style">UI Style</string>

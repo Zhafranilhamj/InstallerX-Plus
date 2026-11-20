@@ -27,8 +27,7 @@ import com.rosan.installer.domain.settings.model.preferences.theme.PaletteStyle
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeColorSpec
 import com.rosan.installer.domain.settings.model.preferences.theme.ThemeMode
 import com.rosan.installer.domain.settings.model.preferences.theme.UiStyle
-import com.rosan.installer.ui.theme.aero.AeroColors
-import com.rosan.installer.ui.theme.aero.AeroDarkColors
+import com.rosan.installer.ui.theme.aero.aeroVariantColors
 import com.rosan.installer.ui.theme.aero.AeroShapes
 import com.rosan.installer.ui.theme.aero.AeroTypography
 import com.rosan.installer.ui.theme.aero.LocalFrutigerAero
@@ -109,8 +108,8 @@ fun InstallerTheme(
         }
     }
 
-    val isAero = uiStyle == UiStyle.FRUTIGER_AERO
-    val isDark = when (themeMode) {
+    val isAero = uiStyle.isAero
+    val isDark = uiStyle == UiStyle.DARK_AERO || when (themeMode) {
         ThemeMode.LIGHT -> false
         ThemeMode.DARK -> true
         ThemeMode.SYSTEM -> isSystemInDarkTheme()
@@ -123,9 +122,9 @@ fun InstallerTheme(
     }
 
     // 1. Generate the base scheme with spec support
-    val baseColorScheme = remember(isAero, keyColor, isDark, paletteStyle, colorSpec) {
+    val baseColorScheme = remember(uiStyle, keyColor, isDark, paletteStyle, colorSpec) {
         if (isAero) {
-            if (isDark) AeroDarkColors else AeroColors
+            aeroVariantColors(uiStyle, isDark)
         } else {
             dynamicColorScheme(
                 keyColor = keyColor,

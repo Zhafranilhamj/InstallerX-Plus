@@ -1,0 +1,1 @@
+- Added five new Frutiger Aero looks: Metro, Aurora, Dark Aero, Eco and Aqua.

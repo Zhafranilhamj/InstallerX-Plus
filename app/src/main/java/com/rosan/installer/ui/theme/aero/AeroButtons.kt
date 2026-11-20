@@ -19,6 +19,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonElevation
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -36,6 +37,10 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.lerp
+import com.rosan.installer.domain.settings.model.preferences.theme.UiStyle
+import com.rosan.installer.ui.theme.InstallerTheme
+import com.rosan.installer.ui.theme.LocalUiStyle
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.collectLatest
 
@@ -57,6 +62,13 @@ private val LightGel = Brush.verticalGradient(
 @Composable
 private fun Modifier.aeroGel(activated: Boolean, source: MutableInteractionSource, filled: Boolean): Modifier {
     if (!activated) return this
+    val style = LocalUiStyle.current
+    val accent = if (InstallerTheme.isDark) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.primary
+    val variantGel = if (style == UiStyle.FRUTIGER_METRO) {
+        Brush.verticalGradient(listOf(accent, accent))
+    } else {
+        Brush.verticalGradient(listOf(lerp(accent, Color.White, 0.18f), accent, lerp(accent, Color.Black, 0.2f)))
+    }
     val pressed by source.collectIsPressedAsState()
     val hovered by source.collectIsHoveredAsState()
     val scale = animateFloatAsState(
@@ -93,7 +105,7 @@ private fun Modifier.aeroGel(activated: Boolean, source: MutableInteractionSourc
         val rim = CornerRadius(size.minDimension / 2f)
         val stroke = 1.dp.toPx()
         onDrawWithContent {
-            drawRect(if (filled) DeepGel else LightGel)
+            drawRect(if (!filled) LightGel else if (style == UiStyle.FRUTIGER_AERO) DeepGel else variantGel)
             drawRoundRect(Color(0xA1FFFFFF), cornerRadius = rim, style = Stroke(2 * stroke))
             if (shine.value < 1f) {
                 val width = size.height * 1.8f

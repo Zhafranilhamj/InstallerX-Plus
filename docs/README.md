@@ -182,6 +182,8 @@ This project uses code from, or is based on the implementation of, the following
 
 In Theme settings, choose Default to keep your existing appearance, Liquid glass for Miuix controls with a floating bar and blur, Material 3 Expressive for Material controls, or Mix of both for Material controls with a floating bar and blur. Blur falls back to solid surfaces on unsupported devices. Selecting Default restores your previous individual appearance settings.
 
+Choose **Frutiger Metro**, **Frutiger Aurora**, **Dark Aero**, **Frutiger Eco**, or **Frutiger Aqua / Helvetica Aqua Aero** for colorful vector shapes, glowing ribbons, dark glass, green landscapes, or an underwater look. Dark Aero stays dark regardless of the system theme.
+
 Choose **Frutiger Aero** for an aquarium backdrop, glossy aqua controls, and gently drifting bubbles. Action icons have raised, beveled shapes and glassy highlights; app logos keep their original artwork beneath a glossy finish. The animated fish stay below the wallpaper’s waterline, including after rotating or resizing the screen. QR codes remain unaltered for reliable scanning. Choose **Default** to return to your existing appearance settings.
 
-During installs and updates, Frutiger Aero shows a bubbling water gauge with sunbeams by day or glowing plankton by night. Liquid glass and Mix of both use tinted glass gauges, while Material 3 Expressive uses a wavy ring.
+During installs and updates, Frutiger Aero and its variants show a bubbling water gauge with sunbeams by day or glowing plankton by night. Liquid glass and Mix of both use tinted glass gauges, while Material 3 Expressive uses a wavy ring.

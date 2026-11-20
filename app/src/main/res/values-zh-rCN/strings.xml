@@ -107,6 +107,16 @@
     <string name="enable_notification_hint">请启用通知以进行安装！</string>
     <string name="enable_storage_permission_hint">请授予“所有文件访问”权限！</string>
     <string name="theme_settings">主题设置</string>
+    <string name="ui_style_metro">Frutiger Metro</string>
+    <string name="ui_style_metro_desc">缤纷的矢量图形与活泼的色彩。</string>
+    <string name="ui_style_aurora">Frutiger Aurora</string>
+    <string name="ui_style_aurora_desc">天空中流动的极光与柔和光芒。</string>
+    <string name="ui_style_dark_aero">Dark Aero</string>
+    <string name="ui_style_dark_aero_desc">深色玻璃搭配明亮的蓝色点缀。</string>
+    <string name="ui_style_eco">Frutiger Eco</string>
+    <string name="ui_style_eco_desc">清新的绿色与自然风景。</string>
+    <string name="ui_style_aqua">Frutiger Aqua / Helvetica Aqua Aero</string>
+    <string name="ui_style_aqua_desc">海洋蓝色、波浪与漂浮的气泡。</string>
     <string name="ui_style_aero">Frutiger Aero</string>
     <string name="ui_style_aero_desc">明亮的水族馆风格，搭配亮泽的水蓝色控件与缓缓漂浮的气泡。</string>
     <string name="theme_settings_ui_style">主题风格</string>

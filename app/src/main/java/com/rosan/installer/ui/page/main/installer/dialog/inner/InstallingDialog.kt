@@ -84,7 +84,7 @@ fun installingDialog(viewModel: InstallerViewModel): DialogParams {
                 }
                 val style = LocalUiStyle.current
                 val determinateProgress = installingStage?.measuredProgress()
-                if (style == UiStyle.FRUTIGER_AERO || style == UiStyle.MIXED) {
+                if (style.isAero || style == UiStyle.MIXED) {
                     LiquidInstallGauge(style, determinateProgress, MaterialTheme.colorScheme.primary, uiState.viewSettings.useBlur)
                 } else if (style == UiStyle.MATERIAL_EXPRESSIVE) {
                     val ring = Modifier.align(Alignment.CenterHorizontally)
